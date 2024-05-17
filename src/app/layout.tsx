@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Capstone Admin",
+  title: `Capstone Admin - ${process.env.ENV_MODE !== 'production' && process.env.ENV_MODE}`,
 };
 
 export default function RootLayout({

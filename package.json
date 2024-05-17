@@ -3,25 +3,35 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "copy:dev:env": "env-cmd -f ./env/development.env node ./scripts/write-env.mjs",
+    "copy:staging:env": "env-cmd -f ./env/staging.env node ./scripts/write-env.mjs",
+    "copy:prod:env": "env-cmd -f ./env/production.env node ./scripts/write-env.mjs",
+    "start:dev": "yarn copy:dev:env && next dev --turbo",
+    "start:staging": "yarn copy:staging:env && next dev --turbo",
+    "start:prod": "yarn copy:prod:env && wnext dev --turbo",
+    "build:dev": "yarn copy:dev:env && next build",
+    "build:staging": "yarn copy:staging:env && next build",
+    "build:prod": "yarn copy:prod:env && next build",
+    "preview:dev": "yarn build:dev && next start",
+    "preview:staging": "yarn build:staging && next start",
+    "preview:prod": "yarn build:prod && next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "env-cmd": "^10.1.0",
+    "next": "14.2.3",
     "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.3"
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.0",
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
-    "eslint": "^8",
-    "eslint-config-next": "14.1.0"
+    "typescript": "^5"
   }
 }
