@@ -3,7 +3,8 @@ import { fontsans } from "@/utils/fonts";
 import { pageMetadata } from "@/utils/metadata-helpter";
 import { ENV_MODE } from "@/constants/env-constant";
 import { cn } from "@/lib/utils";
-import Sidebar from "@/components/layout/sidebar";
+import { Sidebar } from "@/components/layout/sidebar";
+
 
 export const metadata = pageMetadata({ title: `Capstone Admin - ${ENV_MODE !== 'production' && ENV_MODE}` })
 
@@ -19,7 +20,7 @@ export default function RootLayout({
         fontsans.variable
       )}>
         <Sidebar />
-        <main>
+        <main className="bg-blue-300 w-full">
           {children}
         </main>
       </body>
