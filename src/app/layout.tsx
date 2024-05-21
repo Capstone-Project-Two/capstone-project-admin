@@ -1,12 +1,10 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import "@/assets/styles/globals.css";
+import { fontsans } from "@/assets/fonts";
+import { pageMetadata } from "@/utils/metadata-helpter";
+import { ENV_MODE } from "../constants/env-constant";
+import { cn } from "@/lib/utils";
 
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: `Capstone Admin - ${process.env.ENV_MODE !== 'production' && process.env.ENV_MODE}`,
-};
+export const metadata = pageMetadata({ title: `Capstone Admin - ${ENV_MODE !== 'production' && ENV_MODE}` })
 
 export default function RootLayout({
   children,
@@ -14,8 +12,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={cn(
+        "min-h-screen bg-background font-sans antialiased",
+        fontsans.variable
+      )}>
+        <main>
+          {children}
+        </main>
+      </body>
     </html>
   );
 }
