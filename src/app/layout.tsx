@@ -1,8 +1,9 @@
-import "@/assets/styles/globals.css";
-import { fontsans } from "@/assets/fonts";
+import "@/styles/globals.css";
+import { fontsans } from "@/utils/fonts";
 import { pageMetadata } from "@/utils/metadata-helpter";
-import { ENV_MODE } from "../constants/env-constant";
+import { ENV_MODE } from "@/constants/env-constant";
 import { cn } from "@/lib/utils";
+import Sidebar from "@/components/layout/sidebar";
 
 export const metadata = pageMetadata({ title: `Capstone Admin - ${ENV_MODE !== 'production' && ENV_MODE}` })
 
@@ -14,10 +15,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn(
-        "min-h-screen bg-background font-sans antialiased",
+        "min-h-screen flex bg-background font-sans antialiased",
         fontsans.variable
       )}>
-        Navbar
+        <Sidebar />
         <main>
           {children}
         </main>
