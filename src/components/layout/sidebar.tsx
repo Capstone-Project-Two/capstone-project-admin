@@ -8,15 +8,17 @@ import {
   TooltipContent, TooltipProvider, TooltipTrigger
 } from "@/components/ui/tooltip"
 import {
-  Archive,
-  ArchiveX,
-  File,
-  Inbox, LucideIcon, Send, Trash2,
+  LayoutDashboard, ListCollapse, LucideIcon,
   User
 } from "lucide-react"
-import { useState } from "react"
+import { Dispatch, SetStateAction } from "react"
+import { ROUTER_PATH } from "@/constants/route-constant"
+import { usePathname } from "next/navigation"
+import { Separator } from "../ui/separator"
 
 type Props = {
+  isCollapsed: boolean;
+  setIsCollapsed: Dispatch<SetStateAction<boolean>>
 }
 
 type TLink = {
@@ -24,46 +26,23 @@ type TLink = {
   label?: string
   icon: LucideIcon
   variant: "default" | "ghost"
+  to: string
 }
 
-export function Sidebar({ }: Props) {
-  const [isCollapsed, setIsCollapsed] = useState(false)
+export function Sidebar({ isCollapsed, setIsCollapsed }: Props) {
+  const pathname = usePathname()
   const links: Array<TLink> = [
     {
-      title: "Inbox",
-      label: "128",
-      icon: Inbox,
-      variant: "default",
+      title: "Overview",
+      icon: LayoutDashboard,
+      to: ROUTER_PATH.HOMEPAGE,
+      variant: pathname === ROUTER_PATH.HOMEPAGE ? "default" : "ghost",
     },
     {
-      title: "Drafts",
-      label: "9",
-      icon: File,
-      variant: "ghost",
-    },
-    {
-      title: "Sent",
-      label: "",
-      icon: Send,
-      variant: "ghost",
-    },
-    {
-      title: "Junk",
-      label: "23",
-      icon: ArchiveX,
-      variant: "ghost",
-    },
-    {
-      title: "Trash",
-      label: "",
-      icon: Trash2,
-      variant: "ghost",
-    },
-    {
-      title: "Archive",
-      label: "",
-      icon: Archive,
-      variant: "ghost",
+      title: "Users",
+      icon: User,
+      to: ROUTER_PATH.USERS,
+      variant: pathname === ROUTER_PATH.USERS ? "default" : "ghost",
     },
   ]
 
@@ -71,47 +50,16 @@ export function Sidebar({ }: Props) {
     <TooltipProvider delayDuration={0}>
       <div
         data-collapsed={isCollapsed}
-        className={`group flex flex-col gap-4 py-2 data-[collapsed=true]:py-2 ${isCollapsed ? "w-auto" : "w-[15%]"}`}
+        className={`group flex flex-col gap-4 ${isCollapsed ? "w-auto" : "xl:w-[15%] lg:w-[25%] md:w-[40%] w-fit"}`}
       >
+        <Separator />
         <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
-          {isCollapsed ? (
-            <Tooltip delayDuration={0}>
-              <TooltipTrigger asChild>
-                <Button
-                  onClick={() => {
-                    setIsCollapsed(!isCollapsed)
-                  }}
-                  className={"w-9 h-9 flex-shrink-0 p-0"}
-                >
-                  <User className="w-4 h-4 bg-primary text-white" />
-                  <span className="sr-only">Logo</span>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right" className="flex items-center gap-4">
-                Logo
-                {true && (
-                  <span className="ml-auto text-muted-foreground">
-                    label
-                  </span>
-                )}
-              </TooltipContent>
-            </Tooltip>
-          ) : (
-            <Button
-              onClick={() => {
-                setIsCollapsed(!isCollapsed)
-              }}
-              className={"dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white"}
-            >
-              Logo
-            </Button>
-          )}
           {links.map((link, index) =>
             isCollapsed ? (
               <Tooltip key={index} delayDuration={0}>
                 <TooltipTrigger asChild>
                   <Link
-                    href="#"
+                    href={link.to}
                     className={cn(
                       buttonVariants({ variant: link.variant, size: "icon" }),
                       "h-9 w-9",
@@ -135,32 +83,67 @@ export function Sidebar({ }: Props) {
             ) : (
               <Link
                 key={index}
-                href="#"
+                href={link.to}
                 className={cn(
                   buttonVariants({ variant: link.variant, size: "sm" }),
                   link.variant === "default" &&
                   "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
-                  "justify-start"
+                  "justify-start "
                 )}
               >
                 <link.icon className="mr-2 h-4 w-4" />
-                {link.title}
-                {link.label && (
-                  <span
-                    className={cn(
-                      "ml-auto",
-                      link.variant === "default" &&
-                      "text-background dark:text-white"
-                    )}
-                  >
-                    {link.label}
-                  </span>
-                )}
+                <div className="md:inline-block hidden">
+                  {link.title}
+                  {link.label && (
+                    <span
+                      className={cn(
+                        "ml-auto",
+                        link.variant === "default" &&
+                        "text-background dark:text-white"
+                      )}
+                    >
+                      {link.label}
+                    </span>
+                  )}
+                </div>
               </Link>
             )
           )}
         </nav>
+        {isCollapsed ? (
+          <Tooltip delayDuration={0}>
+            <TooltipTrigger asChild>
+              <Button
+                variant={"unstyled"}
+                onClick={() => { setIsCollapsed(!isCollapsed) }}
+                className={cn(
+                  // buttonVariants({ variant: "ghost", size: "sm" }),
+                  "h-9 w-9 mt-auto p-0 justify-center",
+                )}
+              >
+                <ListCollapse className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right" className="flex items-center gap-4">
+              Expand
+            </TooltipContent>
+          </Tooltip>
+        ) : (
+          <Button
+            variant={"unstyled"}
+            onClick={() => { setIsCollapsed(!isCollapsed) }}
+            className={cn(
+              "justify-start mt-auto"
+            )}
+          >
+            <ListCollapse className="mr-2 h-4 w-4" />
+            <div className="md:inline-block hidden">
+              Collapse
+            </div>
+          </Button>
+        )
+        }
       </div>
-    </TooltipProvider>
+    </TooltipProvider >
   )
 }

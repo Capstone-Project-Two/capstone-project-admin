@@ -2,17 +2,17 @@ import { pageMetadata } from "@/utils/metadata-helpter"
 import { Metadata } from "next"
 
 export const metadata: Metadata = pageMetadata({
-  title: "Home"
+  title: "User",
 })
 
 type Props = {}
 
-function Home({ }: Props) {
+function UsersPage({ }: Props) {
   return (
     <div>
-      Capstone Admin
+      UsersPage
     </div>
   )
 }
 
-export default Home
+export default UsersPage
