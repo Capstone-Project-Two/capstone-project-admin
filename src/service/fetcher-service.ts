@@ -18,8 +18,12 @@ export async function fetchDefault({
       },
     });
 
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
     return res.json();
-  } catch (e: any) {
-    throw new Error(e);
+  } catch (e) {
+    console.log(e);
   }
 }
