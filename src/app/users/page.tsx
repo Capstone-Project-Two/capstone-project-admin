@@ -1,6 +1,6 @@
 import { pageMetadata } from "@/utils/metadata-helpter"
 import { Metadata } from "next"
-import ListUser from "./list-user"
+import ListUser from "../../components/user/list-user"
 import { Suspense } from "react"
 
 export const metadata: Metadata = pageMetadata({

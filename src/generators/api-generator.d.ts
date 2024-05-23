@@ -47,8 +47,7 @@ export interface components {
       updatedAt: string;
       email: string;
       phone_number: string;
-      /** @enum {string} */
-      roles: "patient" | "admin" | "therapist";
+      roles: ("patient" | "admin" | "therapist")[];
     };
     UpdateAdminDto: {
       email?: string;
@@ -59,6 +58,9 @@ export interface components {
     };
     CreatePatientDto: {
       email: string;
+      username: string;
+      phone_number: string;
+      gender: Record<string, never>;
     };
     PatientResponseDto: {
       _id: string;
@@ -77,6 +79,9 @@ export interface components {
     };
     UpdatePatientDto: {
       email?: string;
+      username?: string;
+      phone_number?: string;
+      gender?: Record<string, never>;
     };
   };
   responses: never;
