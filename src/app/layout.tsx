@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import LayoutProvider from "@/contexts/layout-provider";
 import Container from "@/components/ui/container";
 import { Metadata } from "next";
-import AntdProvider from "@/contexts/antd-provider";
+import AppThemeProvider from "@/contexts/app-theme-provider";
 
 
 export const metadata: Metadata = {
@@ -26,13 +26,13 @@ export default function RootLayout({
         "min-h-screen bg-background font-sans antialiased",
         fontsans.variable
       )}>
-        <AntdProvider>
+        <AppThemeProvider>
           <LayoutProvider>
             <Container>
               {children}
             </Container>
           </LayoutProvider>
-        </AntdProvider>
+        </AppThemeProvider>
       </body>
     </html>
   );
