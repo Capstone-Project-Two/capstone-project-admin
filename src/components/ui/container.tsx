@@ -5,7 +5,7 @@ type Props = {
 
 function Container({ children }: Props) {
   return (
-    <main className="md:p-6 sm:p-4 p-2.5 bg-blue-300 w-full">
+    <main className="md:p-6 sm:p-4 p-2.5 w-full">
       {children}
     </main>
   )
