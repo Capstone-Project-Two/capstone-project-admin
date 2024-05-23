@@ -1,6 +1,5 @@
 import { getPatients } from "@/actions/get-action"
 import { pageMetadata } from "@/utils/metadata-helpter"
-import { Button } from "antd"
 import { Metadata } from "next"
 
 export const metadata: Metadata = pageMetadata({
@@ -22,9 +21,6 @@ async function UsersPage({ }: Props) {
 
   return (
     <div>
-      <Button>
-        Click me
-      </Button>
       {patients.map(patient => (
         <div key={patient._id}>
           {patient.email}

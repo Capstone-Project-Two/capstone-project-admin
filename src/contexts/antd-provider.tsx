@@ -1,4 +1,5 @@
-import { AntdRegistry } from "@ant-design/nextjs-registry"
+import { primary } from "@/styles/colors"
+import { ConfigProvider } from "antd"
 
 type Props = {
   children: React.ReactNode
@@ -6,9 +7,18 @@ type Props = {
 
 function AntdProvider({ children }: Props) {
   return (
-    <AntdRegistry>
+    <ConfigProvider
+      theme={{
+        cssVar: true,
+        token: {
+          // Seed Token
+          colorPrimary: primary,
+          borderRadius: 10,
+        }
+      }}
+    >
       {children}
-    </AntdRegistry>
+    </ConfigProvider>
   )
 }
 

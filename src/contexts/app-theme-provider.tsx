@@ -1,3 +1,4 @@
+import { AntdRegistry } from "@ant-design/nextjs-registry"
 import AntdProvider from "./antd-provider"
 
 type Props = {
@@ -6,9 +7,11 @@ type Props = {
 
 function AppThemeProvider({ children }: Props) {
   return (
-    <AntdProvider>
-      {children}
-    </AntdProvider>
+    <AntdRegistry>
+      <AntdProvider>
+        {children}
+      </AntdProvider>
+    </AntdRegistry>
   )
 }
 
