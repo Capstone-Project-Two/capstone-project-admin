@@ -1,14 +1,13 @@
 "use client"
 import { createUser } from "@/actions/post-action"
 import { useState, useTransition } from "react"
-import { useToast } from "../ui/use-toast"
 import { isValidResponse } from "@/utils/validate-response"
+import { toast } from "sonner"
 
 type Props = {}
 
 function CreateUserForm({ }: Props) {
   const [input, setInput] = useState("test@gmail.com")
-  const { toast } = useToast()
   const handleInput = (value: string) => {
     setInput(value)
   }
@@ -19,8 +18,8 @@ function CreateUserForm({ }: Props) {
     startTransition(async () => {
       await createUser({ email: input }).then((res) => {
         if (!isValidResponse(res.statusCode as number)) {
-          toast({
-            title: res.message
+          res.message.forEach((mes: string) => {
+            toast(mes)
           })
         }
       }).catch(e => {
