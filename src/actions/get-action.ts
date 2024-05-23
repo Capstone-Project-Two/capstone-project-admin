@@ -10,8 +10,8 @@ export const getPatients = async () => {
   });
 
   return {
-    message: res.message,
-    data: res.data as Array<PatientResponseDto>,
-    statusCode: res.statusCode,
+    message: res?.message,
+    data: res?.data as Array<PatientResponseDto>,
+    statusCode: res?.statusCode,
   };
 };
