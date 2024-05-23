@@ -5,6 +5,6 @@ import { fetchDefault } from "@/service/fetcher-service";
 export const getPatients = async () => {
   const res = await fetchDefault({ url: API_ROUTE.GET_ALL_PATIENTS });
   return {
-    data: res.data as Array<PatientResponseDto>,
+    data: res?.data as Array<PatientResponseDto>,
   };
 };
