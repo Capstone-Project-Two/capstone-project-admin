@@ -1,11 +1,10 @@
+import Spinner from "./spinner"
 
 type Props = {}
 
 function PageLoading({ }: Props) {
   return (
-    <div>
-      Loading...
-    </div>
+    <Spinner color="#3A72EC" size="md" />
   )
 }
 
