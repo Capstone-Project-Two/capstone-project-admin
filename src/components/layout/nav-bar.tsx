@@ -23,7 +23,7 @@ function NavBar({ }: Props) {
   ]
   return (
     <TooltipProvider>
-      <nav className="h-[60px] xl:px-4 px-2.5 flex items-center w-full fixed top-0">
+      <nav className="h-[60px] xl:px-4 px-2.5 flex items-center w-full fixed top-0 border border-b-1">
         {links.map((link, index) => (
           <Link
             title={link.title}

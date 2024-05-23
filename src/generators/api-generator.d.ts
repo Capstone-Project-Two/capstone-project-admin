@@ -71,8 +71,7 @@ export interface components {
       phone_number: string;
       /** @enum {string} */
       gender: "male" | "female";
-      /** @enum {string} */
-      roles: "patient" | "admin" | "therapist";
+      roles: ("patient" | "admin" | "therapist")[];
       /** @default false */
       is_deleted: boolean;
     };

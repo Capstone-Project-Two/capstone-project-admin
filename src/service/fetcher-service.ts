@@ -27,3 +27,25 @@ export async function fetchDefault({
     console.log(e);
   }
 }
+
+export async function fetchPostDefault({
+  url,
+  data,
+}: {
+  url: API_ROUTE;
+  data: any;
+}) {
+  try {
+    const res = await fetch(`${BASE_API_URL}${url}`, {
+      method: "post",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    return res.json();
+  } catch (e: any) {
+    console.log(e);
+  }
+}

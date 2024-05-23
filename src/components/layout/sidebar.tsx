@@ -14,7 +14,6 @@ import {
 import { Dispatch, SetStateAction } from "react"
 import { ROUTER_PATH } from "@/constants/route-constant"
 import { usePathname } from "next/navigation"
-import { Separator } from "../ui/separator"
 
 type Props = {
   isCollapsed: boolean;
@@ -50,9 +49,8 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: Props) {
     <TooltipProvider delayDuration={0}>
       <div
         data-collapsed={isCollapsed}
-        className={`group flex flex-col gap-4 ${isCollapsed ? "w-auto" : "xl:w-[15%] lg:w-[25%] md:w-[40%] w-fit"}`}
+        className={`pt-2 border border-r-1 group flex flex-col gap-4 ${isCollapsed ? "w-auto" : "xl:w-[15%] lg:w-[25%] md:w-[40%] w-fit"}`}
       >
-        <Separator />
         <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
           {links.map((link, index) =>
             isCollapsed ? (

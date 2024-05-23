@@ -1,6 +1,7 @@
-import { getPatients } from "@/actions/get-action"
 import { pageMetadata } from "@/utils/metadata-helpter"
 import { Metadata } from "next"
+import ListUser from "./list-user"
+import { Suspense } from "react"
 
 export const metadata: Metadata = pageMetadata({
   title: "User",
@@ -9,23 +10,11 @@ export const metadata: Metadata = pageMetadata({
 type Props = {}
 
 async function UsersPage({ }: Props) {
-  const patients = await getPatients()
-
-  if (!patients || patients.length === 0) {
-    return (
-      <div>
-        No users
-      </div>
-    )
-  }
-
   return (
     <div>
-      {patients.map(patient => (
-        <div key={patient._id}>
-          {patient.email}
-        </div>
-      ))}
+      <Suspense fallback={<div>Loading...</div>}>
+        <ListUser />
+      </Suspense>
     </div>
   )
 }

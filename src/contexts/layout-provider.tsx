@@ -2,6 +2,7 @@
 
 import NavBar from "@/components/layout/nav-bar"
 import { Sidebar } from "@/components/layout/sidebar"
+import { Toaster } from "@/components/ui/toaster"
 import { useState } from "react"
 
 type Props = {
@@ -17,6 +18,7 @@ function LayoutProvider({ children }: Props) {
         <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
         {children}
       </div>
+      <Toaster />
     </div>
   )
 }
