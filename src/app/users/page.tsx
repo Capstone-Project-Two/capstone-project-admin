@@ -9,7 +9,7 @@ export const metadata: Metadata = pageMetadata({
 type Props = {}
 
 async function UsersPage({ }: Props) {
-  const patients = await getPatients()
+  const { data: patients } = await getPatients()
 
   if (!patients || patients.length === 0) {
     return (
