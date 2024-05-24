@@ -2,6 +2,7 @@
 import { PatientResponseDto } from "@/service/api-types"
 import { Button, Table, TableColumnsType } from "antd"
 import UserModal from "./user-modal"
+import { deleteUser } from "@/actions/user-action"
 
 type Props = {
   patients: Array<PatientResponseDto>
@@ -34,7 +35,7 @@ function UserTable({ patients }: Props) {
       dataIndex: '',
       key: 'view_user',
       render: (patient: PatientResponseDto) => (
-        <UserModal />
+        <UserModal key={patient._id} id={patient._id} />
       ),
     },
     {
@@ -42,8 +43,8 @@ function UserTable({ patients }: Props) {
       dataIndex: '',
       key: 'ban_user',
       render: (patient: PatientResponseDto) => (
-        <Button key={patient._id} onClick={() => {
-          alert(patient._id)
+        <Button key={patient._id} onClick={async () => {
+          await deleteUser(patient._id)
         }}>
           Ban
         </Button>

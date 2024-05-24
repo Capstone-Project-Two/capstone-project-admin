@@ -3,7 +3,6 @@ import { fontsans } from "@/utils/fonts";
 import { ENV_MODE } from "@/constants/env-constant";
 import { cn } from "@/lib/utils";
 import LayoutProvider from "@/contexts/layout-provider";
-import Container from "@/components/ui/container";
 import { Metadata } from "next";
 import AppThemeProvider from "@/contexts/app-theme-provider";
 
@@ -28,9 +27,7 @@ export default function RootLayout({
       )}>
         <AppThemeProvider>
           <LayoutProvider>
-            <Container>
-              {children}
-            </Container>
+            {children}
           </LayoutProvider>
         </AppThemeProvider>
       </body>

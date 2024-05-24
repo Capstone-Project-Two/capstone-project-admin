@@ -24,7 +24,7 @@ function LayoutProvider({ children }: Props) {
             overflow: 'initial',
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
-            margin: '24px 16px 0'
+            margin: 24
           }}>
           <div style={{
             padding: 24,

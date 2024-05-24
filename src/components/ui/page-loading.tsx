@@ -1,10 +1,10 @@
-import Spinner from "./spinner"
+import { Spin } from "antd"
 
 type Props = {}
 
 function PageLoading({ }: Props) {
   return (
-    <Spinner color="#3A72EC" size="md" />
+    <Spin />
   )
 }
 

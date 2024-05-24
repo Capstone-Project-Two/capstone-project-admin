@@ -1,5 +1,6 @@
 import { getPatients } from "@/actions/get-action"
 import UserTable from "./user-table"
+import EmptyData from "../ui/empty-data"
 
 type Props = {}
 
@@ -8,9 +9,7 @@ async function ListUser({ }: Props) {
 
   if (!patients || patients.length === 0) {
     return (
-      <div>
-        No users
-      </div>
+      <EmptyData />
     )
   }
 

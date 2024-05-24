@@ -1,17 +1,22 @@
-import { API_ROUTE } from "@/constants/api-route-constant";
 import { BASE_API_URL } from "@/constants/env-constant";
+
+export const fetcher = (url: string) =>
+  fetchDefault({ url }).then((res: any) => {
+    return res;
+  });
 
 export async function fetchDefault({
   url,
   tags,
   revalidate,
 }: {
-  url: API_ROUTE;
+  url: string;
   tags?: Array<string>;
   revalidate?: number;
 }) {
   try {
     const res = await fetch(`${BASE_API_URL}${url}`, {
+      cache: "no-store",
       next: {
         tags: tags,
         revalidate: revalidate,
@@ -31,13 +36,15 @@ export async function fetchDefault({
 export async function fetchPostDefault({
   url,
   data,
+  method,
 }: {
-  url: API_ROUTE;
-  data: any;
+  url: string;
+  data?: any;
+  method?: "post" | "patch" | "delete";
 }) {
   try {
     const res = await fetch(`${BASE_API_URL}${url}`, {
-      method: "post",
+      method: method ?? "post",
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",

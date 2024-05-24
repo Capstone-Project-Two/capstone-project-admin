@@ -18,3 +18,14 @@ export async function createUser(createPatient: CreatePatientDto) {
 
   return res;
 }
+
+export async function deleteUser(id: string) {
+  const res = await fetchPostDefault({
+    url: `${API_ROUTE.GET_ALL_PATIENTS}/${id}`,
+    method: "delete",
+  });
+
+  revalidateTag(REVALIDATE_TAG_ENUM.PATIENT);
+
+  return res;
+}
