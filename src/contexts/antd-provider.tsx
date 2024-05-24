@@ -1,4 +1,6 @@
+"use client"
 import { primary } from "@/styles/colors"
+import { StyleProvider } from "@ant-design/cssinjs"
 import { ConfigProvider } from "antd"
 
 type Props = {
@@ -7,18 +9,20 @@ type Props = {
 
 function AntdProvider({ children }: Props) {
   return (
-    <ConfigProvider
-      theme={{
-        cssVar: true,
-        token: {
-          // Seed Token
-          colorPrimary: primary,
-          borderRadius: 10,
-        }
-      }}
-    >
-      {children}
-    </ConfigProvider>
+    <StyleProvider layer>
+      <ConfigProvider
+        theme={{
+          cssVar: true,
+          token: {
+            // Seed Token
+            colorPrimary: primary,
+            borderRadius: 10,
+          }
+        }}
+      >
+        {children}
+      </ConfigProvider>
+    </StyleProvider>
   )
 }
 
