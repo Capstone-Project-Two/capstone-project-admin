@@ -1,5 +1,5 @@
 import { getPatients } from "@/actions/get-action"
-import UserCard from "@/components/user/user-card"
+import UserTable from "./user-table"
 
 type Props = {}
 
@@ -13,11 +13,10 @@ async function ListUser({ }: Props) {
       </div>
     )
   }
+
   return (
     <div className="flex flex-col gap-4">
-      {patients.map(patient => (
-        <UserCard patient={patient} key={patient._id} />
-      ))}
+      <UserTable patients={patients} />
     </div>
   )
 }
