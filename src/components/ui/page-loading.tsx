@@ -1,11 +1,10 @@
+import { Spin } from "antd"
 
 type Props = {}
 
 function PageLoading({ }: Props) {
   return (
-    <div>
-      Loading...
-    </div>
+    <Spin />
   )
 }
 

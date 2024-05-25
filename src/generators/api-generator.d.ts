@@ -17,6 +17,9 @@ export interface paths {
     delete: operations["AdminsController_remove"];
     patch: operations["AdminsController_update"];
   };
+  "/patients/seed": {
+    post: operations["PatientsController_seedPatient"];
+  };
   "/patients": {
     get: operations["PatientsController_findAll"];
     post: operations["PatientsController_create"];
@@ -25,6 +28,12 @@ export interface paths {
     get: operations["PatientsController_findOne"];
     delete: operations["PatientsController_remove"];
     patch: operations["PatientsController_update"];
+  };
+  "/patients/ban-patient/{id}": {
+    patch: operations["PatientsController_banPatient"];
+  };
+  "/patients/unban-patient/{id}": {
+    patch: operations["PatientsController_unbanPatient"];
   };
 }
 
@@ -47,8 +56,7 @@ export interface components {
       updatedAt: string;
       email: string;
       phone_number: string;
-      /** @enum {string} */
-      roles: "patient" | "admin" | "therapist";
+      roles: ("patient" | "admin" | "therapist")[];
     };
     UpdateAdminDto: {
       email?: string;
@@ -57,8 +65,15 @@ export interface components {
       /** @enum {string} */
       roles?: "patient" | "admin" | "therapist";
     };
+    SeedPatientDto: {
+      /** @default 100 */
+      lenght?: number;
+    };
     CreatePatientDto: {
       email: string;
+      username: string;
+      phone_number: string;
+      gender: string;
     };
     PatientResponseDto: {
       _id: string;
@@ -71,13 +86,20 @@ export interface components {
       phone_number: string;
       /** @enum {string} */
       gender: "male" | "female";
-      /** @enum {string} */
-      roles: "patient" | "admin" | "therapist";
+      roles: ("patient" | "admin" | "therapist")[];
       /** @default false */
       is_deleted: boolean;
+      /** @default false */
+      is_banned: boolean;
     };
     UpdatePatientDto: {
       email?: string;
+      username?: string;
+      phone_number?: string;
+      gender?: string;
+      is_banned: boolean;
+      is_deleted: boolean;
+      roles: ("patient" | "admin" | "therapist")[];
     };
   };
   responses: never;
@@ -162,6 +184,18 @@ export interface operations {
       };
     };
   };
+  PatientsController_seedPatient: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SeedPatientDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
   PatientsController_findAll: {
     responses: {
       200: {
@@ -191,7 +225,9 @@ export interface operations {
     };
     responses: {
       200: {
-        content: never;
+        content: {
+          "application/json": components["schemas"]["PatientResponseDto"];
+        };
       };
     };
   };
@@ -216,6 +252,30 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["UpdatePatientDto"];
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  PatientsController_banPatient: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  PatientsController_unbanPatient: {
+    parameters: {
+      path: {
+        id: string;
       };
     };
     responses: {
