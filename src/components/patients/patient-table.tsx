@@ -1,8 +1,8 @@
 "use client"
 import { PatientResponseDto } from "@/service/api-types"
 import { Button, Spin, Table, TableColumnsType } from "antd"
-import UserModal from "./user-modal"
-import { banPatient, unbanPatient } from "@/actions/user-action"
+import UserModal from "./patient-modal"
+import { banPatient, unbanPatient } from "@/actions/patient-action"
 import { useTransition } from "react"
 import { convertDatasource } from "@/utils/antd-data-helper"
 

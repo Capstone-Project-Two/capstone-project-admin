@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { Layout, Menu, MenuProps } from 'antd';
 import Link from "next/link";
 import { ROUTER_PATH } from "@/constants/route-constant";
-import { LayoutDashboard, User } from "lucide-react";
+import { LayoutDashboard, PodcastIcon, User } from "lucide-react";
 import React from "react";
 import Navbar from "./navbar";
 
@@ -15,6 +15,12 @@ type Props = {
 type TLink = {
   label: React.ReactNode
   icon?: any
+  children?: [
+    {
+      label: React.ReactNode;
+      icon?: any
+    }
+  ]
 }
 
 const { Sider } = Layout;
@@ -34,6 +40,15 @@ function Sidebar({ collapsed, setCollapsed, children }: Props) {
     {
       label: <Link href={ROUTER_PATH.USERS}>Users</Link>,
       icon: User,
+    },
+    {
+      label: <Link href={ROUTER_PATH.POSTS}>Posts</Link>,
+      icon: PodcastIcon,
+      children: [
+        {
+          label: <Link href={ROUTER_PATH.POSTS_HISTORY}>Post History</Link>,
+        }
+      ]
     }
   ]
 
@@ -41,6 +56,7 @@ function Sidebar({ collapsed, setCollapsed, children }: Props) {
     key: `sub${index}`,
     icon: React.createElement(item.icon),
     label: item.label,
+    children: item.children
   }))
   return (
     <Layout>

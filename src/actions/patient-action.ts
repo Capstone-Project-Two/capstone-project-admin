@@ -6,7 +6,7 @@ import { fetchPostDefault } from "@/service/fetcher-service";
 import { isValidResponse } from "@/utils/validate-response";
 import { revalidateTag } from "next/cache";
 
-export async function createUser(createPatient: CreatePatientDto) {
+export async function createPatient(createPatient: CreatePatientDto) {
   const res = await fetchPostDefault({
     url: API_ROUTE.GET_ALL_PATIENTS,
     data: createPatient,
@@ -51,7 +51,7 @@ export async function unbanPatient(id: string) {
   }
 }
 
-export async function deleteUser(id: string) {
+export async function deletePatient(id: string) {
   const res = await fetchPostDefault({
     url: `${API_ROUTE.GET_ALL_PATIENTS}/${id}`,
     method: "DELETE",
