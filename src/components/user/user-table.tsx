@@ -4,6 +4,7 @@ import { Button, Spin, Table, TableColumnsType } from "antd"
 import UserModal from "./user-modal"
 import { banPatient, unbanPatient } from "@/actions/user-action"
 import { useTransition } from "react"
+import { convertDatasource } from "@/utils/antd-data-helper"
 
 type Props = {
   patients: Array<PatientResponseDto>
@@ -76,7 +77,7 @@ function UserTable({ patients }: Props) {
       pagination={{
         hideOnSinglePage: true
       }}
-      dataSource={patients}
+      dataSource={convertDatasource(patients)}
       columns={columns}
     />
   )

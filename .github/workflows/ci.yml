@@ -2,9 +2,9 @@ name: Building project
 
 on:
   push:
-    branches: "*"
+    branches: ["dev", "master", "staging"]
   pull_request:
-    branches: "*"
+    branches: ["dev", "master", "staging"]
 
 jobs:
   build:
