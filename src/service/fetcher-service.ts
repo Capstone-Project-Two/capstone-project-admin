@@ -9,20 +9,14 @@ export async function fetchDefault({
   url,
   tags,
   revalidate,
-  options,
 }: {
   url: string;
   tags?: Array<string>;
   revalidate?: number;
-  options?: {
-    method: "POST" | "PATCH" | "DELETE";
-    data?: any;
-  };
 }) {
   try {
     const res = await fetch(`${BASE_API_URL}${url}`, {
-      body: JSON.stringify(options?.data),
-      method: options?.method ?? "GET",
+      method: "GET",
       cache: "no-store",
       headers: {
         "Content-type": "application/json",
@@ -35,6 +29,34 @@ export async function fetchDefault({
 
     if (!res.ok) {
       throw new Error("Failed to fetch data");
+    }
+
+    return res.json();
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export async function fetchPostDefault({
+  url,
+  method,
+  data,
+}: {
+  url: string;
+  method: "POST" | "PATCH" | "DELETE";
+  data?: any;
+}) {
+  try {
+    const res = await fetch(`${BASE_API_URL}${url}`, {
+      body: JSON.stringify(data),
+      method: method,
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to ${method} data`);
     }
 
     return res.json();

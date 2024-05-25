@@ -2,9 +2,9 @@ name: Building project
 
 on:
   push:
-    branches: ["dev", "master", "staging"]
+    branches: "*"
   pull_request:
-    branches: ["dev", "master", "staging"]
+    branches: "*"
 
 jobs:
   build:
@@ -27,13 +27,10 @@ jobs:
           yarn install
 
       - name: Building project (dev)
-        run:
-          yarn build:dev
+        run: yarn build:dev
 
       - name: Building project (staging)
-        run:
-          yarn build:staging
+        run: yarn build:staging
 
       - name: Building project (prod)
-        run:
-          yarn build:prod
+        run: yarn build:prod
