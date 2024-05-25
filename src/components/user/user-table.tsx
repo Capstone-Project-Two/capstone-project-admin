@@ -1,14 +1,16 @@
 "use client"
 import { PatientResponseDto } from "@/service/api-types"
-import { Button, Table, TableColumnsType } from "antd"
+import { Button, Spin, Table, TableColumnsType } from "antd"
 import UserModal from "./user-modal"
-import { deleteUser } from "@/actions/user-action"
+import { banPatient, unbanPatient } from "@/actions/user-action"
+import { useTransition } from "react"
 
 type Props = {
   patients: Array<PatientResponseDto>
 }
 
 function UserTable({ patients }: Props) {
+  const [isPending, startTransition] = useTransition()
   const columns: TableColumnsType<PatientResponseDto> = [
     {
       title: "Email",
@@ -23,36 +25,57 @@ function UserTable({ patients }: Props) {
     {
       title: "Phone number",
       dataIndex: "phone_number",
-      key: "phone_number"
+      key: "phone_number",
+      width: "10%"
     },
     {
       title: "Roles",
       dataIndex: "roles",
-      key: "roles"
+      key: "roles",
+      width: "10%"
     },
     {
       title: 'View',
       dataIndex: '',
       key: 'view_user',
+      width: '10%',
       render: (patient: PatientResponseDto) => (
-        <UserModal key={patient._id} id={patient._id} />
+        <div key={patient._id}>
+          <UserModal id={patient._id} />
+        </div>
       ),
     },
     {
-      title: 'Ban',
+      title: <div className="flex items-center gap-2">Ban {isPending && <Spin />}</div>,
       dataIndex: '',
-      key: 'ban_user',
+      key: 'ban',
       render: (patient: PatientResponseDto) => (
-        <Button key={patient._id} onClick={async () => {
-          await deleteUser(patient._id)
-        }}>
-          Ban
+        <Button
+          disabled={isPending}
+          key={patient._id}
+          onClick={async () => {
+            if (patient.is_banned) {
+              startTransition(async () => {
+                await unbanPatient(patient._id)
+              })
+            } else {
+              startTransition(async () => {
+                await banPatient(patient._id)
+              })
+            }
+          }}>
+          <div>
+            Status: {patient.is_banned ? 'Banned' : "Not banned"}
+          </div>
         </Button>
       ),
     },
   ]
   return (
     <Table
+      pagination={{
+        hideOnSinglePage: true
+      }}
       dataSource={patients}
       columns={columns}
     />

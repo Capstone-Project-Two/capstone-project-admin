@@ -1,4 +1,4 @@
-import { getPatients } from "@/actions/get-action"
+import { getPatients } from "@/service/get-service"
 import UserTable from "./user-table"
 import EmptyData from "../ui/empty-data"
 
@@ -14,9 +14,7 @@ async function ListUser({ }: Props) {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <UserTable patients={patients} />
-    </div>
+    <UserTable patients={patients} />
   )
 }
 

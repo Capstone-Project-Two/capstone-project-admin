@@ -26,15 +26,21 @@ function UserModal({ id }: Props) {
   return (
     <>
       <Button type="primary" onClick={showModal}>
-        Open Modal
+        View
       </Button>
       <Modal
         footer={[]}
-        title={userData?.username} open={isOpened} onCancel={handleCancel}
+        title={userData?.username} open={isOpened}
+        onCancel={handleCancel}
       >
-        <p>
-          {userData?.email}
-        </p>
+        <p>{userData._id}</p>
+        <p>{userData?.email}</p>
+        <p>{userData?.username}</p>
+        <p>{userData?.phone_number}</p>
+        <p>{userData?.gender}</p>
+        {userData.roles.map((role, index) => (
+          <p key={index}>{role}</p>
+        ))}
       </Modal>
     </>
   )
