@@ -1,51 +1,70 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { Layout, Menu, MenuProps } from 'antd';
+"use client"
+import { useState } from "react";
+import { Layout, Menu, MenuProps, theme } from 'antd';
 import Link from "next/link";
 import { ROUTER_PATH } from "@/constants/route-constant";
-import { LayoutDashboard, User } from "lucide-react";
+import { LayoutDashboard, MailWarningIcon, User } from "lucide-react";
 import React from "react";
 import Navbar from "./navbar";
+import { usePathname } from "next/navigation";
+import { ItemType, MenuItemType } from "antd/es/menu/interface";
 
 type Props = {
-  collapsed: boolean;
-  setCollapsed: Dispatch<SetStateAction<boolean>>
   children: React.ReactNode
 }
 
-type TLink = {
+interface TLink {
+  key: string
   label: React.ReactNode
   icon?: any
+  children?: ItemType<MenuItemType>[]
 }
 
-const { Sider } = Layout;
+const { Sider, Content } = Layout;
 
-function Sidebar({ collapsed, setCollapsed, children }: Props) {
+function Sidebar({ children }: Props) {
+  const pathname = usePathname()
+  const [collapsed, setCollapsed] = useState(false);
   const [isBroken, setIsBroken] = useState(false)
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
 
   const sidebarLinks: Array<TLink> = [
     {
+      key: '',
       label: <Link href={ROUTER_PATH.HOMEPAGE}>Logo</Link>,
       icon: LayoutDashboard,
     },
     {
+      key: ROUTER_PATH.HOMEPAGE,
       label: <Link href={ROUTER_PATH.HOMEPAGE}>Overview</Link>,
       icon: LayoutDashboard,
     },
     {
-      label: <Link href={ROUTER_PATH.USERS}>Users</Link>,
+      key: ROUTER_PATH.USERS,
+      label: <Link className="text-black" href={ROUTER_PATH.USERS}>Users</Link>,
       icon: User,
+      children: [
+        {
+          key: ROUTER_PATH.SUSPEND_USER,
+          label: <Link href={ROUTER_PATH.SUSPEND_USER}>Suspended Users</Link>,
+          icon: <MailWarningIcon size={20} />
+        }
+      ]
     }
   ]
 
-  const renderSidebarItems: MenuProps['items'] = sidebarLinks.map((item, index) => ({
-    key: `sub${index}`,
+  const renderSidebarItems: MenuProps['items'] = sidebarLinks.map((item) => ({
+    key: item.key,
     icon: React.createElement(item.icon),
     label: item.label,
+    children: item.children
   }))
   return (
     <Layout>
       <Sider
-        width={200}
+        width={220}
         trigger={null}
         breakpoint="lg"
         collapsible
@@ -57,17 +76,32 @@ function Sidebar({ collapsed, setCollapsed, children }: Props) {
       >
         <Menu
           mode='inline'
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={[ROUTER_PATH.HOMEPAGE]}
+          selectedKeys={[pathname]}
           items={renderSidebarItems}
+          className="py-4 px-0 overflow-auto h-screen"
           style={{
-            padding: "16px 0",
-            borderRight: "1px solid rgba(0,0,0, 0.15)",
-            height: "100vh"
+            borderRight: "1px solid rgba(0, 0, 0, 0.15)"
           }}
         />
       </Sider>
       <Navbar setCollapsed={setCollapsed} collapsed={collapsed}>
-        {children}
+        <Content
+          style={{
+            overflow: 'auto',
+            background: colorBgContainer,
+            borderRadius: borderRadiusLG,
+            margin: 24,
+          }}>
+          <div style={{
+            padding: 24,
+            height: "100%",
+            background: colorBgContainer,
+            borderRadius: borderRadiusLG,
+          }}>
+            {children}
+          </div>
+        </Content>
       </Navbar>
     </Layout>
   )
