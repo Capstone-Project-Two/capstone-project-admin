@@ -8,6 +8,7 @@ import React from "react";
 import Navbar from "./navbar";
 import { usePathname } from "next/navigation";
 import { ItemType, MenuItemType } from "antd/es/menu/interface";
+import { LayoutLink } from "./layout-link";
 
 type Props = {
   children: React.ReactNode
@@ -38,21 +39,21 @@ function Sidebar({ children }: Props) {
     },
     {
       key: ROUTER_PATH.HOMEPAGE,
-      label: <Link href={ROUTER_PATH.HOMEPAGE}>Overview</Link>,
+      label: <LayoutLink href={ROUTER_PATH.HOMEPAGE}>Overview</LayoutLink>,
       icon: LayoutDashboard,
     },
     {
       key: ROUTER_PATH.USERS,
-      label: <Link className="text-black" href={ROUTER_PATH.USERS}>Users</Link>,
+      label: <LayoutLink href={ROUTER_PATH.USERS}>Users</LayoutLink>,
       icon: User,
       children: [
         {
           key: ROUTER_PATH.SUSPEND_USER,
-          label: <Link href={ROUTER_PATH.SUSPEND_USER}>Suspended Users</Link>,
+          label: <LayoutLink href={ROUTER_PATH.SUSPEND_USER}>Suspended Users</LayoutLink>,
           icon: <MailWarningIcon size={20} />
         }
       ]
-    }
+    },
   ]
 
   const renderSidebarItems: MenuProps['items'] = sidebarLinks.map((item) => ({
