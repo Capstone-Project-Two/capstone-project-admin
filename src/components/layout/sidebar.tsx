@@ -3,19 +3,21 @@ import { useState } from "react";
 import { Layout, Menu, MenuProps, theme } from 'antd';
 import Link from "next/link";
 import { ROUTER_PATH } from "@/constants/route-constant";
-import { LayoutDashboard, User } from "lucide-react";
+import { LayoutDashboard, MailWarningIcon, User } from "lucide-react";
 import React from "react";
 import Navbar from "./navbar";
 import { usePathname } from "next/navigation";
+import { ItemType, MenuItemType } from "antd/es/menu/interface";
 
 type Props = {
   children: React.ReactNode
 }
 
-type TLink = {
+interface TLink {
   key: string
   label: React.ReactNode
   icon?: any
+  children?: ItemType<MenuItemType>[]
 }
 
 const { Sider, Content } = Layout;
@@ -41,8 +43,15 @@ function Sidebar({ children }: Props) {
     },
     {
       key: ROUTER_PATH.USERS,
-      label: <Link href={ROUTER_PATH.USERS}>Users</Link>,
+      label: <Link className="text-black" href={ROUTER_PATH.USERS}>Users</Link>,
       icon: User,
+      children: [
+        {
+          key: ROUTER_PATH.SUSPEND_USER,
+          label: <Link href={ROUTER_PATH.SUSPEND_USER}>Suspended Users</Link>,
+          icon: <MailWarningIcon size={20} />
+        }
+      ]
     }
   ]
 
@@ -50,11 +59,12 @@ function Sidebar({ children }: Props) {
     key: item.key,
     icon: React.createElement(item.icon),
     label: item.label,
+    children: item.children
   }))
   return (
     <Layout>
       <Sider
-        width={200}
+        width={220}
         trigger={null}
         breakpoint="lg"
         collapsible
