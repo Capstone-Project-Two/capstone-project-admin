@@ -79,24 +79,23 @@ function Sidebar({ children }: Props) {
           defaultSelectedKeys={[ROUTER_PATH.HOMEPAGE]}
           selectedKeys={[pathname]}
           items={renderSidebarItems}
+          className="py-4 px-0 overflow-auto h-screen"
           style={{
-            padding: "16px 0",
-            borderRight: "1px solid rgba(0,0,0, 0.15)",
-            height: "100vh"
+            borderRight: "1px solid rgba(0, 0, 0, 0.15)"
           }}
         />
       </Sider>
       <Navbar setCollapsed={setCollapsed} collapsed={collapsed}>
         <Content
           style={{
-            overflow: 'initial',
+            overflow: 'auto',
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
-            margin: 24
+            margin: 24,
           }}>
           <div style={{
             padding: 24,
-            minHeight: 360,
+            height: "100%",
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
           }}>
