@@ -3,9 +3,9 @@ import { ROUTER_PATH } from "@/constants/route-constant"
 import { MenuFoldOutlined } from "@ant-design/icons"
 import { Button, Layout, Menu, MenuProps, theme } from "antd"
 import { LayoutDashboard, User } from "lucide-react"
-import Link from "next/link"
 import { usePathname } from "next/navigation"
 import React, { Dispatch, SetStateAction } from "react"
+import { LayoutLink } from "./layout-link"
 
 type Props = {
   collapsed: boolean;
@@ -30,12 +30,12 @@ function Navbar({ collapsed, setCollapsed, children }: Props) {
   const navBarLinks: Array<TLink> = [
     {
       key: ROUTER_PATH.HOMEPAGE,
-      label: <Link href={ROUTER_PATH.HOMEPAGE}>Overview</Link>,
+      label: <LayoutLink href={ROUTER_PATH.HOMEPAGE}>Overview</LayoutLink>,
       icon: LayoutDashboard,
     },
     {
       key: ROUTER_PATH.USERS,
-      label: <Link href={ROUTER_PATH.USERS}>Users</Link>,
+      label: <LayoutLink href={ROUTER_PATH.USERS}>Users</LayoutLink>,
       icon: User,
     },
   ]
