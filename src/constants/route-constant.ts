@@ -3,4 +3,6 @@ export enum ROUTER_PATH {
   USERS = "/users",
   SUSPEND_USER = "/users/suspend",
   THERAPISTS = "/therapists",
+
+  SOCKET_TEST = "/socket-test",
 }

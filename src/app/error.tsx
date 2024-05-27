@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from 'antd'
 import { useEffect } from 'react'
 
 export default function Error({
@@ -14,16 +15,19 @@ export default function Error({
   }, [error])
 
   return (
-    <div>
-      <h2>Something went wrong!</h2>
-      <button
+    <div className='flex flex-col items-start gap-4 h-[70vh]'>
+      <h2 className='font-bold text-2xl text-primary'>Something went wrong!</h2>
+      <Button
+        type='primary'
+        size='large'
+        className='font-semibold'
         onClick={
           // Attempt to recover by trying to re-render the segment
           () => reset()
         }
       >
         Try again
-      </button>
+      </Button>
     </div>
   )
 }

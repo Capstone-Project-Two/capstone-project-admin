@@ -5,7 +5,7 @@ import { fetchDefault } from "@/service/fetcher-service";
 
 export const getPatients = async () => {
   const res = await fetchDefault({
-    url: API_ROUTE.GET_ALL_PATIENTS,
+    url: API_ROUTE.BASE_PATIENT,
     tags: [REVALIDATE_TAG_ENUM.PATIENT],
   });
 
@@ -18,7 +18,7 @@ export const getPatients = async () => {
 
 export const getTherapists = async () => {
   const res = await fetchDefault({
-    url: API_ROUTE.GET_ALL_THERAPIST,
+    url: API_ROUTE.BASE_THERAPIST,
     tags: [REVALIDATE_TAG_ENUM.THERAPIST],
   });
 

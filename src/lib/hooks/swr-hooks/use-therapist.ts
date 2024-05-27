@@ -6,7 +6,7 @@ import useSWR from "swr";
 
 export default function useTherapist(id: string) {
   const { data, isLoading, mutate } = useSWR(
-    `${API_ROUTE.GET_ALL_THERAPIST}/${id}`,
+    `${API_ROUTE.BASE_THERAPIST}/${id}`,
     fetcher
   );
 
