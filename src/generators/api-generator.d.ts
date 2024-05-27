@@ -17,9 +17,6 @@ export interface paths {
     delete: operations["AdminsController_remove"];
     patch: operations["AdminsController_update"];
   };
-  "/patients/seed": {
-    post: operations["PatientsController_seedPatient"];
-  };
   "/patients": {
     get: operations["PatientsController_findAll"];
     post: operations["PatientsController_create"];
@@ -34,6 +31,33 @@ export interface paths {
   };
   "/patients/unban-patient/{id}": {
     patch: operations["PatientsController_unbanPatient"];
+  };
+  "/therapists": {
+    get: operations["TherapistsController_findAll"];
+    post: operations["TherapistsController_create"];
+  };
+  "/therapists/{id}": {
+    get: operations["TherapistsController_findOne"];
+    delete: operations["TherapistsController_remove"];
+    patch: operations["TherapistsController_update"];
+  };
+  "/posts": {
+    get: operations["PostsController_findAll"];
+    post: operations["PostsController_create"];
+  };
+  "/posts/{id}": {
+    get: operations["PostsController_findOne"];
+    delete: operations["PostsController_remove"];
+    patch: operations["PostsController_update"];
+  };
+  "/posts/remove-post/{id}": {
+    patch: operations["PostsController_userRemovePost"];
+  };
+  "/seeds": {
+    post: operations["SeedsController_create"];
+  };
+  "/factories": {
+    post: operations["FactoriesController_create"];
   };
 }
 
@@ -65,10 +89,6 @@ export interface components {
       /** @enum {string} */
       roles?: "patient" | "admin" | "therapist";
     };
-    SeedPatientDto: {
-      /** @default 100 */
-      lenght?: number;
-    };
     CreatePatientDto: {
       email: string;
       username: string;
@@ -92,6 +112,33 @@ export interface components {
       /** @default false */
       is_banned: boolean;
     };
+    PostResponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      body: string;
+      patient: components["schemas"]["PatientResponseDto"];
+    };
+    RelationalPatientResponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      email: string;
+      username: string;
+      phone_number: string;
+      /** @enum {string} */
+      gender: "male" | "female";
+      roles: ("patient" | "admin" | "therapist")[];
+      /** @default false */
+      is_deleted: boolean;
+      /** @default false */
+      is_banned: boolean;
+      posts: components["schemas"]["PostResponseDto"][];
+    };
     UpdatePatientDto: {
       email?: string;
       username?: string;
@@ -100,6 +147,75 @@ export interface components {
       is_banned: boolean;
       is_deleted: boolean;
       roles: ("patient" | "admin" | "therapist")[];
+    };
+    CreateTherapistDto: {
+      first_name: string;
+      last_name: string;
+      bio: string;
+      username: string;
+      email: string;
+      phone_number: string;
+      /** @enum {string} */
+      gender: "male" | "female";
+      /**
+       * @default [
+       *   "therapist"
+       * ]
+       * @enum {string}
+       */
+      roles: "patient" | "admin" | "therapist";
+      /** @default false */
+      is_deleted: boolean;
+    };
+    TherapistResponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      first_name: string;
+      last_name: string;
+      bio: string;
+      username: string;
+      email: string;
+      phone_number: string;
+      /** @enum {string} */
+      gender: "male" | "female";
+      /** @enum {string} */
+      roles: "patient" | "admin" | "therapist";
+      is_deleted: boolean;
+    };
+    UpdateTherapistDto: {
+      first_name?: string;
+      last_name?: string;
+      bio?: string;
+      username?: string;
+      email?: string;
+      phone_number?: string;
+      /** @enum {string} */
+      gender?: "male" | "female";
+      /**
+       * @default [
+       *   "therapist"
+       * ]
+       * @enum {string}
+       */
+      roles?: "patient" | "admin" | "therapist";
+      /** @default false */
+      is_deleted?: boolean;
+    };
+    CreatePostDto: {
+      body: string;
+      patient: string;
+    };
+    UpdatePostDto: {
+      body: string;
+      /** @default false */
+      is_deleted: boolean;
+    };
+    CreateFactoryDto: {
+      /** @default 10 */
+      length?: number;
     };
   };
   responses: never;
@@ -184,23 +300,11 @@ export interface operations {
       };
     };
   };
-  PatientsController_seedPatient: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["SeedPatientDto"];
-      };
-    };
-    responses: {
-      201: {
-        content: never;
-      };
-    };
-  };
   PatientsController_findAll: {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["PatientResponseDto"][];
+          "application/json": components["schemas"]["RelationalPatientResponseDto"][];
         };
       };
     };
@@ -280,6 +384,171 @@ export interface operations {
     };
     responses: {
       200: {
+        content: never;
+      };
+    };
+  };
+  TherapistsController_findAll: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["TherapistResponseDto"][];
+        };
+      };
+    };
+  };
+  TherapistsController_create: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateTherapistDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  TherapistsController_findOne: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["TherapistResponseDto"];
+        };
+      };
+    };
+  };
+  TherapistsController_remove: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  TherapistsController_update: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateTherapistDto"];
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  PostsController_findAll: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["PostResponseDto"][];
+        };
+      };
+    };
+  };
+  PostsController_create: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreatePostDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  PostsController_findOne: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["PostResponseDto"];
+        };
+      };
+    };
+  };
+  PostsController_remove: {
+    parameters: {
+      header: {
+        patient_id: string;
+      };
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  PostsController_update: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdatePostDto"];
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  PostsController_userRemovePost: {
+    parameters: {
+      header: {
+        patient_id: string;
+      };
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  SeedsController_create: {
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  FactoriesController_create: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateFactoryDto"];
+      };
+    };
+    responses: {
+      201: {
         content: never;
       };
     };
