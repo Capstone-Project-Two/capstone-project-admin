@@ -8,7 +8,7 @@ import { revalidateTag } from "next/cache";
 
 export async function createPatient(createPatient: CreatePatientDto) {
   const res = await fetchPostDefault({
-    url: API_ROUTE.GET_ALL_PATIENTS,
+    url: API_ROUTE.BASE_PATIENT,
     data: createPatient,
     method: "POST",
   }).then((res) => res?.json());
@@ -53,7 +53,7 @@ export async function unbanPatient(id: string) {
 
 export async function deletePatient(id: string) {
   const res = await fetchPostDefault({
-    url: `${API_ROUTE.GET_ALL_PATIENTS}/${id}`,
+    url: `${API_ROUTE.BASE_PATIENT}/${id}`,
     method: "DELETE",
   });
 

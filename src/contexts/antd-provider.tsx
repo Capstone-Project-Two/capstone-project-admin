@@ -17,6 +17,8 @@ function AntdProvider({ children }: Props) {
             // Seed Token
             colorPrimary: primary,
             borderRadius: 10,
+
+            colorLink: "#000"
           }
         }}
       >

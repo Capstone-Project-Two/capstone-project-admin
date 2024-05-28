@@ -3,11 +3,12 @@ import { useState } from "react";
 import { Layout, Menu, MenuProps, theme } from 'antd';
 import Link from "next/link";
 import { ROUTER_PATH } from "@/constants/route-constant";
-import { LayoutDashboard, MailWarningIcon, PodcastIcon, User } from "lucide-react";
+import { Database, LayoutDashboard, MailWarningIcon, PodcastIcon, Stethoscope, User } from "lucide-react";
 import React from "react";
 import Navbar from "./navbar";
 import { usePathname } from "next/navigation";
 import { ItemType, MenuItemType } from "antd/es/menu/interface";
+import { LayoutLink } from "./layout-link";
 
 type Props = {
   children: React.ReactNode
@@ -38,17 +39,17 @@ function Sidebar({ children }: Props) {
     },
     {
       key: ROUTER_PATH.HOMEPAGE,
-      label: <Link href={ROUTER_PATH.HOMEPAGE}>Overview</Link>,
+      label: <LayoutLink href={ROUTER_PATH.HOMEPAGE}>Overview</LayoutLink>,
       icon: LayoutDashboard,
     },
     {
       key: ROUTER_PATH.USERS,
-      label: <Link className="text-black" href={ROUTER_PATH.USERS}>Users</Link>,
+      label: <LayoutLink href={ROUTER_PATH.USERS}>Users</LayoutLink>,
       icon: User,
       children: [
         {
           key: ROUTER_PATH.SUSPEND_USER,
-          label: <Link href={ROUTER_PATH.SUSPEND_USER}>Suspended Users</Link>,
+          label: <LayoutLink href={ROUTER_PATH.SUSPEND_USER}>Suspended Users</LayoutLink>,
           icon: <MailWarningIcon size={20} />
         }
       ]
@@ -63,7 +64,17 @@ function Sidebar({ children }: Props) {
           label: <Link href={ROUTER_PATH.POSTS_HISTORY}>Post History</Link>,
         }
       ]
-    }
+    },
+    {
+      key: ROUTER_PATH.SOCKET_TEST,
+      label: <LayoutLink href={ROUTER_PATH.SOCKET_TEST}>Socket Test</LayoutLink>,
+      icon: Database
+    },
+    {
+      key: ROUTER_PATH.THERAPISTS,
+      label: <LayoutLink href={ROUTER_PATH.THERAPISTS}>Therapists</LayoutLink>,
+      icon: Stethoscope,
+    },
   ]
 
   const renderSidebarItems: MenuProps['items'] = sidebarLinks.map((item) => ({

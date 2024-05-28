@@ -1,8 +1,11 @@
 export enum API_ROUTE {
-  /** Patients */
-  GET_ALL_PATIENTS = "/patients",
+  //Patient Routes
+  BASE_PATIENT = "/patients",
   BAN_PATIENT = "/patients/ban-patient",
   UNBAN_PATIENT = "/patients/unban-patient",
+
+  //Therapist Routes
+  BASE_THERAPIST = "/therapists",
 
   /** Posts */
   GET_ALL_POSTS = "/posts",
