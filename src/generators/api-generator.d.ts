@@ -36,6 +36,9 @@ export interface paths {
     get: operations["TherapistsController_findAll"];
     post: operations["TherapistsController_create"];
   };
+  "/therapists/specializations": {
+    get: operations["TherapistsController_getAllSpecializations"];
+  };
   "/therapists/{id}": {
     get: operations["TherapistsController_findOne"];
     delete: operations["TherapistsController_remove"];
@@ -155,6 +158,7 @@ export interface components {
       username: string;
       email: string;
       phone_number: string;
+      specializations: string[];
       /** @enum {string} */
       gender: "male" | "female";
       /**
@@ -179,6 +183,7 @@ export interface components {
       username: string;
       email: string;
       phone_number: string;
+      specializations: string[];
       /** @enum {string} */
       gender: "male" | "female";
       /** @enum {string} */
@@ -192,6 +197,7 @@ export interface components {
       username?: string;
       email?: string;
       phone_number?: string;
+      specializations?: string[];
       /** @enum {string} */
       gender?: "male" | "female";
       /**
@@ -301,6 +307,14 @@ export interface operations {
     };
   };
   PatientsController_findAll: {
+    parameters: {
+      query?: {
+        /** @example 1 */
+        page?: number;
+        /** @example 10 */
+        limit?: number;
+      };
+    };
     responses: {
       200: {
         content: {
@@ -409,6 +423,13 @@ export interface operations {
       };
     };
   };
+  TherapistsController_getAllSpecializations: {
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
   TherapistsController_findOne: {
     parameters: {
       path: {
@@ -453,6 +474,14 @@ export interface operations {
     };
   };
   PostsController_findAll: {
+    parameters: {
+      query?: {
+        /** @example 1 */
+        page?: number;
+        /** @example 10 */
+        limit?: number;
+      };
+    };
     responses: {
       200: {
         content: {

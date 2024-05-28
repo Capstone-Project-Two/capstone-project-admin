@@ -1,6 +1,7 @@
 "use client";
 import { createTherapist } from "@/actions/therapist-action";
 import { GENDER } from "@/constants/gender-constant";
+import useSpecialization from "@/lib/hooks/swr-hooks/use-specialization";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -9,17 +10,20 @@ import {
   notification,
   NotificationArgsProps,
   Select,
+  SelectProps,
+  Spin,
 } from "antd";
-import { error } from "console";
-import { ErrorMessage, Form, Formik, FormikValues } from "formik";
+import { ErrorMessage, Form, Formik } from "formik";
 import { Stethoscope } from "lucide-react";
-import { useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import * as Yup from "yup";
 
 function CreateTherapistModal() {
   const [isOpened, setIsOpened] = useState(false);
 
   const [isPending, startTransition] = useTransition();
+
+  const { specializations, isLoading, mutate } = useSpecialization();
 
   const [api, contextHolder] = notification.useNotification();
 
@@ -33,13 +37,15 @@ function CreateTherapistModal() {
 
   const handleCreateTherapist = async (values: any, resetForm: any) => {
     startTransition(async () => {
-      await createTherapist(values).then((res) => {
-        successNotification("success", "topRight", res?.message);
-        console.log(res);
-        // resetForm();
-      }).catch((error) => {
-        console.log(error);
-      })
+      await createTherapist(values)
+        .then((res) => {
+          successNotification("success", "topRight", res?.message);
+          resetForm();
+          mutate();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     });
   };
 
@@ -58,6 +64,17 @@ function CreateTherapistModal() {
     });
   };
 
+  const specializationOptions = useMemo(() => {
+    const options: SelectProps["options"] = [];
+    specializations?.forEach((spec) => {
+      options.push({
+        value: spec,
+        label: spec,
+      });
+    });
+    return options;
+  }, [specializations]);
+
   const therapistSchema = Yup.object({
     first_name: Yup.string()
       .required("First name is required")
@@ -74,7 +91,12 @@ function CreateTherapistModal() {
     email: Yup.string()
       .required("Email is required")
       .email("Invalid email address"),
+    specializations: Yup.array(),
   });
+
+  if (isLoading) {
+    return <Spin />;
+  }
 
   return (
     <>
@@ -98,6 +120,7 @@ function CreateTherapistModal() {
             email: "",
             bio: "",
             phone_number: "",
+            specializations: [],
           }}
           validationSchema={therapistSchema}
           onSubmit={(values, { resetForm }) =>
@@ -228,6 +251,29 @@ function CreateTherapistModal() {
 
                   <div className="text-red-500 text-sm mt-2">
                     <ErrorMessage name="email" />
+                  </div>
+                </div>
+                <div>
+                  <label
+                    htmlFor="specializations"
+                    className="block mb-2 text-sm font-medium "
+                  >
+                    Specializations
+                    <span className="text-red-500 text-sm ml-1">*</span>
+                  </label>
+                  <Select
+                    mode="tags"
+                    style={{ width: "100%" }}
+                    placeholder="Specializations"
+                    value={values.specializations}
+                    onChange={(value) =>
+                      setFieldValue("specializations", value)
+                    }
+                    options={specializationOptions}
+                  />
+
+                  <div className="text-red-500 text-sm mt-2">
+                    <ErrorMessage name="specializations" />
                   </div>
                 </div>
               </div>
