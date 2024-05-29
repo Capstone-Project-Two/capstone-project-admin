@@ -2,6 +2,7 @@
 import { createTherapist } from "@/actions/therapist-action";
 import { GENDER } from "@/constants/gender-constant";
 import useSpecialization from "@/lib/hooks/swr-hooks/use-specialization";
+import { therapistSchema } from "@/lib/validation/therapist-schema";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -16,7 +17,6 @@ import {
 import { ErrorMessage, Form, Formik } from "formik";
 import { Stethoscope } from "lucide-react";
 import { useMemo, useState, useTransition } from "react";
-import * as Yup from "yup";
 
 function CreateTherapistModal() {
   const [isOpened, setIsOpened] = useState(false);
@@ -74,25 +74,6 @@ function CreateTherapistModal() {
     });
     return options;
   }, [specializations]);
-
-  const therapistSchema = Yup.object({
-    first_name: Yup.string()
-      .required("First name is required")
-      .min(2, "First name must be at least 2 characters"),
-    last_name: Yup.string()
-      .required("Last name is required")
-      .min(2, "Last name must be at least 2 characters"),
-    bio: Yup.string(),
-    gender: Yup.string().required("Gender is required"),
-    username: Yup.string()
-      .required("Username is required")
-      .min(3, "Username must be at least 3 characters"),
-    phone_number: Yup.number().required("Phone number is required"),
-    email: Yup.string()
-      .required("Email is required")
-      .email("Invalid email address"),
-    specializations: Yup.array(),
-  });
 
   if (isLoading) {
     return <Spin />;
