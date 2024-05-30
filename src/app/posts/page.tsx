@@ -1,4 +1,5 @@
 import ListPosts from "@/components/posts/list-posts"
+import EmptyData from "@/components/ui/empty-data"
 import PaginationUi from "@/components/ui/pagination"
 import { getPosts } from "@/service/get-service"
 import { Spin } from "antd"
@@ -13,13 +14,18 @@ type Props = {
 async function PostPage({ searchParams }: Props) {
   const currentPage = Number(searchParams.page) ?? 1
   const { data: posts, meta } = await getPosts({ page: currentPage })
+
+  if (!posts || posts.length === 0) {
+    return <EmptyData />
+  }
+
   return (
     <div className="flex flex-col gap-4 items-end">
       <Suspense fallback={<Spin />}>
         <ListPosts posts={posts} />
       </Suspense>
       <PaginationUi
-        totalItems={meta.totalItems}
+        totalItems={meta?.totalItems}
         currentPage={Number(searchParams.page) ?? 1}
       />
     </div>

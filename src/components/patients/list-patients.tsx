@@ -11,11 +11,7 @@ type Props = {
 }
 
 async function ListPatients({ searchParams }: Props) {
-  const { data: patients, meta, statusCode } = await getPatients({ page: Number(searchParams.page) })
-
-  if (statusCode !== 200) {
-    return <EmptyData />
-  }
+  const { data: patients, meta } = await getPatients({ page: Number(searchParams.page) })
 
   if (!patients || patients.length === 0) {
     return (
@@ -27,7 +23,7 @@ async function ListPatients({ searchParams }: Props) {
     <div className="flex flex-col gap-4 items-end">
       <UserTable patients={patients} />
       <PaginationUi
-        totalItems={meta.totalItems}
+        totalItems={meta?.totalItems}
         currentPage={Number(searchParams.page) ?? 1}
       />
     </div>
