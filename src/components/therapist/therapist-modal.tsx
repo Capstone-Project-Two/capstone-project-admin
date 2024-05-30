@@ -9,6 +9,7 @@ import { Edit2Icon, Trash } from "lucide-react";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { therapistSchema } from "@/lib/validation/therapist-schema";
 import { updateTherapist } from "@/actions/therapist-action";
+import { getRandomColor } from "@/utils/antd-random-color-helper";
 
 type Props = {
   id: string;
@@ -55,15 +56,10 @@ function TherapistModal({ id }: Props) {
   }
 
 
-  const colors = [
-    'magenta', 'red', 'volcano', 'orange', 'gold', 'lime', 
-    'green', 'cyan', 'blue', 'geekblue', 'purple'
-  ];
+  
   
    // Function to get a random color from the colors array
-   const getRandomColor = () => {
-    return colors[Math.floor(Math.random() * colors.length)];
-  };
+  
 
   const handleEditTherapist = (values: any) => {
     startTransition(async () => {
