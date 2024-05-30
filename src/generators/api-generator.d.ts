@@ -63,6 +63,13 @@ export interface paths {
     get: operations["LikePostsController_findAll"];
   };
   "/like-posts/{id}": {
+    get: operations["LikePostsController_findLikePostByPost"];
+    patch: operations["LikePostsController_update"];
+  };
+  "/like-posts": {
+    get: operations["LikePostsController_findAll"];
+  };
+  "/like-posts/{id}": {
     get: operations["LikePostsController_findLikeByPost"];
     patch: operations["LikePostsController_update"];
   };
@@ -127,6 +134,7 @@ export interface components {
       updatedAt: string;
       body: string;
       patient: components["schemas"]["PatientResponseDto"];
+      like_count: number;
       like_count: number;
     };
     RelationalPatientResponseDto: {
@@ -239,6 +247,20 @@ export interface components {
       patient?: string;
       post?: string;
     };
+    LikePostResponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      patient: components["schemas"]["PatientResponseDto"];
+      post: components["schemas"]["PostResponseDto"];
+      is_like: boolean;
+    };
+    UpdateLikePostDto: {
+      patient?: string;
+      post?: string;
+    };
   };
   responses: never;
   parameters: never;
@@ -323,6 +345,14 @@ export interface operations {
     };
   };
   PatientsController_findAll: {
+    parameters: {
+      query?: {
+        /** @example 1 */
+        page?: number;
+        /** @example 10 */
+        limit?: number;
+      };
+    };
     parameters: {
       query?: {
         /** @example 1 */
@@ -491,6 +521,14 @@ export interface operations {
         limit?: number;
       };
     };
+    parameters: {
+      query?: {
+        /** @example 1 */
+        page?: number;
+        /** @example 10 */
+        limit?: number;
+      };
+    };
     responses: {
       200: {
         content: {
@@ -587,6 +625,46 @@ export interface operations {
     };
     responses: {
       201: {
+        content: never;
+      };
+    };
+  };
+  LikePostsController_findAll: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["LikePostResponseDto"][];
+        };
+      };
+    };
+  };
+  LikePostsController_findLikePostByPost: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["LikePostResponseDto"][];
+        };
+      };
+    };
+  };
+  LikePostsController_update: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateLikePostDto"];
+      };
+    };
+    responses: {
+      200: {
         content: never;
       };
     };

@@ -2,19 +2,23 @@ import { pageMetadata } from "@/utils/metadata-helpter"
 import { Metadata } from "next"
 import ListPatients from "../../components/patients/list-patients"
 import { Suspense } from "react"
-import { Table } from "antd"
+import { Spin } from "antd"
 
 export const metadata: Metadata = pageMetadata({
   title: "User",
 })
 
-type Props = {}
+type Props = {
+  searchParams: {
+    page: string
+  }
+}
 
-async function UsersPage({ }: Props) {
+function UsersPage({ searchParams }: Props) {
   return (
     <div>
-      <Suspense fallback={<Table loading={true} />}>
-        <ListPatients />
+      <Suspense fallback={<Spin />}>
+        <ListUser searchParams={searchParams} />
       </Suspense>
     </div>
   )

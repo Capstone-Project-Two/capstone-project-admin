@@ -7,10 +7,17 @@ import {
   TherapistResponseDto,
 } from "@/service/api-types";
 import { fetchDefault } from "@/service/fetcher-service";
+import { TMeta } from "@/types/types";
 
-export const getPatients = async () => {
+export const getPatients = async ({
+  page = 1,
+  limit = 10,
+}: {
+  page?: number;
+  limit?: number;
+}) => {
   const res = await fetchDefault({
-    url: API_ROUTE.BASE_PATIENT,
+    url: `${API_ROUTE.BASE_PATIENT}?page=${page}&limit=${limit}`,
     tags: [REVALIDATE_TAG_ENUM.PATIENT],
   });
 
@@ -57,6 +64,7 @@ export const getLikePostByPost = async ({ postId }: { postId: string }) => {
     message: res?.message,
     data: res?.data as Array<LikePostResponseDto>,
     statusCode: res?.statusCode,
+    meta: res.meta as TMeta,
   };
 };
 
