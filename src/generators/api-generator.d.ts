@@ -59,23 +59,12 @@ export interface paths {
   "/factories": {
     post: operations["FactoriesController_create"];
   };
-  "/posts": {
-    get: operations["PostsController_findAll"];
-    post: operations["PostsController_create"];
+  "/like-posts": {
+    get: operations["LikePostsController_findAll"];
   };
-  "/posts/{id}": {
-    get: operations["PostsController_findOne"];
-    delete: operations["PostsController_remove"];
-    patch: operations["PostsController_update"];
-  };
-  "/posts/remove-post/{id}": {
-    patch: operations["PostsController_userRemovePost"];
-  };
-  "/seeds": {
-    post: operations["SeedsController_create"];
-  };
-  "/factories": {
-    post: operations["FactoriesController_create"];
+  "/like-posts/{id}": {
+    get: operations["LikePostsController_findLikePostByPost"];
+    patch: operations["LikePostsController_update"];
   };
 }
 
@@ -138,6 +127,7 @@ export interface components {
       updatedAt: string;
       body: string;
       patient: components["schemas"]["PatientResponseDto"];
+      like_count: number;
     };
     RelationalPatientResponseDto: {
       _id: string;
@@ -235,18 +225,19 @@ export interface components {
       /** @default 10 */
       length?: number;
     };
-    CreatePostDto: {
-      body: string;
-      patient: string;
+    LikePostResponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      patient: components["schemas"]["PatientResponseDto"];
+      post: components["schemas"]["PostResponseDto"];
+      is_like: boolean;
     };
-    UpdatePostDto: {
-      body: string;
-      /** @default false */
-      is_deleted: boolean;
-    };
-    CreateFactoryDto: {
-      /** @default 10 */
-      length?: number;
+    UpdateLikePostDto: {
+      patient?: string;
+      post?: string;
     };
   };
   responses: never;
@@ -331,19 +322,15 @@ export interface operations {
       };
     };
   };
-  PatientsController_seedPatient: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["SeedPatientDto"];
-      };
-    };
-    responses: {
-      201: {
-        content: never;
-      };
-    };
-  };
   PatientsController_findAll: {
+    parameters: {
+      query?: {
+        /** @example 1 */
+        page?: number;
+        /** @example 10 */
+        limit?: number;
+      };
+    };
     responses: {
       200: {
         content: {
@@ -496,107 +483,6 @@ export interface operations {
     };
   };
   PostsController_findAll: {
-    responses: {
-      200: {
-        content: {
-          "application/json": components["schemas"]["PostResponseDto"][];
-        };
-      };
-    };
-  };
-  PostsController_create: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreatePostDto"];
-      };
-    };
-    responses: {
-      201: {
-        content: never;
-      };
-    };
-  };
-  PostsController_findOne: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      200: {
-        content: {
-          "application/json": components["schemas"]["PostResponseDto"];
-        };
-      };
-    };
-  };
-  PostsController_remove: {
-    parameters: {
-      header: {
-        patient_id: string;
-      };
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      200: {
-        content: never;
-      };
-    };
-  };
-  PostsController_update: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UpdatePostDto"];
-      };
-    };
-    responses: {
-      200: {
-        content: never;
-      };
-    };
-  };
-  PostsController_userRemovePost: {
-    parameters: {
-      header: {
-        patient_id: string;
-      };
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      200: {
-        content: never;
-      };
-    };
-  };
-  SeedsController_create: {
-    responses: {
-      201: {
-        content: never;
-      };
-    };
-  };
-  FactoriesController_create: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateFactoryDto"];
-      };
-    };
-    responses: {
-      201: {
-        content: never;
-      };
-    };
-  };
-  PostsController_findAll: {
     parameters: {
       query?: {
         /** @example 1 */
@@ -701,6 +587,46 @@ export interface operations {
     };
     responses: {
       201: {
+        content: never;
+      };
+    };
+  };
+  LikePostsController_findAll: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["LikePostResponseDto"][];
+        };
+      };
+    };
+  };
+  LikePostsController_findLikePostByPost: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["LikePostResponseDto"][];
+        };
+      };
+    };
+  };
+  LikePostsController_update: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateLikePostDto"];
+      };
+    };
+    responses: {
+      200: {
         content: never;
       };
     };
