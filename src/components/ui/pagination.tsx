@@ -1,37 +1,75 @@
 "use client"
-import { useSearchParams } from "next/navigation";
-import { ShadcnPagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "./shadcn-ui/pagination";
+
+import { URL_PARAM } from "@/constants/url-param-constant";
+import useUrlParam from "@/lib/hooks/use-url-param";
+import { cn } from "@/lib/utils";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { Pagination, PaginationProps } from "antd";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type Props = {
-  totalPages: number
-  baseUrl: string;
+  totalItems: number
   currentPage: number
+  className?: string;
 }
 
-function Pagination({ totalPages, baseUrl, currentPage }: Props) {
-  const searchParams = useSearchParams()
-  const previousPage = Number(currentPage) - 1
-  const nextPage = Number(currentPage) + 1
-  const isDisabled = previousPage <= 1 || nextPage > totalPages
-
+function PaginationUi({ totalItems, currentPage, className }: Props) {
+  const pathname = usePathname()
+  const { updateUrlParam, getAllParams } = useUrlParam()
+  const onChange: PaginationProps['onChange'] = (page) => {
+    updateUrlParam({
+      paramName: URL_PARAM.PAGE,
+      paramValue: page.toString()
+    })
+  };
   return (
-    <ShadcnPagination>
-      <PaginationContent>
-        <PaginationItem
-        >
-          <PaginationPrevious href={isDisabled ? '#' : `${baseUrl}?page=${previousPage}`} />
-        </PaginationItem>
-        {Array.from({ length: totalPages }).map((_, index) => (
-          <PaginationItem key={index}>
-            <PaginationLink isActive={currentPage - 1 === index} href={`${baseUrl}?page=${index + 1}`}>{index + 1}</PaginationLink>
-          </PaginationItem>
-        ))}
-        <PaginationItem>
-          <PaginationNext href={isDisabled ? '#' : `${baseUrl}?page=${nextPage}`} />
-        </PaginationItem>
-      </PaginationContent>
-    </ShadcnPagination>
+    <Pagination
+      className={cn(className)}
+      showQuickJumper
+      defaultCurrent={1}
+      showTotal={(total) => `Total ${total} items`}
+      showSizeChanger={false}
+      total={totalItems}
+      current={currentPage ?? 1}
+      onChange={onChange}
+      itemRender={(page, type) => {
+        if (type === 'prev') {
+          return (
+            <Link href={'#'}>
+              <LeftOutlined />
+            </Link>
+          )
+        }
+        if (type === 'next') {
+          return (
+            <Link href={'#'}>
+              <RightOutlined />
+            </Link>
+          )
+        }
+        if (type === 'jump-prev') {
+          return (
+            <Link href={'#'}>
+              ...
+            </Link>
+          )
+        }
+        if (type === 'jump-next') {
+          return (
+            <Link href={'#'}>
+              ...
+            </Link>
+          )
+        }
+        return (
+          <Link href={`${pathname}?${URL_PARAM.PAGE}=${page}${getAllParams().length > 0 ? `&${getAllParams()}` : ''}`}>
+            {page}
+          </Link>
+        )
+      }}
+    />
   )
 }
 
-export default Pagination
+export default PaginationUi

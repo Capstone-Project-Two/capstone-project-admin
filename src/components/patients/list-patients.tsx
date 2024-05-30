@@ -1,8 +1,7 @@
 import { getPatients } from "@/service/get-service"
 import UserTable from "./patient-table"
 import EmptyData from "../ui/empty-data"
-import Pagination from "../ui/pagination"
-import { ROUTER_PATH } from "@/constants/route-constant"
+import PaginationUi from "../ui/pagination"
 
 type Props = {
   searchParams: {
@@ -25,15 +24,14 @@ async function ListUser({ searchParams }: Props) {
   }
 
   return (
-    <>
+    <div className="flex flex-col gap-4 items-end">
       <UserTable patients={patients} />
-
-      <Pagination
-        totalPages={meta.totalPages}
-        baseUrl={ROUTER_PATH.USERS}
-        currentPage={Number(searchParams.page)}
+      <PaginationUi
+        className="mt-auto"
+        totalItems={meta.totalItems}
+        currentPage={Number(searchParams.page) ?? 1}
       />
-    </>
+    </div>
   )
 }
 

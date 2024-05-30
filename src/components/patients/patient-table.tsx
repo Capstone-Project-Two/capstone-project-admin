@@ -1,7 +1,7 @@
 "use client"
 import { PatientResponseDto } from "@/service/api-types"
 import { Button, Spin, Table, TableColumnsType } from "antd"
-import UserModal from "./patient-modal"
+import PatientModal from "./patient-modal"
 import { banPatient, unbanPatient } from "@/actions/patient-action"
 import { useTransition } from "react"
 import { convertDatasource } from "@/utils/antd-data-helper"
@@ -42,7 +42,7 @@ function UserTable({ patients }: Props) {
       width: '10%',
       render: (patient: PatientResponseDto) => (
         <div key={patient._id}>
-          <UserModal id={patient._id} />
+          <PatientModal id={patient._id} />
         </div>
       ),
     },

@@ -14,14 +14,14 @@ type Props = {
   }
 }
 
-function UsersPage({ searchParams }: Props) {
+function PatientsPage({ searchParams }: Props) {
   return (
     <div>
       <Suspense fallback={<Spin />}>
-        <ListUser searchParams={searchParams} />
+        <ListPatients searchParams={searchParams} />
       </Suspense>
     </div>
   )
 }
 
-export default UsersPage
+export default PatientsPage

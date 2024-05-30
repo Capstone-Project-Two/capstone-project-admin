@@ -1,6 +1,6 @@
 export enum ROUTER_PATH {
   HOMEPAGE = "/",
-  USERS = "/patients",
+  PATIENTS = "/patients",
   SUSPEND_USER = "/patients/suspend",
   THERAPISTS = "/therapists",
 

@@ -34,8 +34,8 @@ function Navbar({ collapsed, setCollapsed, children }: Props) {
       icon: LayoutDashboard,
     },
     {
-      key: ROUTER_PATH.USERS,
-      label: <LayoutLink href={ROUTER_PATH.USERS}>Users</LayoutLink>,
+      key: ROUTER_PATH.PATIENTS,
+      label: <LayoutLink href={ROUTER_PATH.PATIENTS}>Patients</LayoutLink>,
       icon: User,
     },
     {
