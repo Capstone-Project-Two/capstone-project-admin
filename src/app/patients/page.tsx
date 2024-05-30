@@ -1,6 +1,6 @@
 import { pageMetadata } from "@/utils/metadata-helpter"
 import { Metadata } from "next"
-import ListUser from "../../components/user/list-user"
+import ListUser from "../../components/patients/list-patients"
 import { Suspense } from "react"
 import { Spin } from "antd"
 
@@ -14,7 +14,7 @@ type Props = {
   }
 }
 
-function UsersPage({ searchParams }: Props) {
+function PatientsPage({ searchParams }: Props) {
   return (
     <div>
       <Suspense fallback={<Spin />}>
@@ -24,4 +24,4 @@ function UsersPage({ searchParams }: Props) {
   )
 }
 
-export default UsersPage
+export default PatientsPage
