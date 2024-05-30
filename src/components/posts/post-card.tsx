@@ -76,7 +76,7 @@ function PostCard({ post }: Props) {
           {isLoading && <Spin />}
           {!isLoading && likePostData?.filter(post => post.is_like).map(post => (
             <div key={post._id}>
-              {post.patient.username}
+              {post?.patient?.username}
             </div>
           ))}
         </Flex>

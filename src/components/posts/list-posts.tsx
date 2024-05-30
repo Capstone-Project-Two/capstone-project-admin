@@ -7,7 +7,7 @@ type Props = {
 
 function ListPosts({ posts }: Props) {
   return (
-    <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+    <div className="w-full grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
       {posts.map(post => (
         <PostCard key={post._id} post={post} />
       ))}

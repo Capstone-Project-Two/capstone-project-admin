@@ -77,6 +77,7 @@ function UserTable({ patients }: Props) {
       pagination={{
         hideOnSinglePage: true
       }}
+      className="w-full"
       dataSource={convertDatasource(patients)}
       columns={columns}
     />
