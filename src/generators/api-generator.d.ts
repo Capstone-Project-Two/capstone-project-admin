@@ -59,20 +59,12 @@ export interface paths {
   "/factories": {
     post: operations["FactoriesController_create"];
   };
-  "/posts": {
-    get: operations["PostsController_findAll"];
-    post: operations["PostsController_create"];
+  "/like-posts": {
+    get: operations["LikePostsController_findAll"];
   };
-  "/posts/{id}": {
-    get: operations["PostsController_findOne"];
-    delete: operations["PostsController_remove"];
-    patch: operations["PostsController_update"];
-  };
-  "/posts/remove-post/{id}": {
-    patch: operations["PostsController_userRemovePost"];
-  };
-  "/seeds": {
-    post: operations["SeedsController_create"];
+  "/like-posts/{id}": {
+    get: operations["LikePostsController_findOne"];
+    patch: operations["LikePostsController_update"];
   };
 }
 
@@ -232,14 +224,16 @@ export interface components {
       /** @default 10 */
       length?: number;
     };
-    CreatePostDto: {
-      body: string;
-      patient: string;
+    LikePostResponseDto: {
+      patient: components["schemas"]["PatientResponseDto"];
+      post: components["schemas"]["PostResponseDto"];
+      like_count: number;
     };
-    UpdatePostDto: {
-      body: string;
-      /** @default false */
-      is_deleted: boolean;
+    UpdateLikePostDto: {
+      patient?: string;
+      post?: string;
+      /** @default 0 */
+      like_count?: number;
     };
   };
   responses: never;
@@ -325,6 +319,14 @@ export interface operations {
     };
   };
   PatientsController_findAll: {
+    parameters: {
+      query?: {
+        /** @example 1 */
+        page?: number;
+        /** @example 10 */
+        limit?: number;
+      };
+    };
     responses: {
       200: {
         content: {
@@ -477,6 +479,14 @@ export interface operations {
     };
   };
   PostsController_findAll: {
+    parameters: {
+      query?: {
+        /** @example 1 */
+        page?: number;
+        /** @example 10 */
+        limit?: number;
+      };
+    };
     responses: {
       200: {
         content: {
@@ -577,28 +587,16 @@ export interface operations {
       };
     };
   };
-  PostsController_findAll: {
+  LikePostsController_findAll: {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["PostResponseDto"][];
+          "application/json": components["schemas"]["LikePostResponseDto"][];
         };
       };
     };
   };
-  PostsController_create: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreatePostDto"];
-      };
-    };
-    responses: {
-      201: {
-        content: never;
-      };
-    };
-  };
-  PostsController_findOne: {
+  LikePostsController_findOne: {
     parameters: {
       path: {
         id: string;
@@ -607,27 +605,12 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["PostResponseDto"];
+          "application/json": components["schemas"]["LikePostResponseDto"];
         };
       };
     };
   };
-  PostsController_remove: {
-    parameters: {
-      header: {
-        patient_id: string;
-      };
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      200: {
-        content: never;
-      };
-    };
-  };
-  PostsController_update: {
+  LikePostsController_update: {
     parameters: {
       path: {
         id: string;
@@ -635,33 +618,11 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["UpdatePostDto"];
+        "application/json": components["schemas"]["UpdateLikePostDto"];
       };
     };
     responses: {
       200: {
-        content: never;
-      };
-    };
-  };
-  PostsController_userRemovePost: {
-    parameters: {
-      header: {
-        patient_id: string;
-      };
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      200: {
-        content: never;
-      };
-    };
-  };
-  SeedsController_create: {
-    responses: {
-      201: {
         content: never;
       };
     };

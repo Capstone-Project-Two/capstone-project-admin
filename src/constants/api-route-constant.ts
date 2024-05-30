@@ -8,5 +8,8 @@ export enum API_ROUTE {
   BASE_THERAPIST = "/therapists",
 
   /** Posts */
-  GET_ALL_POSTS = "/posts",
+  BASE_POSTS = "/posts",
+  
+  /** Like posts */
+  BASE_LIKE_POSTS = "/like-posts"
 }
