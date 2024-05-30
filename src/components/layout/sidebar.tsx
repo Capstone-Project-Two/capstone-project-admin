@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Layout, Menu, MenuProps, theme } from 'antd';
 import Link from "next/link";
 import { ROUTER_PATH } from "@/constants/route-constant";
-import { LayoutDashboard, MailWarningIcon, User } from "lucide-react";
+import { Database, LayoutDashboard, MailWarningIcon, Stethoscope, User } from "lucide-react";
 import React from "react";
 import Navbar from "./navbar";
 import { usePathname } from "next/navigation";
@@ -53,6 +53,16 @@ function Sidebar({ children }: Props) {
           icon: <MailWarningIcon size={20} />
         }
       ]
+    },
+    {
+      key: ROUTER_PATH.SOCKET_TEST,
+      label: <LayoutLink href={ROUTER_PATH.SOCKET_TEST}>Socket Test</LayoutLink>,
+      icon: Database
+    },
+    {
+      key: ROUTER_PATH.THERAPISTS,
+      label: <LayoutLink href={ROUTER_PATH.THERAPISTS}>Therapists</LayoutLink>,
+      icon: Stethoscope,
     },
   ]
 

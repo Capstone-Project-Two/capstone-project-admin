@@ -5,3 +5,5 @@ export type AdminResponseDto = GenApi["AdminResponseDto"];
 export type PatientResponseDto = GenApi["PatientResponseDto"];
 export type CreatePatientDto = GenApi["CreatePatientDto"];
 export type UpdatePatientDto = GenApi["UpdatePatientDto"];
+export type TherapistResponseDto = GenApi["TherapistResponseDto"];
+export type CreateTherapistDto = GenApi["CreateTherapistDto"]

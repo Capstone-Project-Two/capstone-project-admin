@@ -1,6 +1,6 @@
 import { API_ROUTE } from "@/constants/api-route-constant";
 import { REVALIDATE_TAG_ENUM } from "@/constants/revalidate-tags-constant";
-import { PatientResponseDto } from "@/service/api-types";
+import { PatientResponseDto, TherapistResponseDto } from "@/service/api-types";
 import { fetchDefault } from "@/service/fetcher-service";
 import { TMeta } from "@/types/types";
 
@@ -12,7 +12,7 @@ export const getPatients = async ({
   limit?: number;
 }) => {
   const res = await fetchDefault({
-    url: `${API_ROUTE.GET_ALL_PATIENTS}?page=${page}&limit=${limit}`,
+    url: `${API_ROUTE.BASE_PATIENT}?page=${page}&limit=${limit}`,
     tags: [REVALIDATE_TAG_ENUM.PATIENT],
   });
 
@@ -21,5 +21,18 @@ export const getPatients = async ({
     data: res?.data as Array<PatientResponseDto>,
     statusCode: res?.statusCode,
     meta: res.meta as TMeta,
+  };
+};
+
+export const getTherapists = async () => {
+  const res = await fetchDefault({
+    url: API_ROUTE.BASE_THERAPIST,
+    tags: [REVALIDATE_TAG_ENUM.THERAPIST],
+  });
+
+  return {
+    message: res?.message,
+    data: res?.data as Array<TherapistResponseDto>,
+    statusCode: res?.statusCode,
   };
 };
