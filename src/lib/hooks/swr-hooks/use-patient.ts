@@ -4,7 +4,7 @@ import { PatientResponseDto } from "@/service/api-types";
 import { fetcher } from "@/service/fetcher-service";
 import useSWR from "swr";
 
-export default function useUser(id: string) {
+export default function usePatient(id: string) {
   const { data, isLoading, mutate } = useSWR(
     `${API_ROUTE.BASE_PATIENT}/${id}`,
     fetcher

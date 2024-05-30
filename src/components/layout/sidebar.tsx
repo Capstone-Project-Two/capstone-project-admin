@@ -43,13 +43,13 @@ function Sidebar({ children }: Props) {
       icon: LayoutDashboard,
     },
     {
-      key: ROUTER_PATH.USERS,
-      label: <LayoutLink href={ROUTER_PATH.USERS}>Users</LayoutLink>,
+      key: ROUTER_PATH.PATIENTS,
+      label: <LayoutLink href={ROUTER_PATH.PATIENTS}>Patients</LayoutLink>,
       icon: User,
       children: [
         {
           key: ROUTER_PATH.SUSPEND_USER,
-          label: <LayoutLink href={ROUTER_PATH.SUSPEND_USER}>Suspended Users</LayoutLink>,
+          label: <LayoutLink href={ROUTER_PATH.SUSPEND_USER}>Suspended Patients</LayoutLink>,
           icon: <MailWarningIcon size={20} />
         }
       ]
