@@ -62,13 +62,6 @@ export interface paths {
   "/factories": {
     post: operations["FactoriesController_create"];
   };
-  "/like-posts": {
-    get: operations["LikePostsController_findAll"];
-  };
-  "/like-posts/{id}": {
-    get: operations["LikePostsController_findLikePostByPost"];
-    patch: operations["LikePostsController_update"];
-  };
 }
 
 export type webhooks = Record<string, never>;
@@ -130,7 +123,6 @@ export interface components {
       updatedAt: string;
       body: string;
       patient: components["schemas"]["PatientResponseDto"];
-      like_count: number;
     };
     RelationalPatientResponseDto: {
       _id: string;
@@ -230,20 +222,6 @@ export interface components {
     CreateFactoryDto: {
       /** @default 10 */
       length?: number;
-    };
-    LikePostResponseDto: {
-      _id: string;
-      /** Format: date-time */
-      createdAt: string;
-      /** Format: date-time */
-      updatedAt: string;
-      patient: components["schemas"]["PatientResponseDto"];
-      post: components["schemas"]["PostResponseDto"];
-      is_like: boolean;
-    };
-    UpdateLikePostDto: {
-      patient?: string;
-      post?: string;
     };
   };
   responses: never;
@@ -448,7 +426,9 @@ export interface operations {
   TherapistsController_getAllSpecializations: {
     responses: {
       200: {
-        content: never;
+        content: {
+          "application/json": string[];
+        };
       };
     };
   };
@@ -600,46 +580,6 @@ export interface operations {
     };
     responses: {
       201: {
-        content: never;
-      };
-    };
-  };
-  LikePostsController_findAll: {
-    responses: {
-      200: {
-        content: {
-          "application/json": components["schemas"]["LikePostResponseDto"][];
-        };
-      };
-    };
-  };
-  LikePostsController_findLikePostByPost: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      200: {
-        content: {
-          "application/json": components["schemas"]["LikePostResponseDto"][];
-        };
-      };
-    };
-  };
-  LikePostsController_update: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UpdateLikePostDto"];
-      };
-    };
-    responses: {
-      200: {
         content: never;
       };
     };
