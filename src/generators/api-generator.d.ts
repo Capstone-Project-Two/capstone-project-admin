@@ -63,7 +63,7 @@ export interface paths {
     get: operations["LikePostsController_findAll"];
   };
   "/like-posts/{id}": {
-    get: operations["LikePostsController_findOne"];
+    get: operations["LikePostsController_findLikeByPost"];
     patch: operations["LikePostsController_update"];
   };
 }
@@ -127,6 +127,7 @@ export interface components {
       updatedAt: string;
       body: string;
       patient: components["schemas"]["PatientResponseDto"];
+      like_count: number;
     };
     RelationalPatientResponseDto: {
       _id: string;
@@ -225,15 +226,18 @@ export interface components {
       length?: number;
     };
     LikePostResponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
       patient: components["schemas"]["PatientResponseDto"];
       post: components["schemas"]["PostResponseDto"];
-      like_count: number;
+      is_like: boolean;
     };
     UpdateLikePostDto: {
       patient?: string;
       post?: string;
-      /** @default 0 */
-      like_count?: number;
     };
   };
   responses: never;
@@ -596,7 +600,7 @@ export interface operations {
       };
     };
   };
-  LikePostsController_findOne: {
+  LikePostsController_findLikeByPost: {
     parameters: {
       path: {
         id: string;
@@ -605,7 +609,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["LikePostResponseDto"];
+          "application/json": components["schemas"]["LikePostResponseDto"][];
         };
       };
     };

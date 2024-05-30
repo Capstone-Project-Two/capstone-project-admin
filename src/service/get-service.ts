@@ -1,8 +1,10 @@
 import { API_ROUTE } from "@/constants/api-route-constant";
 import { REVALIDATE_TAG_ENUM } from "@/constants/revalidate-tags-constant";
 import {
-    PostResponseDto,
-    RelationalPatientResponseDto, TherapistResponseDto,
+  LikePostResponseDto,
+  PostResponseDto,
+  RelationalPatientResponseDto,
+  TherapistResponseDto,
 } from "@/service/api-types";
 import { fetchDefault } from "@/service/fetcher-service";
 
@@ -28,6 +30,32 @@ export const getPosts = async () => {
   return {
     message: res?.message,
     data: res?.data as Array<PostResponseDto>,
+    statusCode: res?.statusCode,
+  };
+};
+
+export const getLikePosts = async () => {
+  const res = await fetchDefault({
+    url: API_ROUTE.BASE_LIKE_POSTS,
+    tags: [REVALIDATE_TAG_ENUM.LIKE_POST],
+  });
+
+  return {
+    message: res?.message,
+    data: res?.data as Array<LikePostResponseDto>,
+    statusCode: res?.statusCode,
+  };
+};
+
+export const getLikePostByPost = async ({ postId }: { postId: string }) => {
+  const res = await fetchDefault({
+    url: `${API_ROUTE.BASE_LIKE_POSTS}/${postId}`,
+    tags: [REVALIDATE_TAG_ENUM.LIKE_POST],
+  });
+
+  return {
+    message: res?.message,
+    data: res?.data as Array<LikePostResponseDto>,
     statusCode: res?.statusCode,
   };
 };

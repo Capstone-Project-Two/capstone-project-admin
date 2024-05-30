@@ -113,14 +113,17 @@ function Sidebar({ children }: Props) {
             overflow: 'auto',
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
-            margin: 24,
-          }}>
-          <div style={{
-            padding: 24,
-            height: "100%",
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
-          }}>
+          }}
+          className="sm:m-[24px] m-[16px]"
+        >
+          <div
+            className="sm:p-[24px] p-[16px]"
+            style={{
+              height: "100%",
+              background: colorBgContainer,
+              borderRadius: borderRadiusLG,
+            }}
+          >
             {children}
           </div>
         </Content>

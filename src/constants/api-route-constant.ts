@@ -9,7 +9,7 @@ export enum API_ROUTE {
 
   /** Posts */
   BASE_POSTS = "/posts",
-  
+
   /** Like posts */
-  BASE_LIKE_POSTS = "/like-posts"
+  BASE_LIKE_POSTS = "/like-posts",
 }

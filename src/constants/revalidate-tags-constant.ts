@@ -3,4 +3,5 @@ export enum REVALIDATE_TAG_ENUM {
   ADMIN = "admin",
   THERAPIST = "therapist",
   POST = "post",
+  LIKE_POST = "like_post",
 }

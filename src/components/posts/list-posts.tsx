@@ -1,53 +1,17 @@
-"use client"
 import { PostResponseDto } from "@/service/api-types"
-import { convertDatasource } from "@/utils/antd-data-helper"
-import { Table, TableColumnsType } from "antd"
+import PostCard from "./post-card"
 
 type Props = {
   posts: Array<PostResponseDto>
 }
 
 function ListPosts({ posts }: Props) {
-  const columns: TableColumnsType<PostResponseDto> = [
-    {
-      title: "Username",
-      dataIndex: "_id",
-      key: "username",
-      render: (key) => {
-        return (
-          posts.filter((post) => post._id === key).map((post: PostResponseDto) => (
-            <div key={post._id}>
-              {post.patient.username}
-            </div>
-          ))
-        )
-      }
-    },
-    {
-      title: "Email",
-      dataIndex: "_id",
-      key: "email",
-      render: (key) => {
-        return (
-          posts?.filter((post) => post._id === key)?.map((post: PostResponseDto) => (
-            <div key={post._id}>
-              {post.patient.email}
-            </div>
-          ))
-        )
-      }
-    },
-    {
-      title: "Body",
-      dataIndex: "body",
-      key: "body"
-    },
-  ]
   return (
-    <Table
-      dataSource={convertDatasource(posts)}
-      columns={columns}
-    />
+    <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+      {posts.map(post => (
+        <PostCard key={post._id} post={post} />
+      ))}
+    </div>
   )
 }
 
