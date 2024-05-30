@@ -1,5 +1,5 @@
 "use client"
-import useUser from "@/lib/hooks/swr-hooks/use-user";
+import usePatient from "@/lib/hooks/swr-hooks/use-patient";
 import { Button, Modal, Spin } from "antd";
 import { useState } from "react";
 
@@ -8,7 +8,7 @@ type Props = {
 }
 
 function UserModal({ id }: Props) {
-  const { userData, isLoading } = useUser(id)
+  const { userData, isLoading } = usePatient(id)
   const [isOpened, setIsOpened] = useState(false)
 
   const showModal = () => {

@@ -1,7 +1,7 @@
 "use client"
 import { PatientResponseDto } from "@/service/api-types"
 import { Button, Spin, Table, TableColumnsType } from "antd"
-import UserModal from "./user-modal"
+import UserModal from "./patient-modal"
 import { banPatient, unbanPatient } from "@/actions/user-action"
 import { useTransition } from "react"
 import { convertDatasource } from "@/utils/antd-data-helper"
@@ -16,12 +16,14 @@ function UserTable({ patients }: Props) {
     {
       title: "Email",
       dataIndex: "email",
-      key: "email"
+      key: "email",
+      width: "15%"
     },
     {
       title: "Username",
       dataIndex: "username",
       key: "username",
+      width: "10%"
     },
     {
       title: "Phone number",
@@ -50,6 +52,7 @@ function UserTable({ patients }: Props) {
       title: <div className="flex items-center gap-2">Ban {isPending && <Spin />}</div>,
       dataIndex: '',
       key: 'ban',
+      width: "10%",
       render: (patient: PatientResponseDto) => (
         <Button
           disabled={isPending}
@@ -74,6 +77,7 @@ function UserTable({ patients }: Props) {
   ]
   return (
     <Table
+      className="w-full"
       pagination={{
         hideOnSinglePage: true
       }}
