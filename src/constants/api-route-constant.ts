@@ -12,4 +12,5 @@ export enum API_ROUTE {
 
   /** Like posts */
   BASE_LIKE_POSTS = "/like-posts",
+  GET_ALL_SPECIALIZATIONS = "/therapists/specializations",
 }
