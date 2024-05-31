@@ -1,8 +1,6 @@
+import CreatePostModal from "@/components/posts/create-post-modal"
 import ListPosts from "@/components/posts/list-posts"
-import EmptyData from "@/components/ui/empty-data"
-import PaginationUi from "@/components/ui/pagination"
-import { getPosts } from "@/service/get-service"
-import { Spin } from "antd"
+import { Space, Spin } from "antd"
 import { Suspense } from "react"
 
 type Props = {
@@ -12,24 +10,14 @@ type Props = {
 }
 
 async function PostPage({ searchParams }: Props) {
-  const currentPage = Number(searchParams.page) ?? 1
-  const { data: posts, meta } = await getPosts({ page: currentPage })
-
-  if (!posts || posts.length === 0) {
-    return <EmptyData />
-  }
-
   return (
-    <div className="flex flex-col gap-4 items-end">
+    <Space size={"middle"} direction="vertical" className="w-full">
+      <h1 className="text-2xl font-bold">Posts</h1>
+      <CreatePostModal />
       <Suspense fallback={<Spin />}>
-        <ListPosts posts={posts} />
+        <ListPosts searchParams={searchParams} />
       </Suspense>
-      <PaginationUi
-        totalPages={meta?.totalPages}
-        totalItems={meta?.totalItems}
-        currentPage={Number(searchParams.page) ?? 1}
-      />
-    </div>
+    </Space>
   )
 }
 

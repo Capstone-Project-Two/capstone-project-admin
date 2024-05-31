@@ -117,7 +117,7 @@ function Sidebar({ children }: Props) {
           className="sm:m-[24px] m-[16px]"
         >
           <div
-            className="sm:p-[24px] p-[16px]"
+            className="sm:p-[24px] p-[16px] w-full"
             style={{
               height: "100%",
               background: colorBgContainer,

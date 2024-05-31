@@ -1,17 +1,39 @@
-import { PostResponseDto } from "@/service/api-types"
-import PostCard from "./post-card"
+import { Space } from "antd";
+import PaginationUi from "../ui/pagination";
+import PostCard from "./post-card";
+import { getPosts } from "@/service/get-service";
+import EmptyData from "../ui/empty-data";
 
 type Props = {
-  posts: Array<PostResponseDto>
+  searchParams: {
+    page: string;
+  }
 }
 
-function ListPosts({ posts }: Props) {
+async function ListPosts({ searchParams }: Props) {
+  const currentPage = Number(searchParams.page) ?? 1
+  const { data: posts, meta } = await getPosts({ page: currentPage })
+
+  if (!posts || posts.length === 0) {
+    return (
+      <EmptyData />
+    )
+  }
+
   return (
-    <div className="w-full grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
-      {posts.map(post => (
-        <PostCard key={post._id} post={post} />
-      ))}
-    </div>
+    <Space direction="vertical" size={"middle"} className="w-full">
+      <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 w-full">
+        {posts.map(post => (
+          <PostCard key={post._id} post={post} />
+        ))}
+      </div>
+      <PaginationUi
+        className="flex justify-end"
+        totalPages={meta?.totalPages}
+        totalItems={meta?.totalItems}
+        currentPage={Number(searchParams.page) ?? 1}
+      />
+    </Space>
   )
 }
 

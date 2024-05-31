@@ -29,7 +29,7 @@ function PaginationUi({ totalItems, currentPage, totalPages, className }: Props)
   if (totalPages > 1)
     return (
       <Pagination
-        className={cn(className)}
+        className={cn(className, 'w-full')}
         showQuickJumper
         defaultCurrent={1}
         showTotal={(total) => `Total ${total} items`}
