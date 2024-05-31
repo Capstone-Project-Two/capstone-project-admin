@@ -4,4 +4,14 @@ export type TMeta = {
   itemsPerPage: number;
   currentPage: number;
   currentPageItems: number;
-}
+};
+
+export type TError = {
+  statusCode: number;
+  timestamp: Date;
+  path: string;
+  messages: Array<string>;
+  errorType: string;
+  validationMessages: Array<string>;
+  data?: [];
+};

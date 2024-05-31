@@ -3,6 +3,7 @@ import { REVALIDATE_TAG_ENUM } from "@/constants/revalidate-tags-constant";
 import { PatientResponseDto, TherapistResponseDto } from "@/service/api-types";
 import { fetchDefault } from "@/service/fetcher-service";
 import { TMeta } from "@/types/types";
+import { isValidResponse } from "@/utils/validate-response";
 
 export const getPatients = async ({
   page = 1,
@@ -17,10 +18,11 @@ export const getPatients = async ({
   });
 
   return {
+    error: !isValidResponse(res?.statusCode) && res,
     message: res?.message,
     data: res?.data as Array<PatientResponseDto>,
     statusCode: res?.statusCode,
-    meta: res.meta as TMeta,
+    meta: res?.meta as TMeta,
   };
 };
 
@@ -31,6 +33,7 @@ export const getTherapists = async () => {
   });
 
   return {
+    error: !isValidResponse(res?.statusCode) && res,
     message: res?.message,
     data: res?.data as Array<TherapistResponseDto>,
     statusCode: res?.statusCode,
