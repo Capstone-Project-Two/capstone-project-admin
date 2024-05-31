@@ -25,6 +25,7 @@ async function PostPage({ searchParams }: Props) {
         <ListPosts posts={posts} />
       </Suspense>
       <PaginationUi
+        totalPages={meta?.totalPages}
         totalItems={meta?.totalItems}
         currentPage={Number(searchParams.page) ?? 1}
       />

@@ -23,6 +23,7 @@ async function ListPatients({ searchParams }: Props) {
     <div className="flex flex-col gap-4 items-end">
       <UserTable patients={patients} />
       <PaginationUi
+        totalPages={meta?.totalPages}
         totalItems={meta?.totalItems}
         currentPage={Number(searchParams.page) ?? 1}
       />
