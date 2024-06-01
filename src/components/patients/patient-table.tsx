@@ -1,16 +1,16 @@
 "use client"
 import { PatientResponseDto } from "@/service/api-types"
 import { Button, Spin, Table, TableColumnsType } from "antd"
-import UserModal from "./patient-modal"
-import { banPatient, unbanPatient } from "@/actions/user-action"
 import { useTransition } from "react"
 import { convertDatasource } from "@/utils/antd-data-helper"
+import { banPatient, unbanPatient } from "@/actions/patient-action"
+import PatientModal from "./patient-modal"
 
 type Props = {
   patients: Array<PatientResponseDto>
 }
 
-function UserTable({ patients }: Props) {
+function PatientTable({ patients }: Props) {
   const [isPending, startTransition] = useTransition()
   const columns: TableColumnsType<PatientResponseDto> = [
     {
@@ -44,7 +44,7 @@ function UserTable({ patients }: Props) {
       width: '10%',
       render: (patient: PatientResponseDto) => (
         <div key={patient._id}>
-          <UserModal id={patient._id} />
+          <PatientModal id={patient._id} />
         </div>
       ),
     },
@@ -87,4 +87,4 @@ function UserTable({ patients }: Props) {
   )
 }
 
-export default UserTable
+export default PatientTable

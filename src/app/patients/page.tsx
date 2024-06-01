@@ -5,7 +5,7 @@ import { Suspense } from "react"
 import { Spin } from "antd"
 
 export const metadata: Metadata = pageMetadata({
-  title: "User",
+  title: "Patients",
 })
 
 type Props = {
