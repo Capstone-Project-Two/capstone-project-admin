@@ -14,3 +14,4 @@ export type UpdateLikePostDto = GenApi["UpdateLikePostDto"];
 export type LikePostResponseDto = GenApi["LikePostResponseDto"];
 export type UpdateTherapistDto = GenApi["UpdateTherapistDto"];
 export type CreatePostDto = GenApi["CreatePostDto"];
+export type RelationalPostResponseDto = GenApi["RelationalPostResponseDto"];

@@ -3,8 +3,8 @@ import { REVALIDATE_TAG_ENUM } from "@/constants/revalidate-tags-constant";
 import { URL_PARAM } from "@/constants/url-param-constant";
 import {
   LikePostResponseDto,
-  PostResponseDto,
   RelationalPatientResponseDto,
+  RelationalPostResponseDto,
   TherapistResponseDto,
 } from "@/service/api-types";
 import { fetchDefault } from "@/service/fetcher-service";
@@ -37,7 +37,7 @@ export const getPosts = async ({ page = 1, limit = 10 }: TPagination) => {
 
   return {
     message: res?.message,
-    data: res?.data as Array<PostResponseDto>,
+    data: res?.data as Array<RelationalPostResponseDto>,
     statusCode: res?.statusCode,
     meta: res?.meta as TMeta,
   };

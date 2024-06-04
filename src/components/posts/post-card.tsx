@@ -1,13 +1,15 @@
 "use client"
 import { likePost } from "@/actions/post-action";
 import useLikePost from "@/lib/hooks/swr-hooks/use-like-post";
-import { PostResponseDto } from "@/service/api-types";
+import { RelationalPostResponseDto } from "@/service/api-types";
 import { dateFormat } from "@/utils/date-format";
 import { Button, Divider, Flex, Space, Spin } from "antd";
 import { useTransition } from "react";
+import Image from "next/image";
+import { imageReqHelper } from "@/utils/image-req-helper";
 
 type Props = {
-  post: PostResponseDto;
+  post: RelationalPostResponseDto;
 }
 
 function PostCard({ post }: Props) {
@@ -63,6 +65,13 @@ function PostCard({ post }: Props) {
         <p>
           {post._id}
         </p>
+
+        {post.postPhotos.length > 0 && post.postPhotos.map(post => (
+          <div key={post._id}>
+            <Image src={imageReqHelper(post.filename as string)} width={200} height={200} alt={post.filename} />
+          </div>
+        ))}
+
       </Space>
 
       <Divider />
