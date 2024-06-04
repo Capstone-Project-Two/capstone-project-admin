@@ -9,7 +9,7 @@ import { revalidateTag } from "next/cache";
 export const likePost = async (updateLikePostDto: UpdateLikePostDto) => {
   const res = await fetchPostDefault({
     url: `${API_ROUTE.BASE_LIKE_POSTS}/${updateLikePostDto.post}`,
-    data: {
+    body: {
       patient: updateLikePostDto.patient,
     },
     method: "PATCH",
@@ -26,7 +26,7 @@ export const createPost = async (createPostDto: CreatePostDto) => {
     const res = await fetchPostDefault({
       url: `${API_ROUTE.BASE_POSTS}`,
       method: "POST",
-      data: createPostDto,
+      body: createPostDto,
     });
 
     console.log(res?.data);

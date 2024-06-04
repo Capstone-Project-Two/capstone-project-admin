@@ -26,8 +26,8 @@ function CreatePostModal({ }: Props) {
 
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     startTransition(async () => {
-      await createPost({ body: values.body, patient: '63686861790123456789abcd' }).then(res => {
-        console.log(res)
+      await createPost({ body: values.body, patient: '63686861790123456789abcd', postPhotos: [] }).then(() => {
+        handleCancel()
       }).catch(e => {
         console.log("🚀 ~ awaitcreatePost ~ e:", e)
       })
