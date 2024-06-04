@@ -62,6 +62,51 @@ export interface paths {
   "/factories": {
     post: operations["FactoriesController_create"];
   };
+  "/appointments": {
+    get: operations["AppointmentsController_findAll"];
+    post: operations["AppointmentsController_create"];
+  };
+  "/appointments/{id}": {
+    get: operations["AppointmentsController_findOne"];
+    delete: operations["AppointmentsController_remove"];
+    patch: operations["AppointmentsController_update"];
+  };
+  "/auth/login": {
+    post: operations["AuthController_login"];
+  };
+  "/auth/logout": {
+    get: operations["AuthController_logout"];
+  };
+  "/credential": {
+    get: operations["CredentialController_findAll"];
+    post: operations["CredentialController_create"];
+  };
+  "/credential/{id}": {
+    get: operations["CredentialController_findOne"];
+    delete: operations["CredentialController_remove"];
+    patch: operations["CredentialController_update"];
+  };
+  "/like-posts": {
+    get: operations["LikePostsController_findAll"];
+  };
+  "/like-posts/by-post/{id}": {
+    get: operations["LikePostsController_findLikePostByPost"];
+  };
+  "/like-posts/by-patient/{id}": {
+    get: operations["LikePostsController_findLikePostByPatient"];
+  };
+  "/like-posts/{id}": {
+    patch: operations["LikePostsController_update"];
+  };
+  "/post-photos": {
+    get: operations["PostPhotosController_findAll"];
+    post: operations["PostPhotosController_create"];
+  };
+  "/post-photos/{id}": {
+    get: operations["PostPhotosController_findOne"];
+    delete: operations["PostPhotosController_remove"];
+    patch: operations["PostPhotosController_update"];
+  };
 }
 
 export type webhooks = Record<string, never>;
@@ -71,9 +116,6 @@ export interface components {
     CreateAdminDto: {
       email: string;
       password: string;
-      phone_number: string;
-      /** @enum {string} */
-      roles: "patient" | "admin" | "therapist";
     };
     AdminResponseDto: {
       _id: string;
@@ -88,9 +130,6 @@ export interface components {
     UpdateAdminDto: {
       email?: string;
       password?: string;
-      phone_number?: string;
-      /** @enum {string} */
-      roles?: "patient" | "admin" | "therapist";
     };
     CreatePatientDto: {
       email: string;
@@ -123,6 +162,7 @@ export interface components {
       updatedAt: string;
       body: string;
       patient: components["schemas"]["PatientResponseDto"];
+      like_count: number;
     };
     RelationalPatientResponseDto: {
       _id: string;
@@ -213,15 +253,94 @@ export interface components {
     CreatePostDto: {
       body: string;
       patient: string;
+      postPhotos: string[];
+    };
+    PostPhotoResponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      filename: string;
+      post: components["schemas"]["PostResponseDto"];
+    };
+    RelationalPostResponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      body: string;
+      patient: components["schemas"]["PatientResponseDto"];
+      like_count: number;
+      postPhotos: components["schemas"]["PostPhotoResponseDto"][];
     };
     UpdatePostDto: {
       body: string;
+      postPhotos: string[];
       /** @default false */
       is_deleted: boolean;
     };
     CreateFactoryDto: {
       /** @default 10 */
       length?: number;
+    };
+    CreateAppointmentDto: {
+      note: string;
+      symptoms: string;
+      patient: string;
+      therapist: string;
+      /** Format: date-time */
+      scheduleDate: string;
+      status: string;
+    };
+    AppointmentResponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      note: string;
+      symptoms: string;
+      /** Format: date-time */
+      scheduleDate: string;
+      /** @enum {string} */
+      status: "requested" | "scheduled" | "completed" | "cancelled";
+      patient: components["schemas"]["PatientResponseDto"];
+      therapist: components["schemas"]["TherapistResponseDto"];
+    };
+    UpdateAppointmentDto: {
+      note?: string;
+      symptoms?: string;
+      patient?: string;
+      therapist?: string;
+      /** Format: date-time */
+      scheduleDate?: string;
+      status?: string;
+    };
+    AdminLoginDto: {
+      email: string;
+      password: string;
+    };
+    CreateCredentialDto: Record<string, never>;
+    UpdateCredentialDto: Record<string, never>;
+    LikePostResponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      patient: components["schemas"]["PatientResponseDto"];
+      post: components["schemas"]["PostResponseDto"];
+      is_like: boolean;
+    };
+    UpdateLikePostDto: {
+      patient?: string;
+      post?: string;
+    };
+    UpdatePostPhotoDto: {
+      filename?: string;
+      post?: Record<string, never>;
     };
   };
   responses: never;
@@ -487,7 +606,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["PostResponseDto"][];
+          "application/json": components["schemas"]["RelationalPostResponseDto"][];
         };
       };
     };
@@ -513,7 +632,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["PostResponseDto"];
+          "application/json": components["schemas"]["RelationalPostResponseDto"];
         };
       };
     };
@@ -580,6 +699,265 @@ export interface operations {
     };
     responses: {
       201: {
+        content: never;
+      };
+    };
+  };
+  AppointmentsController_findAll: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["AppointmentResponseDto"][];
+        };
+      };
+    };
+  };
+  AppointmentsController_create: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateAppointmentDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  AppointmentsController_findOne: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["AppointmentResponseDto"];
+        };
+      };
+    };
+  };
+  AppointmentsController_remove: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  AppointmentsController_update: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateAppointmentDto"];
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  AuthController_login: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["AdminLoginDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  AuthController_logout: {
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  CredentialController_findAll: {
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  CredentialController_create: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateCredentialDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  CredentialController_findOne: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  CredentialController_remove: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  CredentialController_update: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateCredentialDto"];
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  LikePostsController_findAll: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["LikePostResponseDto"][];
+        };
+      };
+    };
+  };
+  LikePostsController_findLikePostByPost: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["LikePostResponseDto"][];
+        };
+      };
+    };
+  };
+  LikePostsController_findLikePostByPatient: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["LikePostResponseDto"][];
+        };
+      };
+    };
+  };
+  LikePostsController_update: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateLikePostDto"];
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  PostPhotosController_findAll: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["PostPhotoResponseDto"];
+        };
+      };
+    };
+  };
+  PostPhotosController_create: {
+    requestBody: {
+      content: {
+        "application/json": string;
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  PostPhotosController_findOne: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  PostPhotosController_remove: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  PostPhotosController_update: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdatePostPhotoDto"];
+      };
+    };
+    responses: {
+      200: {
         content: never;
       };
     };

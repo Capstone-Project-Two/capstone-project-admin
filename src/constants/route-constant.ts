@@ -5,4 +5,7 @@ export enum ROUTER_PATH {
   THERAPISTS = "/therapists",
 
   SOCKET_TEST = "/socket-test",
+
+  POSTS = "/posts",
+  POSTS_HISTORY = "/posts/history",
 }
