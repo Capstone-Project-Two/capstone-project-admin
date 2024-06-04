@@ -1,11 +1,10 @@
 import { getPatients } from "@/service/get-service"
-import UserTable from "./patient-table"
+import PatientTable from "./patient-table"
 import EmptyData from "../ui/empty-data"
 import PaginationUi from "../ui/pagination"
 
 type Props = {
   searchParams: {
-    // [key: string]: string;
     page: string
   }
 }
@@ -21,7 +20,7 @@ async function ListPatients({ searchParams }: Props) {
 
   return (
     <div className="flex flex-col gap-4 items-end">
-      <UserTable patients={patients} />
+      <PatientTable patients={patients} />
       <PaginationUi
         totalPages={meta?.totalPages}
         totalItems={meta?.totalItems}

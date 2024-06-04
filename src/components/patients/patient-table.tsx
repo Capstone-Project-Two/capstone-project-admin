@@ -2,15 +2,15 @@
 import { PatientResponseDto } from "@/service/api-types"
 import { Button, Spin, Table, TableColumnsType } from "antd"
 import PatientModal from "./patient-modal"
-import { banPatient, unbanPatient } from "@/actions/patient-action"
 import { useTransition } from "react"
 import { convertDatasource } from "@/utils/antd-data-helper"
+import { banPatient, unbanPatient } from "@/actions/patient-action"
 
 type Props = {
   patients: Array<PatientResponseDto>
 }
 
-function UserTable({ patients }: Props) {
+function PatientTable({ patients }: Props) {
   const [isPending, startTransition] = useTransition()
   const columns: TableColumnsType<PatientResponseDto> = [
     {
@@ -84,4 +84,4 @@ function UserTable({ patients }: Props) {
   )
 }
 
-export default UserTable
+export default PatientTable

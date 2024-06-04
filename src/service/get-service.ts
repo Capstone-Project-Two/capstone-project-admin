@@ -9,6 +9,7 @@ import {
 } from "@/service/api-types";
 import { fetchDefault } from "@/service/fetcher-service";
 import { TMeta } from "@/types/types";
+import { isValidResponse } from "@/utils/validate-response";
 
 type TPagination = {
   page?: number;
@@ -22,6 +23,7 @@ export const getPatients = async ({ page = 1, limit = 10 }: TPagination) => {
   });
 
   return {
+    error: !isValidResponse(res?.statusCode) && res,
     message: res?.message,
     data: res?.data as Array<RelationalPatientResponseDto>,
     statusCode: res?.statusCode,
@@ -66,7 +68,7 @@ export const getLikePostByPost = async ({ postId }: { postId: string }) => {
     message: res?.message,
     data: res?.data as Array<LikePostResponseDto>,
     statusCode: res?.statusCode,
-    meta: res.meta as TMeta,
+    meta: res?.meta as TMeta,
   };
 };
 
@@ -77,6 +79,7 @@ export const getTherapists = async () => {
   });
 
   return {
+    error: !isValidResponse(res?.statusCode) && res,
     message: res?.message,
     data: res?.data as Array<TherapistResponseDto>,
     statusCode: res?.statusCode,

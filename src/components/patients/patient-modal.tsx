@@ -7,7 +7,7 @@ type Props = {
   id: string;
 }
 
-function UserModal({ id }: Props) {
+function PatientModal({ id }: Props) {
   const { userData, isLoading } = usePatient(id)
   const [isOpened, setIsOpened] = useState(false)
 
@@ -46,4 +46,4 @@ function UserModal({ id }: Props) {
   )
 }
 
-export default UserModal
+export default PatientModal
