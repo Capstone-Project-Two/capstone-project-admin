@@ -1,7 +1,7 @@
 import { BASE_API_URL } from "@/constants/env-constant";
 
 export const fetcher = (url: string) =>
-  fetchDefault({ url }).then((res: any) => {
+  fetchDefault({ url }).then((res: any  ) => {
     return res;
   });
 
@@ -27,10 +27,6 @@ export async function fetchDefault({
       },
     });
 
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-
     return res.json();
   } catch (e) {
     console.log(e);
@@ -40,24 +36,24 @@ export async function fetchDefault({
 export async function fetchPostDefault({
   url,
   method,
-  data,
+  body,
 }: {
   url: string;
   method: "POST" | "PATCH" | "DELETE";
-  data?: any;
+  body?: any;
 }) {
   try {
     const res = await fetch(`${BASE_API_URL}${url}`, {
-      body: JSON.stringify(data),
+      body: JSON.stringify(body),
       method: method,
       headers: {
         "Content-type": "application/json",
       },
     });
 
-    if (!res.ok) {
-      throw new Error(`Failed to ${method} data`);
-    }
+    // if (!res.ok) {
+    //   throw new Error(`Failed to ${method} data`);
+    // }
 
     return res.json();
   } catch (e) {

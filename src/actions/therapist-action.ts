@@ -8,7 +8,7 @@ import { revalidateTag } from "next/cache";
 export async function createTherapist(createTherapist: CreateTherapistDto) {
   const res = await fetchPostDefault({
     url: API_ROUTE.BASE_THERAPIST,
-    data: createTherapist,
+    body: createTherapist,
     method: "POST",
   }).then((res) => res);
 
@@ -19,7 +19,7 @@ export async function createTherapist(createTherapist: CreateTherapistDto) {
 export async function updateTherapist(id: string, updateTherapist: UpdateTherapistDto) {
   const res = await fetchPostDefault({
     url: `${API_ROUTE.BASE_THERAPIST}/${id}`,
-    data: updateTherapist,
+    body: updateTherapist,
     method: "PATCH",
   }).then((res) => res);
 

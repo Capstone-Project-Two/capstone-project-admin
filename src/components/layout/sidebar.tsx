@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Layout, Menu, MenuProps, theme } from 'antd';
 import Link from "next/link";
 import { ROUTER_PATH } from "@/constants/route-constant";
-import { Calendar, Database, LayoutDashboard, MailWarningIcon, Stethoscope, User } from "lucide-react";
+import { Calendar, Database, LayoutDashboard, MailWarningIcon, PodcastIcon, Stethoscope, User } from "lucide-react";
 import React from "react";
 import Navbar from "./navbar";
 import { usePathname } from "next/navigation";
@@ -51,6 +51,17 @@ function Sidebar({ children }: Props) {
           key: ROUTER_PATH.SUSPEND_USER,
           label: <LayoutLink href={ROUTER_PATH.SUSPEND_USER}>Suspended Patients</LayoutLink>,
           icon: <MailWarningIcon size={20} />
+        }
+      ]
+    },
+    {
+      key: ROUTER_PATH.POSTS,
+      label: <Link href={ROUTER_PATH.POSTS}>Posts</Link>,
+      icon: PodcastIcon,
+      children: [
+        {
+          key: ROUTER_PATH.POSTS_HISTORY,
+          label: <Link href={ROUTER_PATH.POSTS_HISTORY}>Post History</Link>,
         }
       ]
     },
@@ -107,14 +118,17 @@ function Sidebar({ children }: Props) {
             overflow: 'auto',
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
-            margin: 24,
-          }}>
-          <div style={{
-            padding: 24,
-            height: "100%",
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
-          }}>
+          }}
+          className="sm:m-[24px] m-[16px]"
+        >
+          <div
+            className="sm:p-[24px] p-[16px] w-full"
+            style={{
+              height: "100%",
+              background: colorBgContainer,
+              borderRadius: borderRadiusLG,
+            }}
+          >
             {children}
           </div>
         </Content>
