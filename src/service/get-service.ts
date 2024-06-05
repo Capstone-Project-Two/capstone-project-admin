@@ -1,7 +1,8 @@
 import { API_ROUTE } from "@/constants/api-route-constant";
 import { REVALIDATE_TAG_ENUM } from "@/constants/revalidate-tags-constant";
-import { AppointmentResponseDto, URL_PARAM } from "@/constants/url-param-constant";
+import { URL_PARAM } from "@/constants/url-param-constant";
 import {
+  AppointmentResponseDto,
   LikePostResponseDto,
   RelationalPatientResponseDto,
   RelationalPostResponseDto,
