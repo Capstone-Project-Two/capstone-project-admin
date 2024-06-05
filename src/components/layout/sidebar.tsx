@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Layout, Menu, MenuProps, theme } from 'antd';
 import Link from "next/link";
 import { ROUTER_PATH } from "@/constants/route-constant";
-import { Database, LayoutDashboard, MailWarningIcon, Stethoscope, User } from "lucide-react";
+import { Calendar, Database, LayoutDashboard, MailWarningIcon, Stethoscope, User } from "lucide-react";
 import React from "react";
 import Navbar from "./navbar";
 import { usePathname } from "next/navigation";
@@ -63,6 +63,11 @@ function Sidebar({ children }: Props) {
       key: ROUTER_PATH.THERAPISTS,
       label: <LayoutLink href={ROUTER_PATH.THERAPISTS}>Therapists</LayoutLink>,
       icon: Stethoscope,
+    },
+    {
+      key: ROUTER_PATH.APPOINTMENTS,
+      label: <LayoutLink href={ROUTER_PATH.APPOINTMENTS}>Appointments</LayoutLink>,
+      icon: Calendar,
     },
   ]
 

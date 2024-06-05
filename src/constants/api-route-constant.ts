@@ -7,4 +7,8 @@ export enum API_ROUTE {
   //Therapist Routes
   BASE_THERAPIST = "/therapists",
   GET_ALL_SPECIALIZATIONS = "/therapists/specializations",
+  
+  
+  //Therapist Routes
+  BASE_APPOINTMENTS = "/appointments",
 }
