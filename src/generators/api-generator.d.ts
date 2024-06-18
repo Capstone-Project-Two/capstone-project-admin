@@ -107,6 +107,41 @@ export interface paths {
     delete: operations["PostPhotosController_remove"];
     patch: operations["PostPhotosController_update"];
   };
+  "/patient-comments": {
+    get: operations["PatientCommentsController_findAll"];
+    post: operations["PatientCommentsController_create"];
+  };
+  "/patient-comments/{id}": {
+    get: operations["PatientCommentsController_findOne"];
+    delete: operations["PatientCommentsController_remove"];
+    patch: operations["PatientCommentsController_update"];
+  };
+  "/patient-comments/all-replies/{id}": {
+    get: operations["PatientCommentsController_findAllReplies"];
+  };
+  "/patient-comments/remove-comment/{id}": {
+    patch: operations["PatientCommentsController_removePost"];
+  };
+  "/save-posts": {
+    get: operations["SavedPostsController_findAll"];
+    post: operations["SavedPostsController_create"];
+  };
+  "/save-posts/{id}": {
+    get: operations["SavedPostsController_findOne"];
+    patch: operations["SavedPostsController_update"];
+  };
+  "/save-posts/patient-saved-posts/{id}": {
+    get: operations["SavedPostsController_findPatientSavePost"];
+  };
+  "/credits": {
+    get: operations["CreditsController_findAll"];
+    post: operations["CreditsController_create"];
+  };
+  "/credits/{id}": {
+    get: operations["CreditsController_findOne"];
+    delete: operations["CreditsController_remove"];
+    patch: operations["CreditsController_update"];
+  };
 }
 
 export type webhooks = Record<string, never>;
@@ -163,6 +198,8 @@ export interface components {
       body: string;
       patient: components["schemas"]["PatientResponseDto"];
       like_count: number;
+      save_count: number;
+      comment_count: number;
     };
     RelationalPatientResponseDto: {
       _id: string;
@@ -273,6 +310,8 @@ export interface components {
       body: string;
       patient: components["schemas"]["PatientResponseDto"];
       like_count: number;
+      save_count: number;
+      comment_count: number;
       postPhotos: components["schemas"]["PostPhotoResponseDto"][];
     };
     UpdatePostDto: {
@@ -341,6 +380,89 @@ export interface components {
     UpdatePostPhotoDto: {
       filename?: string;
       post?: Record<string, never>;
+    };
+    CreatePatientCommentDto: {
+      content: string;
+      patient: string;
+      post: string;
+      parent?: string;
+      children?: string[];
+    };
+    OmitTypeClass: {
+      _id: string;
+      username: string;
+    };
+    PatientCommentResponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      content: string;
+      patient: components["schemas"]["OmitTypeClass"];
+      /** @default false */
+      is_deleted: boolean;
+      /** @default 0 */
+      reply_count: number;
+    };
+    NestedPatientCommentResponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      content: string;
+      patient: components["schemas"]["OmitTypeClass"];
+      /** @default false */
+      is_deleted: boolean;
+      /** @default 0 */
+      reply_count: number;
+      parent: components["schemas"]["PatientCommentResponseDto"];
+      post: string;
+    };
+    RelationalPatientCommentResponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      content: string;
+      patient: components["schemas"]["OmitTypeClass"];
+      /** @default false */
+      is_deleted: boolean;
+      /** @default 0 */
+      reply_count: number;
+      parent: components["schemas"]["PatientCommentResponseDto"];
+      post: string;
+      children: components["schemas"]["NestedPatientCommentResponseDto"][];
+    };
+    UpdatePatientCommentDto: {
+      content?: string;
+      patient?: string;
+      post?: string;
+      parent?: string;
+      children?: string[];
+      /** @default false */
+      is_deleted: boolean;
+    };
+    CreateSavedPostDto: {
+      patient: string;
+      post: string;
+    };
+    SavePostsResponseDto: {
+      patient: components["schemas"]["PatientResponseDto"];
+      post: components["schemas"]["PostResponseDto"];
+      is_saved: boolean;
+    };
+    UpdateSavedPostDto: {
+      patient?: string;
+      post?: string;
+    };
+    CreateCreditDto: {
+      title: string;
+    };
+    UpdateCreditDto: {
+      title?: string;
     };
   };
   responses: never;
@@ -704,6 +826,11 @@ export interface operations {
     };
   };
   AppointmentsController_findAll: {
+    parameters: {
+      query: {
+        status: string;
+      };
+    };
     responses: {
       200: {
         content: {
@@ -954,6 +1081,220 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["UpdatePostPhotoDto"];
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  PatientCommentsController_findAll: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["RelationalPatientCommentResponseDto"][];
+        };
+      };
+    };
+  };
+  PatientCommentsController_create: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreatePatientCommentDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  PatientCommentsController_findOne: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["RelationalPatientCommentResponseDto"];
+        };
+      };
+    };
+  };
+  PatientCommentsController_remove: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  PatientCommentsController_update: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdatePatientCommentDto"];
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  PatientCommentsController_findAllReplies: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  PatientCommentsController_removePost: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  SavedPostsController_findAll: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["SavePostsResponseDto"][];
+        };
+      };
+    };
+  };
+  SavedPostsController_create: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateSavedPostDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  SavedPostsController_findOne: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["SavePostsResponseDto"];
+        };
+      };
+    };
+  };
+  SavedPostsController_update: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateSavedPostDto"];
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  SavedPostsController_findPatientSavePost: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["SavePostsResponseDto"];
+        };
+      };
+    };
+  };
+  CreditsController_findAll: {
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  CreditsController_create: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateCreditDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  CreditsController_findOne: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  CreditsController_remove: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  CreditsController_update: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateCreditDto"];
       };
     };
     responses: {

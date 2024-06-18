@@ -11,7 +11,6 @@ import {
 import { fetchDefault } from "@/service/fetcher-service";
 import { TMeta } from "@/types/types";
 import { isValidResponse } from "@/utils/validate-response";
-import { url } from "inspector";
 
 type TPagination = {
   page?: number;

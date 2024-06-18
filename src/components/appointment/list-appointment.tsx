@@ -1,6 +1,6 @@
-import { getAppointments, getTherapists } from "@/service/get-service";
 import EmptyData from "../ui/empty-data";
-import AppointmentTable from "./appointment-table";
+import AppointmentCard from "./appointment-card";
+import { getAppointments } from "@/service/get-service";
 
 type Props = {
   searchParams: {
@@ -11,11 +11,11 @@ type Props = {
 async function ListAppointment({ searchParams }: Props) {
   const { data: appointments } = await getAppointments(searchParams);
 
-  if (!appointments || appointments.length === 0) {
+  if (!appointments || appointments?.length === 0) {
     return <EmptyData />;
   }
 
-  return <AppointmentTable appointments={appointments} />;
+  return <AppointmentCard appointments={appointments} />;
 }
 
 export default ListAppointment;

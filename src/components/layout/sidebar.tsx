@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Layout, Menu, MenuProps, theme } from "antd";
+import { Badge, Layout, Menu, MenuProps, theme } from "antd";
 import Link from "next/link";
 import { ROUTER_PATH } from "@/constants/route-constant";
 import {
@@ -90,10 +90,8 @@ function Sidebar({ children }: Props) {
       icon: Stethoscope,
     },
     {
-      key: ROUTER_PATH.APPOINTMENTS,
-      label: (
-        <LayoutLink href={ROUTER_PATH.APPOINTMENTS}>Appointments</LayoutLink>
-      ),
+      key: "",
+      label: <LayoutLink href={``}>Appointments</LayoutLink>,
       icon: Calendar,
       children: [
         {
@@ -101,6 +99,22 @@ function Sidebar({ children }: Props) {
           label: (
             <LayoutLink href={ROUTER_PATH.APPOINTMENTS_REQUESTED}>
               Requested
+            </LayoutLink>
+          ),
+        },
+        {
+          key: ROUTER_PATH.APPOINTMENTS_SCHEDULED,
+          label: (
+            <LayoutLink href={ROUTER_PATH.APPOINTMENTS_SCHEDULED}>
+              Scheduled
+            </LayoutLink>
+          ),
+        },
+        {
+          key: ROUTER_PATH.APPOINTMENTS_REJECTED,
+          label: (
+            <LayoutLink href={ROUTER_PATH.APPOINTMENTS_REJECTED}>
+              Rejected
             </LayoutLink>
           ),
         },

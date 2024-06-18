@@ -6,9 +6,10 @@ export type PatientResponseDto = GenApi["PatientResponseDto"];
 export type CreatePatientDto = GenApi["CreatePatientDto"];
 export type UpdatePatientDto = GenApi["UpdatePatientDto"];
 export type TherapistResponseDto = GenApi["TherapistResponseDto"];
-export type CreateTherapistDto = GenApi["CreateTherapistDto"]
-export type UpdateTherapistDto = GenApi["UpdateTherapistDto"]
+export type CreateTherapistDto = GenApi["CreateTherapistDto"];
+export type UpdateTherapistDto = GenApi["UpdateTherapistDto"];
 export type AppointmentResponseDto = GenApi["AppointmentResponseDto"];
+export type UpdateAppointmentDto = GenApi["UpdateAppointmentDto"];
 export type CreateTherapistDto = GenApi["CreateTherapistDto"];
 export type RelationalPatientResponseDto =
   GenApi["RelationalPatientResponseDto"];
