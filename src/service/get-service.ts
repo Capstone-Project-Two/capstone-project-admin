@@ -11,10 +11,15 @@ import {
 import { fetchDefault } from "@/service/fetcher-service";
 import { TMeta } from "@/types/types";
 import { isValidResponse } from "@/utils/validate-response";
+import { url } from "inspector";
 
 type TPagination = {
   page?: number;
   limit?: number;
+};
+
+type FilterParams = {
+  status?: string;
 };
 
 export const getPatients = async ({ page = 1, limit = 10 }: TPagination) => {
@@ -87,9 +92,11 @@ export const getTherapists = async () => {
   };
 };
 
-export const getAppointments = async () => {
+export const getAppointments = async ({ status }: FilterParams) => {
   const res = await fetchDefault({
-    url: API_ROUTE.BASE_APPOINTMENTS,
+    url: `${API_ROUTE.BASE_APPOINTMENTS}?${URL_PARAM.STATUS}=${
+      !status ? "" : status
+    }`,
     tags: [REVALIDATE_TAG_ENUM.APPOINTMENT],
   });
 

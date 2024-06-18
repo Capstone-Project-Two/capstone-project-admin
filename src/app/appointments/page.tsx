@@ -8,14 +8,18 @@ export const metadata: Metadata = pageMetadata({
   title: "Appointment",
 });
 
-type Props = {};
+type Props = {
+  searchParams: {
+    status: string;
+  };
+};
 
-async function AppointmentsPage({}: Props) {
+async function AppointmentsPage({searchParams}: Props) {
   return (
     <div className="flex flex-col gap-y-4">
       <h1 className="text-2xl font-bold">Manage Appointment</h1>
       <Suspense fallback={<Table loading={true} />}>
-        <ListAppointment />
+        <ListAppointment searchParams={searchParams}/>
       </Suspense>
     </div>
   );

@@ -2,7 +2,7 @@
 import { ROUTER_PATH } from "@/constants/route-constant"
 import { MenuFoldOutlined } from "@ant-design/icons"
 import { Button, Layout, Menu, MenuProps, theme } from "antd"
-import { LayoutDashboard, Stethoscope, User } from "lucide-react"
+import { Calendar, LayoutDashboard, Stethoscope, User } from "lucide-react"
 import { usePathname } from "next/navigation"
 import React, { Dispatch, SetStateAction } from "react"
 import { LayoutLink } from "./layout-link"
@@ -42,6 +42,11 @@ function Navbar({ collapsed, setCollapsed, children }: Props) {
       key: ROUTER_PATH.THERAPISTS,
       label: <LayoutLink href={ROUTER_PATH.THERAPISTS}>Therapists</LayoutLink>,
       icon: Stethoscope,
+    },
+    {
+      key: ROUTER_PATH.APPOINTMENTS,
+      label: <LayoutLink href={ROUTER_PATH.APPOINTMENTS}>Appointments</LayoutLink>,
+      icon: Calendar,
     },
   ]
 

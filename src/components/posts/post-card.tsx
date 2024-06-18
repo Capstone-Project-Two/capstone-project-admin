@@ -33,10 +33,10 @@ function PostCard({ post }: Props) {
       <Flex justify="space-between" align="center">
         <Space direction="vertical">
           <p>
-            {post.patient.username}
+            {post.patient?.username}
           </p>
           <p>
-            {post.patient._id}
+            {post.patient?._id}
           </p>
         </Space>
         <Flex vertical align="end">

@@ -14,34 +14,27 @@ function AppointmentTable({ appointments }: Props) {
       dataIndex: "note",
       key: "note",
     },
-    // {
-    //   title: "Last name",
-    //   dataIndex: "last_name",
-    //   key: "last_name",
-    // },
-    // {
-    //   title: "Email",
-    //   dataIndex: "email",
-    //   key: "email",
-    // },
-    // {
-    //   title: "Username",
-    //   dataIndex: "username",
-    //   key: "username",
-    // },
-    // {
-    //   title: "Phone number",
-    //   dataIndex: "phone_number",
-    //   key: "phone_number",
-    //   width: "20%",
-    // },
-    // {
-    //   title: "Roles",
-    //   dataIndex: "roles",
-    //   key: "roles",
-    //   width: "10%",
-    //   className: "font-medium uppercase",
-    // },
+    {
+      title: "Symptoms",
+      dataIndex: "symptoms",
+      key: "symptoms",
+    },
+    {
+      title: "Patient",
+      dataIndex: "_id",
+      key: "patient",
+    },
+    {
+      title: "Therapist",
+      dataIndex: "_id",
+      key: "therapist",
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      width: "20%",
+    },
   ];
   return (
     <Table

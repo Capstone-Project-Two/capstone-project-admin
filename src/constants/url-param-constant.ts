@@ -1,3 +1,4 @@
 export enum URL_PARAM {
-  PAGE = 'page'
+  PAGE = 'page',
+  STATUS = 'status'
 }
