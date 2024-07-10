@@ -78,7 +78,7 @@ function AppointmentCard({ appointments }: Props) {
                     });
                   });
                 }}
-                className="bg-green-600 text-white border-green-600 hover:bg-green-700"
+                className="primary-button"
               >
                 Accept
               </Button>
@@ -91,7 +91,7 @@ function AppointmentCard({ appointments }: Props) {
                     });
                   });
                 }}
-                className="bg-red-500 text-white border-red-500 hover:bg-red-600"
+                className="danger-button"
               >
                 Reject
               </Button>

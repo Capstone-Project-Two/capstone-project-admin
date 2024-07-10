@@ -13,9 +13,6 @@ export const LayoutLink = ({
   children: React.ReactNode;
 }) => {
   const pathname = usePathname();
-
-  console.log(children);
-
   return (
     <Link
       href={href}

@@ -137,6 +137,9 @@ export interface paths {
     get: operations["CreditsController_findAll"];
     post: operations["CreditsController_create"];
   };
+  "/credits/all": {
+    get: operations["CreditsController_getAllCredit"];
+  };
   "/credits/{id}": {
     get: operations["CreditsController_findOne"];
     delete: operations["CreditsController_remove"];
@@ -171,6 +174,7 @@ export interface components {
       username: string;
       phone_number: string;
       gender: string;
+      credits: number;
     };
     PatientResponseDto: {
       _id: string;
@@ -183,6 +187,7 @@ export interface components {
       phone_number: string;
       /** @enum {string} */
       gender: "male" | "female";
+      credits: number;
       roles: ("patient" | "admin" | "therapist")[];
       /** @default false */
       is_deleted: boolean;
@@ -212,6 +217,7 @@ export interface components {
       phone_number: string;
       /** @enum {string} */
       gender: "male" | "female";
+      credits: number;
       roles: ("patient" | "admin" | "therapist")[];
       /** @default false */
       is_deleted: boolean;
@@ -224,6 +230,7 @@ export interface components {
       username?: string;
       phone_number?: string;
       gender?: string;
+      credits?: number;
       is_banned: boolean;
       is_deleted: boolean;
       roles: ("patient" | "admin" | "therapist")[];
@@ -344,7 +351,7 @@ export interface components {
       /** Format: date-time */
       scheduleDate: string;
       /** @enum {string} */
-      status: "requested" | "scheduled" | "completed" | "cancelled";
+      status: "requested" | "scheduled" | "completed" | "rejected";
       patient: components["schemas"]["PatientResponseDto"];
       therapist: components["schemas"]["TherapistResponseDto"];
     };
@@ -391,6 +398,7 @@ export interface components {
     OmitTypeClass: {
       _id: string;
       username: string;
+      credits: number;
     };
     PatientCommentResponseDto: {
       _id: string;
@@ -460,9 +468,29 @@ export interface components {
     };
     CreateCreditDto: {
       title: string;
+      points: number;
+      price: number;
+      discount: number;
+      is_visible: boolean;
+    };
+    CreditReponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      title: string;
+      points: number;
+      price: number;
+      discount: number;
+      is_visible: boolean;
     };
     UpdateCreditDto: {
       title?: string;
+      points?: number;
+      price?: number;
+      discount?: number;
+      is_visible?: boolean;
     };
   };
   responses: never;
@@ -1246,7 +1274,9 @@ export interface operations {
   CreditsController_findAll: {
     responses: {
       200: {
-        content: never;
+        content: {
+          "application/json": components["schemas"]["CreditReponseDto"][];
+        };
       };
     };
   };
@@ -1262,6 +1292,15 @@ export interface operations {
       };
     };
   };
+  CreditsController_getAllCredit: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["CreditReponseDto"][];
+        };
+      };
+    };
+  };
   CreditsController_findOne: {
     parameters: {
       path: {
@@ -1270,7 +1309,9 @@ export interface operations {
     };
     responses: {
       200: {
-        content: never;
+        content: {
+          "application/json": components["schemas"]["CreditReponseDto"];
+        };
       };
     };
   };

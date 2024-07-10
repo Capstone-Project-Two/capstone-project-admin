@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
-import { Badge, Layout, Menu, MenuProps, theme } from "antd";
+import { Layout, Menu, MenuProps, theme } from "antd";
 import Link from "next/link";
 import { ROUTER_PATH } from "@/constants/route-constant";
 import {
   Calendar,
+  CircleDollarSign,
   Database,
   LayoutDashboard,
   MailWarningIcon,
@@ -90,7 +91,12 @@ function Sidebar({ children }: Props) {
       icon: Stethoscope,
     },
     {
-      key: "",
+      key: ROUTER_PATH.CREDITS,
+      label: <LayoutLink href={ROUTER_PATH.CREDITS}>Credit</LayoutLink>,
+      icon: CircleDollarSign,
+    },
+    {
+      key: ROUTER_PATH.APPOINTMENTS,
       label: <LayoutLink href={``}>Appointments</LayoutLink>,
       icon: Calendar,
       children: [

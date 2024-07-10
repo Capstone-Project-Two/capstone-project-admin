@@ -2,25 +2,25 @@ import { pageMetadata } from "@/utils/metadata-helpter";
 import { Metadata } from "next";
 import { Suspense } from "react";
 import { Table } from "antd";
-import ListTherapist from "@/components/therapist/list-therapist";
-import CreateTherapistModal from "@/components/therapist/create-therapist-modal";
+import ListCredit from "@/components/credit/list-credit";
+import CreateCreditModal from "@/components/credit/create-credit-modal";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Manage Therapist",
+  title: "Manage Credits",
 });
 
 type Props = {};
 
-async function TherapistsPage({}: Props) {
+async function CreditPage({}: Props) {
   return (
     <div className="flex flex-col gap-y-4">
-      <h1 className="text-2xl font-bold">Manage Therapist</h1>
-      <CreateTherapistModal />
+      <h1 className="text-2xl font-bold">Manage Credit Package</h1>
+      <CreateCreditModal />
       <Suspense fallback={<Table loading={true} />}>
-        <ListTherapist />
+        <ListCredit/>
       </Suspense>
     </div>
   );
 }
 
-export default TherapistsPage;
+export default CreditPage;
