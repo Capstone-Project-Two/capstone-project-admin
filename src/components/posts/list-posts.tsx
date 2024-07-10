@@ -7,23 +7,21 @@ import EmptyData from "../ui/empty-data";
 type Props = {
   searchParams: {
     page: string;
-  }
-}
+  };
+};
 
 async function ListPosts({ searchParams }: Props) {
-  const currentPage = Number(searchParams.page) ?? 1
-  const { data: posts, meta } = await getPosts({ page: currentPage })
+  const currentPage = Number(searchParams.page) ?? 1;
+  const { data: posts, meta } = await getPosts({ page: currentPage });
 
   if (!posts || posts.length === 0) {
-    return (
-      <EmptyData />
-    )
+    return <EmptyData />;
   }
 
   return (
     <Space direction="vertical" size={"middle"} className="w-full">
       <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 w-full">
-        {posts.map(post => (
+        {posts.map((post) => (
           <PostCard key={post._id} post={post} />
         ))}
       </div>
@@ -34,7 +32,7 @@ async function ListPosts({ searchParams }: Props) {
         currentPage={Number(searchParams.page) ?? 1}
       />
     </Space>
-  )
+  );
 }
 
-export default ListPosts
+export default ListPosts;

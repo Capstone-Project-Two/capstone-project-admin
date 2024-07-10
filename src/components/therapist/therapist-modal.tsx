@@ -55,11 +55,7 @@ function TherapistModal({ id }: Props) {
     return <Spin />;
   }
 
-
-  
-  
-   // Function to get a random color from the colors array
-  
+  // Function to get a random color from the colors array
 
   const handleEditTherapist = (values: any) => {
     startTransition(async () => {
@@ -228,28 +224,28 @@ function TherapistModal({ id }: Props) {
                       <ErrorMessage name="email" />
                     </div>
                   </div>
-                  <div>
-                    <label
-                      htmlFor="specializations"
-                      className="block mb-2 text-sm font-medium "
-                    >
-                      Specializations
-                      <span className="text-red-500 text-sm ml-1">*</span>
-                    </label>
-                    <Select
-                      mode="tags"
-                      style={{ width: "100%" }}
-                      placeholder="Specializations"
-                      value={values.specializations}
-                      onChange={(value) =>
-                        setFieldValue("specializations", value)
-                      }
-                      options={specializationOptions}
-                    />
+                </div>
+                <div>
+                  <label
+                    htmlFor="specializations"
+                    className="block mb-2 text-sm font-medium "
+                  >
+                    Specializations
+                    <span className="text-red-500 text-sm ml-1">*</span>
+                  </label>
+                  <Select
+                    mode="tags"
+                    style={{ width: "100%" }}
+                    placeholder="Specializations"
+                    value={values.specializations}
+                    onChange={(value) =>
+                      setFieldValue("specializations", value)
+                    }
+                    options={specializationOptions}
+                  />
 
-                    <div className="text-red-500 text-sm mt-2">
-                      <ErrorMessage name="specializations" />
-                    </div>
+                  <div className="text-red-500 text-sm mt-2">
+                    <ErrorMessage name="specializations" />
                   </div>
                 </div>
                 <div className="mb-4">
@@ -260,6 +256,7 @@ function TherapistModal({ id }: Props) {
                     Bio
                   </label>
                   <Input.TextArea
+                    rows={8}
                     name="bio"
                     value={values.bio}
                     onChange={handleChange}
@@ -342,7 +339,9 @@ function TherapistModal({ id }: Props) {
               <div>
                 <label className="font-semibold">Specialization: </label>
                 {therapistData?.specializations?.map((specialization, key) => (
-                  <Tag color={getRandomColor()} key={key}>{specialization}</Tag>
+                  <Tag color={getRandomColor()} key={key}>
+                    {specialization}
+                  </Tag>
                 ))}
               </div>
             </div>

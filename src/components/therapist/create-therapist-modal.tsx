@@ -42,6 +42,7 @@ function CreateTherapistModal() {
           successNotification("success", "topRight", res?.message);
           resetForm();
           mutate();
+          setIsOpened(false);
         })
         .catch((error) => {
           console.log(error);
@@ -273,12 +274,16 @@ function CreateTherapistModal() {
               </div>
               <div className="grid grid-cols-2 gap-x-8">
                 <Button
-                  className="hover:bg-red-500 hover:text-white hover:border-red-500"
+                  className="danger-button"
                   onClick={() => setIsOpened(false)}
                 >
                   Cancel
                 </Button>
-                <Button disabled={isPending} htmlType="submit" type="primary">
+                <Button
+                  disabled={isPending}
+                  htmlType="submit"
+                  className="primary-button"
+                >
                   Submit
                 </Button>
               </div>
