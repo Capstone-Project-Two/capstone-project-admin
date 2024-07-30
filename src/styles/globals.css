@@ -7,11 +7,13 @@
 @tailwind utilities;
 
 :root {
-  --primary: #68b6c9;
+  --primary: #005EDC;
+  --secondary: #7908D2;
 }
 
 ::-webkit-scrollbar {
   width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {

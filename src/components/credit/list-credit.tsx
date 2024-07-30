@@ -1,4 +1,4 @@
-import { getCredits, getTherapists } from "@/service/get-service"
+import { getCredits } from "@/service/get-service"
 import EmptyData from "../ui/empty-data"
 import CreditTable from "./credit-table"
 

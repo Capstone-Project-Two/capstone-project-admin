@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  swcMinify: true,
+  compiler: {
+    styledComponents: true,
+  },
   logging: {
     fetches: {
       fullUrl: true,
@@ -12,6 +16,10 @@ const nextConfig = {
         hostname: "localhost",
         port: "8080",
         pathname: "/postPhotos/**",
+      },
+      {
+        protocol: "https",
+        hostname: "raw.githubusercontent.com",
       },
     ],
   },

@@ -5,19 +5,18 @@ import Link from "next/link";
 import { ROUTER_PATH } from "@/constants/route-constant";
 import {
   Calendar,
-  CircleDollarSign,
-  Database,
-  LayoutDashboard,
-  MailWarningIcon,
-  PodcastIcon,
+  CircleDollarSign, ClipboardMinus, FolderInput, LayoutDashboard, ShieldBan,
   Stethoscope,
-  User,
+  Sticker
 } from "lucide-react";
 import React from "react";
-import Navbar from "./navbar";
 import { usePathname } from "next/navigation";
 import { ItemType, MenuItemType } from "antd/es/menu/interface";
 import { LayoutLink } from "./layout-link";
+import BaseImage from "../ui/base-image";
+import { logo } from "@/utils/image-req-helper";
+import Navbar from "./navbar";
+import { ApntStatus } from "@/constants/appointment-status-constants";
 
 type Props = {
   children: React.ReactNode;
@@ -42,11 +41,6 @@ function Sidebar({ children }: Props) {
 
   const sidebarLinks: Array<TLink> = [
     {
-      key: "",
-      label: <Link href={ROUTER_PATH.HOMEPAGE}>Logo</Link>,
-      icon: LayoutDashboard,
-    },
-    {
       key: ROUTER_PATH.HOMEPAGE,
       label: <LayoutLink href={ROUTER_PATH.HOMEPAGE}>Overview</LayoutLink>,
       icon: LayoutDashboard,
@@ -54,7 +48,7 @@ function Sidebar({ children }: Props) {
     {
       key: ROUTER_PATH.PATIENTS,
       label: <LayoutLink href={ROUTER_PATH.PATIENTS}>Patients</LayoutLink>,
-      icon: User,
+      icon: ClipboardMinus,
       children: [
         {
           key: ROUTER_PATH.SUSPEND_USER,
@@ -63,27 +57,25 @@ function Sidebar({ children }: Props) {
               Suspended Patients
             </LayoutLink>
           ),
-          icon: <MailWarningIcon size={20} />,
+          icon: <ShieldBan size={20} />,
         },
       ],
     },
     {
       key: ROUTER_PATH.POSTS,
       label: <Link href={ROUTER_PATH.POSTS}>Posts</Link>,
-      icon: PodcastIcon,
+      icon: Sticker,
       children: [
         {
+          icon: <FolderInput size={20} />,
           key: ROUTER_PATH.POSTS_HISTORY,
-          label: <Link href={ROUTER_PATH.POSTS_HISTORY}>Post History</Link>,
+          label: (
+            <Link href={ROUTER_PATH.POSTS_HISTORY}>
+              Post History
+            </Link>
+          ),
         },
       ],
-    },
-    {
-      key: ROUTER_PATH.SOCKET_TEST,
-      label: (
-        <LayoutLink href={ROUTER_PATH.SOCKET_TEST}>Socket Test</LayoutLink>
-      ),
-      icon: Database,
     },
     {
       key: ROUTER_PATH.THERAPISTS,
@@ -96,30 +88,30 @@ function Sidebar({ children }: Props) {
       icon: CircleDollarSign,
     },
     {
-      key: ROUTER_PATH.APPOINTMENTS,
-      label: <LayoutLink href={``}>Appointments</LayoutLink>,
+      key: `${ROUTER_PATH.APPOINTMENTS}`,
+      label: <Link href={`${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.REQUESTED}`}>Appointments</Link>,
       icon: Calendar,
       children: [
         {
-          key: ROUTER_PATH.APPOINTMENTS_REQUESTED,
+          key: `${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.REQUESTED}`,
           label: (
-            <LayoutLink href={ROUTER_PATH.APPOINTMENTS_REQUESTED}>
+            <LayoutLink href={`${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.REQUESTED}`}>
               Requested
             </LayoutLink>
           ),
         },
         {
-          key: ROUTER_PATH.APPOINTMENTS_SCHEDULED,
+          key: `${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.SCHEDULED}`,
           label: (
-            <LayoutLink href={ROUTER_PATH.APPOINTMENTS_SCHEDULED}>
+            <LayoutLink href={`${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.SCHEDULED}`}>
               Scheduled
             </LayoutLink>
           ),
         },
         {
-          key: ROUTER_PATH.APPOINTMENTS_REJECTED,
+          key: `${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.REJECTED}`,
           label: (
-            <LayoutLink href={ROUTER_PATH.APPOINTMENTS_REJECTED}>
+            <LayoutLink href={`${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.REJECTED}`}>
               Rejected
             </LayoutLink>
           ),
@@ -130,7 +122,7 @@ function Sidebar({ children }: Props) {
 
   const renderSidebarItems: MenuProps["items"] = sidebarLinks.map((item) => ({
     key: item.key,
-    icon: React.createElement(item.icon),
+    icon: item.icon ? React.createElement(item.icon) : null,
     label: item.label,
     children: item.children,
   }));
@@ -147,6 +139,17 @@ function Sidebar({ children }: Props) {
           setIsBroken(broken);
         }}
       >
+        <Link
+          href={ROUTER_PATH.HOMEPAGE}
+          style={{
+            borderRight: "1px solid rgba(0, 0, 0, 0.15)",
+          }}
+          className="flex gap-3 items-center px-4 pt-4 bg-white">
+          <BaseImage src={logo} width={48} height={48} alt="Chantek" />
+          {!collapsed && <h1 className="font-bold text-xl">
+            Chantek
+          </h1>}
+        </Link>
         <Menu
           mode="inline"
           defaultSelectedKeys={[ROUTER_PATH.HOMEPAGE]}
