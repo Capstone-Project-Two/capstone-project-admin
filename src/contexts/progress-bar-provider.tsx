@@ -1,6 +1,5 @@
 "use client"
 import { primary } from '@/styles/colors';
-// In app directory
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 
 type Props = {

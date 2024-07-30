@@ -20,7 +20,7 @@ export default function useUrlParam() {
       paramName: URL_PARAM.PAGE,
       paramValue: searchParams.get(URL_PARAM.PAGE) ?? "1",
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateUrlParam = ({ paramName, paramValue }: TUpdateUrlParam) => {
@@ -55,12 +55,12 @@ export default function useUrlParam() {
   };
 
   const getFullPath = (): string => {
-    const params = new URLSearchParams(searchParams)
-    params.delete('page')
+    const params = new URLSearchParams(searchParams);
+    params.delete("page");
 
-    const path = `${pathname}?${params.toString()}`
-    return path
-  }
+    const path = `${pathname}?${params.toString()}`;
+    return path;
+  };
 
   return {
     getFullPath,

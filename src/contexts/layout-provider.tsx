@@ -1,5 +1,5 @@
-import React from 'react';
-import { Layout } from 'antd';
+import React, { Suspense } from 'react';
+import { Layout, Spin } from 'antd';
 import Sidebar from '@/components/layout/sidebar';
 import ProgressProvider from './progress-bar-provider';
 
@@ -11,9 +11,11 @@ function LayoutProvider({ children }: Props) {
   return (
     <ProgressProvider>
       <Layout className='h-screen overflow-hidden'>
-        <Sidebar>
-          {children}
-        </Sidebar>
+        <Suspense fallback={<Spin/>}>
+          <Sidebar>
+            {children}
+          </Sidebar>
+        </Suspense>
       </Layout>
     </ProgressProvider >
   )
