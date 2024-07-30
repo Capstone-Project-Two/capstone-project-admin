@@ -15,7 +15,7 @@ export const LayoutLink = ({
   return (
     <Link
       href={href}
-      className={cn(getFullPath() === href && "text-primary", className)}
+      className={cn(getFullPath() === href && "text-primary", className, "flex")}
     >
       {children}
     </Link>

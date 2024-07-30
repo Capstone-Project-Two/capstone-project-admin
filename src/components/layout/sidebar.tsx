@@ -139,7 +139,8 @@ function Sidebar({ children }: Props) {
           setIsBroken(broken);
         }}
       >
-        <div
+        <Link
+          href={ROUTER_PATH.HOMEPAGE}
           style={{
             borderRight: "1px solid rgba(0, 0, 0, 0.15)",
           }}
@@ -148,7 +149,7 @@ function Sidebar({ children }: Props) {
           {!collapsed && <h1 className="font-bold text-xl">
             Chantek
           </h1>}
-        </div>
+        </Link>
         <Menu
           mode="inline"
           defaultSelectedKeys={[ROUTER_PATH.HOMEPAGE]}
@@ -160,29 +161,27 @@ function Sidebar({ children }: Props) {
           }}
         />
       </Sider>
-      <Layout>
-        <Navbar setCollapsed={setCollapsed} collapsed={collapsed}>
-          <Content
+      <Navbar setCollapsed={setCollapsed} collapsed={collapsed}>
+        <Content
+          style={{
+            overflow: "auto",
+            background: colorBgContainer,
+            borderRadius: borderRadiusLG,
+          }}
+          className="sm:m-[24px] m-[16px]"
+        >
+          <div
+            className="sm:p-[24px] p-[16px] w-full"
             style={{
-              overflow: "auto",
+              height: "100%",
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}
-            className="sm:m-[24px] m-[16px]"
           >
-            <div
-              className="sm:p-[24px] p-[16px] w-full"
-              style={{
-                height: "100%",
-                background: colorBgContainer,
-                borderRadius: borderRadiusLG,
-              }}
-            >
-              {children}
-            </div>
-          </Content>
-        </Navbar>
-      </Layout>
+            {children}
+          </div>
+        </Content>
+      </Navbar>
     </Layout>
   );
 }
