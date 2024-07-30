@@ -5,13 +5,9 @@ import Link from "next/link";
 import { ROUTER_PATH } from "@/constants/route-constant";
 import {
   Calendar,
-  CircleDollarSign,
-  Database,
-  LayoutDashboard,
-  MailWarningIcon,
-  PodcastIcon,
-  Stethoscope,
-  User,
+  CircleDollarSign, ClipboardMinus, LayoutDashboard, PodcastIcon,
+  ShieldBan,
+  Stethoscope
 } from "lucide-react";
 import React from "react";
 import { usePathname } from "next/navigation";
@@ -43,10 +39,6 @@ function Sidebar({ children }: Props) {
   } = theme.useToken();
 
   const sidebarLinks: Array<TLink> = [
-    // {
-    //   key: ROUTER_PATH.HOMEPAGE,
-    //   label: <LayoutLink className="flex gap-3 items-center px-4 pt-4 bg-white" href={ROUTER_PATH.HOMEPAGE}><BaseImage src={logo} width={48} height={48} alt="Chantek" /> Chantek</LayoutLink>,
-    // },
     {
       key: ROUTER_PATH.HOMEPAGE,
       label: <LayoutLink href={ROUTER_PATH.HOMEPAGE}>Overview</LayoutLink>,
@@ -55,7 +47,7 @@ function Sidebar({ children }: Props) {
     {
       key: ROUTER_PATH.PATIENTS,
       label: <LayoutLink href={ROUTER_PATH.PATIENTS}>Patients</LayoutLink>,
-      icon: User,
+      icon: ClipboardMinus,
       children: [
         {
           key: ROUTER_PATH.SUSPEND_USER,
@@ -64,7 +56,7 @@ function Sidebar({ children }: Props) {
               Suspended Patients
             </LayoutLink>
           ),
-          icon: <MailWarningIcon size={20} />,
+          icon: <ShieldBan size={20} />,
         },
       ],
     },
@@ -78,13 +70,6 @@ function Sidebar({ children }: Props) {
           label: <Link href={ROUTER_PATH.POSTS_HISTORY}>Post History</Link>,
         },
       ],
-    },
-    {
-      key: ROUTER_PATH.SOCKET_TEST,
-      label: (
-        <LayoutLink href={ROUTER_PATH.SOCKET_TEST}>Socket Test</LayoutLink>
-      ),
-      icon: Database,
     },
     {
       key: ROUTER_PATH.THERAPISTS,
