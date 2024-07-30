@@ -1,7 +1,6 @@
+import useUrlParam from "@/lib/hooks/use-url-param";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
 
 export const LayoutLink = ({
   href,
@@ -12,11 +11,11 @@ export const LayoutLink = ({
   className?: string;
   children: React.ReactNode;
 }) => {
-  const pathname = usePathname();
+  const { getFullPath } = useUrlParam()
   return (
     <Link
       href={href}
-      className={cn(pathname === href && "text-primary", className)}
+      className={cn(getFullPath() === href && "text-primary", className)}
     >
       {children}
     </Link>

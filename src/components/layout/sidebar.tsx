@@ -5,9 +5,9 @@ import Link from "next/link";
 import { ROUTER_PATH } from "@/constants/route-constant";
 import {
   Calendar,
-  CircleDollarSign, ClipboardMinus, LayoutDashboard, PodcastIcon,
-  ShieldBan,
-  Stethoscope
+  CircleDollarSign, ClipboardMinus, FolderInput, LayoutDashboard, ShieldBan,
+  Stethoscope,
+  Sticker
 } from "lucide-react";
 import React from "react";
 import { usePathname } from "next/navigation";
@@ -16,6 +16,7 @@ import { LayoutLink } from "./layout-link";
 import BaseImage from "../ui/base-image";
 import { logo } from "@/utils/image-req-helper";
 import Navbar from "./navbar";
+import { ApntStatus } from "@/constants/appointment-status-constants";
 
 type Props = {
   children: React.ReactNode;
@@ -63,11 +64,16 @@ function Sidebar({ children }: Props) {
     {
       key: ROUTER_PATH.POSTS,
       label: <Link href={ROUTER_PATH.POSTS}>Posts</Link>,
-      icon: PodcastIcon,
+      icon: Sticker,
       children: [
         {
+          icon: <FolderInput size={20} />,
           key: ROUTER_PATH.POSTS_HISTORY,
-          label: <Link href={ROUTER_PATH.POSTS_HISTORY}>Post History</Link>,
+          label: (
+            <Link href={ROUTER_PATH.POSTS_HISTORY}>
+              Post History
+            </Link>
+          ),
         },
       ],
     },
@@ -82,30 +88,30 @@ function Sidebar({ children }: Props) {
       icon: CircleDollarSign,
     },
     {
-      key: ROUTER_PATH.APPOINTMENTS,
-      label: <LayoutLink href={``}>Appointments</LayoutLink>,
+      key: `${ROUTER_PATH.APPOINTMENTS}`,
+      label: <Link href={`${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.REQUESTED}`}>Appointments</Link>,
       icon: Calendar,
       children: [
         {
-          key: ROUTER_PATH.APPOINTMENTS_REQUESTED,
+          key: `${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.REQUESTED}`,
           label: (
-            <LayoutLink href={ROUTER_PATH.APPOINTMENTS_REQUESTED}>
+            <LayoutLink href={`${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.REQUESTED}`}>
               Requested
             </LayoutLink>
           ),
         },
         {
-          key: ROUTER_PATH.APPOINTMENTS_SCHEDULED,
+          key: `${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.SCHEDULED}`,
           label: (
-            <LayoutLink href={ROUTER_PATH.APPOINTMENTS_SCHEDULED}>
+            <LayoutLink href={`${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.SCHEDULED}`}>
               Scheduled
             </LayoutLink>
           ),
         },
         {
-          key: ROUTER_PATH.APPOINTMENTS_REJECTED,
+          key: `${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.REJECTED}`,
           label: (
-            <LayoutLink href={ROUTER_PATH.APPOINTMENTS_REJECTED}>
+            <LayoutLink href={`${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.REJECTED}`}>
               Rejected
             </LayoutLink>
           ),
@@ -133,7 +139,11 @@ function Sidebar({ children }: Props) {
           setIsBroken(broken);
         }}
       >
-        <div className="flex gap-3 items-center px-4 pt-4 bg-white">
+        <div
+          style={{
+            borderRight: "1px solid rgba(0, 0, 0, 0.15)",
+          }}
+          className="flex gap-3 items-center px-4 pt-4 bg-white">
           <BaseImage src={logo} width={48} height={48} alt="Chantek" />
           {!collapsed && <h1 className="font-bold text-xl">
             Chantek
