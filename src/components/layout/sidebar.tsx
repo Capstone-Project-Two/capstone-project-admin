@@ -14,10 +14,12 @@ import {
   User,
 } from "lucide-react";
 import React from "react";
-import Navbar from "./navbar";
 import { usePathname } from "next/navigation";
 import { ItemType, MenuItemType } from "antd/es/menu/interface";
 import { LayoutLink } from "./layout-link";
+import BaseImage from "../ui/base-image";
+import { logo } from "@/utils/image-req-helper";
+import Navbar from "./navbar";
 
 type Props = {
   children: React.ReactNode;
@@ -41,11 +43,10 @@ function Sidebar({ children }: Props) {
   } = theme.useToken();
 
   const sidebarLinks: Array<TLink> = [
-    {
-      key: "",
-      label: <Link href={ROUTER_PATH.HOMEPAGE}>Logo</Link>,
-      icon: LayoutDashboard,
-    },
+    // {
+    //   key: ROUTER_PATH.HOMEPAGE,
+    //   label: <LayoutLink className="flex gap-3 items-center px-4 pt-4 bg-white" href={ROUTER_PATH.HOMEPAGE}><BaseImage src={logo} width={48} height={48} alt="Chantek" /> Chantek</LayoutLink>,
+    // },
     {
       key: ROUTER_PATH.HOMEPAGE,
       label: <LayoutLink href={ROUTER_PATH.HOMEPAGE}>Overview</LayoutLink>,
@@ -130,7 +131,7 @@ function Sidebar({ children }: Props) {
 
   const renderSidebarItems: MenuProps["items"] = sidebarLinks.map((item) => ({
     key: item.key,
-    icon: React.createElement(item.icon),
+    icon: item.icon ? React.createElement(item.icon) : null,
     label: item.label,
     children: item.children,
   }));
@@ -147,6 +148,12 @@ function Sidebar({ children }: Props) {
           setIsBroken(broken);
         }}
       >
+        <div className="flex gap-3 items-center px-4 pt-4 bg-white">
+          <BaseImage src={logo} width={48} height={48} alt="Chantek" />
+          {!collapsed && <h1 className="font-bold text-xl">
+            Chantek
+          </h1>}
+        </div>
         <Menu
           mode="inline"
           defaultSelectedKeys={[ROUTER_PATH.HOMEPAGE]}
@@ -158,27 +165,29 @@ function Sidebar({ children }: Props) {
           }}
         />
       </Sider>
-      <Navbar setCollapsed={setCollapsed} collapsed={collapsed}>
-        <Content
-          style={{
-            overflow: "auto",
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
-          }}
-          className="sm:m-[24px] m-[16px]"
-        >
-          <div
-            className="sm:p-[24px] p-[16px] w-full"
+      <Layout>
+        <Navbar setCollapsed={setCollapsed} collapsed={collapsed}>
+          <Content
             style={{
-              height: "100%",
+              overflow: "auto",
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}
+            className="sm:m-[24px] m-[16px]"
           >
-            {children}
-          </div>
-        </Content>
-      </Navbar>
+            <div
+              className="sm:p-[24px] p-[16px] w-full"
+              style={{
+                height: "100%",
+                background: colorBgContainer,
+                borderRadius: borderRadiusLG,
+              }}
+            >
+              {children}
+            </div>
+          </Content>
+        </Navbar>
+      </Layout>
     </Layout>
   );
 }

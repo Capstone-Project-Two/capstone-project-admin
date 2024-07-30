@@ -10,7 +10,7 @@ type Props = {
 function LayoutProvider({ children }: Props) {
   return (
     <ProgressProvider>
-      <Layout className='h-screen'>
+      <Layout className='h-screen overflow-hidden'>
         <Sidebar>
           {children}
         </Sidebar>

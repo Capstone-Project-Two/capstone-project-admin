@@ -1,9 +1,8 @@
 "use client"
 import { ROUTER_PATH } from "@/constants/route-constant"
 import { MenuFoldOutlined } from "@ant-design/icons"
-import { Button, Layout, Menu, MenuProps, theme } from "antd"
+import { Button, Layout, MenuProps, theme } from "antd"
 import { Calendar, LayoutDashboard, Stethoscope, User } from "lucide-react"
-import { usePathname } from "next/navigation"
 import React, { Dispatch, SetStateAction } from "react"
 import { LayoutLink } from "./layout-link"
 
@@ -22,7 +21,6 @@ type TLink = {
 const { Header } = Layout
 
 function Navbar({ collapsed, setCollapsed, children }: Props) {
-  const pathname = usePathname()
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -58,19 +56,12 @@ function Navbar({ collapsed, setCollapsed, children }: Props) {
 
   return (
     <Layout>
-      <Header className='flex items-center px-6' style={{ background: colorBgContainer, width: "100%", justifyContent: "space-between" }}>
+      <Header className='flex items-center px-6' style={{ background: colorBgContainer, width: "100%", justifyContent: "start" }}>
         <Button
           type='text'
           icon={<MenuFoldOutlined />}
           onClick={() => setCollapsed(!collapsed)}
           className="p-6 bg-primary text-white"
-        />
-        <Menu
-          mode="horizontal"
-          defaultSelectedKeys={[ROUTER_PATH.HOMEPAGE]}
-          selectedKeys={[pathname]}
-          items={renderNavbarItems}
-          style={{ flex: 1, minWidth: 0, height: 60, border: 'none' }}
         />
       </Header>
       {children}
