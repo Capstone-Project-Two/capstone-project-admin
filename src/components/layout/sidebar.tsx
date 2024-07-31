@@ -146,8 +146,8 @@ function Sidebar({ children }: Props) {
           }}
           className="flex gap-3 items-center px-4 pt-4 bg-white">
           <BaseImage src={logo} width={48} height={48} alt="Chantek" />
-          {!collapsed && <h1 className="font-bold text-xl">
-            Chantek
+          {!collapsed && <h1 className="font-bold text-xl tracking-widest">
+            {"Chantek".toUpperCase()}
           </h1>}
         </Link>
         <Menu

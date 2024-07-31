@@ -5,9 +5,11 @@ import { cn } from "@/lib/utils";
 import LayoutProvider from "@/contexts/layout-provider";
 import { Metadata } from "next";
 import AppThemeProvider from "@/contexts/app-theme-provider";
+import { logo } from "@/utils/image-req-helper";
 
 
 export const metadata: Metadata = {
+  icons: logo,
   title: {
     template: `%s | Capstone Admin - ${ENV_MODE !== 'production' && ENV_MODE}`,
     default: `Capstone Admin - ${ENV_MODE !== 'production' && ENV_MODE}`
