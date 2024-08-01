@@ -107,6 +107,24 @@ export interface paths {
     delete: operations["PostPhotosController_remove"];
     patch: operations["PostPhotosController_update"];
   };
+  "/activities": {
+    get: operations["ActivitiesController_findAll"];
+    post: operations["ActivitiesController_create"];
+  };
+  "/activities/{id}": {
+    get: operations["ActivitiesController_findOne"];
+    delete: operations["ActivitiesController_remove"];
+    patch: operations["ActivitiesController_update"];
+  };
+  "/activity-images": {
+    get: operations["ActivityImagesController_findAll"];
+    post: operations["ActivityImagesController_create"];
+  };
+  "/activity-images/{id}": {
+    get: operations["ActivityImagesController_findOne"];
+    delete: operations["ActivityImagesController_remove"];
+    patch: operations["ActivityImagesController_update"];
+  };
   "/patient-comments": {
     get: operations["PatientCommentsController_findAll"];
     post: operations["PatientCommentsController_create"];
@@ -115,6 +133,9 @@ export interface paths {
     get: operations["PatientCommentsController_findOne"];
     delete: operations["PatientCommentsController_remove"];
     patch: operations["PatientCommentsController_update"];
+  };
+  "/patient-comments/post/{id}": {
+    get: operations["PatientCommentsController_findCommentByPost"];
   };
   "/patient-comments/all-replies/{id}": {
     get: operations["PatientCommentsController_findAllReplies"];
@@ -339,6 +360,8 @@ export interface components {
       /** Format: date-time */
       scheduleDate: string;
       status: string;
+      start_time: string;
+      end_time: string;
     };
     AppointmentResponseDto: {
       _id: string;
@@ -354,6 +377,8 @@ export interface components {
       status: "requested" | "scheduled" | "completed" | "rejected";
       patient: components["schemas"]["PatientResponseDto"];
       therapist: components["schemas"]["TherapistResponseDto"];
+      start_time: string;
+      end_time: string;
     };
     UpdateAppointmentDto: {
       note?: string;
@@ -363,6 +388,8 @@ export interface components {
       /** Format: date-time */
       scheduleDate?: string;
       status?: string;
+      start_time?: string;
+      end_time?: string;
     };
     AdminLoginDto: {
       email: string;
@@ -388,6 +415,45 @@ export interface components {
       filename?: string;
       post?: Record<string, never>;
     };
+    CreateActivityDto: {
+      title: string;
+      description: string;
+      type: string;
+      fitness: string;
+      mentalHealth: string;
+      socialSkill: string;
+      development: string;
+      stresslvl: number;
+      activityImages: string[];
+    };
+    ActivityResponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      title: string;
+      description: string;
+      type: string;
+      fitness: string;
+      mentalHealth: string;
+      socialSkill: string;
+      development: string;
+      stresslvl: number;
+      activityImages: string[];
+    };
+    UpdateActivityDto: {
+      title?: string;
+      description?: string;
+      type?: string;
+      fitness?: string;
+      mentalHealth?: string;
+      socialSkill?: string;
+      development?: string;
+      stresslvl?: number;
+      activityImages?: string[];
+    };
+    UpdateActivityImageDto: Record<string, never>;
     CreatePatientCommentDto: {
       content: string;
       patient: string;
@@ -1117,6 +1183,130 @@ export interface operations {
       };
     };
   };
+  ActivitiesController_findAll: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ActivityResponseDto"][];
+        };
+      };
+    };
+  };
+  ActivitiesController_create: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateActivityDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  ActivitiesController_findOne: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ActivityResponseDto"];
+        };
+      };
+    };
+  };
+  ActivitiesController_remove: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  ActivitiesController_update: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateActivityDto"];
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  ActivityImagesController_findAll: {
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  ActivityImagesController_create: {
+    requestBody: {
+      content: {
+        "application/json": string;
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  ActivityImagesController_findOne: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  ActivityImagesController_remove: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  ActivityImagesController_update: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateActivityImageDto"];
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
   PatientCommentsController_findAll: {
     responses: {
       200: {
@@ -1178,6 +1368,20 @@ export interface operations {
     responses: {
       200: {
         content: never;
+      };
+    };
+  };
+  PatientCommentsController_findCommentByPost: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["RelationalPatientCommentResponseDto"][];
+        };
       };
     };
   };

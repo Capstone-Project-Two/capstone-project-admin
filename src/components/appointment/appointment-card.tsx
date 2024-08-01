@@ -65,6 +65,14 @@ function AppointmentCard({ appointments }: Props) {
               <p className="font-semibold">Note</p>
               <p>{appointment?.note}</p>
             </div>
+            <div>
+              <p className="font-semibold">Start time</p>
+              <p>{appointment?.start_time}</p>
+            </div>
+            <div>
+              <p className="font-semibold">End time</p>
+              <p>{appointment?.end_time}</p>
+            </div>
           </div>
           {isPending && <Spin />}
           {appointment?.status === STATUS.REQUESTED && !isPending && (
