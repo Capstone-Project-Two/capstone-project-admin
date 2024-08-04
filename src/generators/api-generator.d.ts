@@ -196,6 +196,7 @@ export interface components {
       phone_number: string;
       gender: string;
       credits: number;
+      profile_img: string;
     };
     PatientResponseDto: {
       _id: string;
@@ -214,6 +215,7 @@ export interface components {
       is_deleted: boolean;
       /** @default false */
       is_banned: boolean;
+      profile_img: string;
     };
     PostResponseDto: {
       _id: string;
@@ -244,6 +246,7 @@ export interface components {
       is_deleted: boolean;
       /** @default false */
       is_banned: boolean;
+      profile_img: string;
       posts: components["schemas"]["PostResponseDto"][];
     };
     UpdatePatientDto: {
@@ -252,6 +255,7 @@ export interface components {
       phone_number?: string;
       gender?: string;
       credits?: number;
+      profile_img?: string;
       is_banned: boolean;
       is_deleted: boolean;
       roles: ("patient" | "admin" | "therapist")[];
@@ -465,6 +469,7 @@ export interface components {
       _id: string;
       username: string;
       credits: number;
+      profile_img: string;
     };
     PatientCommentResponseDto: {
       _id: string;

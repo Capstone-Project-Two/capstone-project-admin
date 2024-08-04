@@ -7,6 +7,7 @@ import { Button, Divider, Flex, Space, Spin } from "antd";
 import { useTransition } from "react";
 import Image from "next/image";
 import { imageReqHelper } from "@/utils/image-req-helper";
+import BaseImage from "../ui/base-image";
 
 type Props = {
   post: RelationalPostResponseDto;
@@ -32,9 +33,12 @@ function PostCard({ post }: Props) {
       {/** Header */}
       <Flex justify="space-between" align="center">
         <Space direction="vertical">
-          <p>
-            {post.patient?.username}
-          </p>
+          <Flex align="center" gap={12}>
+            <BaseImage src={post.patient.profile_img} width={48} className="rounded-full" height={48} alt={post.patient.username} />
+            <p>
+              {post.patient?.username}
+            </p>
+          </Flex>
           <p>
             {post.patient?._id}
           </p>

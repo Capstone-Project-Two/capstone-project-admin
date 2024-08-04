@@ -22,20 +22,15 @@ export const likePost = async (updateLikePostDto: UpdateLikePostDto) => {
 };
 
 export const createPost = async (createPostDto: CreatePostDto) => {
-  try {
-    const res = await fetchPostDefault({
-      url: `${API_ROUTE.BASE_POSTS}`,
-      method: "POST",
-      body: createPostDto,
-    });
+  const res = await fetchPostDefault({
+    url: `${API_ROUTE.BASE_POSTS}`,
+    method: "POST",
+    body: createPostDto,
+  });
 
-    console.log(res?.data);
+  console.log(res?.data);
 
-    revalidateTag(REVALIDATE_TAG_ENUM.POST);
+  revalidateTag(REVALIDATE_TAG_ENUM.POST);
 
-    return res;
-  } catch (e) {
-    // console.log(e);
-    // throw new Error(JSON.stringify(e));
-  }
+  return res;
 };

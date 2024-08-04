@@ -66,7 +66,7 @@ export const getLikePosts = async () => {
 
 export const getLikePostByPost = async ({ postId }: { postId: string }) => {
   const res = await fetchDefault({
-    url: `${API_ROUTE.BASE_LIKE_POSTS}/${postId}`,
+    url: `${API_ROUTE.LIKE_POSTS_BY_POSTS}/${postId}`,
     tags: [REVALIDATE_TAG_ENUM.LIKE_POST],
   });
 
