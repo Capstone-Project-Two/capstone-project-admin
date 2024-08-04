@@ -1,8 +1,9 @@
 "use client"
 import { createPost } from "@/actions/post-action";
 import { CreatePostDto } from "@/service/api-types";
-import { Button, Modal } from "antd";
-import { Field, Form, Formik } from "formik";
+import { Button, Input, Modal } from "antd";
+import { Form, Formik, FormikState } from "formik";
+import { Sticker } from "lucide-react";
 import { useState, useTransition } from "react";
 
 type Props = {}
@@ -17,24 +18,12 @@ function CreatePostModal({ }: Props) {
   const [isPending, startTransition] = useTransition()
   const [files, setFiles] = useState<FileList | null>()
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>
   ) => {
     setFiles(e.target.files)
   }
 
-  const onFinish = async (values: CreatePostDto) => {
+  const onFinish = async (values: CreatePostDto, resetForm: (nextState?: Partial<FormikState<CreatePostDto>>) => void) => {
     const formData = new FormData()
     if (files) {
       for (let i = 0; i < files.length; i++) {
@@ -48,38 +37,74 @@ function CreatePostModal({ }: Props) {
     startTransition(async () => {
       await createPost(formData).catch(e => {
         console.log("🚀 ~ awaitcreatePost ~ e:", e)
+      }).then(() => {
+        resetForm()
+        setFiles(null)
       })
     })
   };
 
   return (
     <>
-      <Button type="primary" onClick={showModal} className="flex flex-col rounded-md items-center justify-center">
+      <Button type="primary" onClick={() => {
+        setIsModalOpen(true);
+      }} className="flex flex-col rounded-md items-center justify-center">
         Create Post
       </Button>
-      <Modal title="Create a Post" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Modal centered title={(
+        <div className="mb-4 flex gap-x-4">
+          <Sticker size={50} />
+          <div>
+            <h1 className="text-xl font-semibold">
+              Create a new Post
+            </h1>
+            <p className="text-sm">Enter therapist info</p>
+          </div>
+        </div>
+      )} open={isModalOpen} footer={[]}>
         <Formik
           initialValues={initialValues}
-          onSubmit={async (values) => {
-            await onFinish(values)
+          onSubmit={async (values, { resetForm }) => {
+            await onFinish(values, resetForm)
           }}
         >
-          {({ }) => {
+          {({ handleChange }) => {
             return (
-              <Form className="flex flex-col " encType="multipart/form-data" method="POST">
+              <Form className="w-full flex flex-col gap-4" encType="multipart/form-data" method="POST">
+
                 <div>
-                  <label htmlFor="body">Body</label>
-                  <Field className="border" name="body" />
+                  <label
+                    htmlFor="body"
+                    className="block mb-2 text-sm font-medium "
+                  >
+                    First name
+                    <span className="text-red-500 text-sm ml-1">*</span>
+                  </label>
+                  <Input name="body" onChange={handleChange} placeholder="Write something here..." />
                 </div>
 
                 <div>
-                  <label htmlFor="postPhotos">Post photos</label>
+                  <label
+                    htmlFor="postPhotos"
+                    className="block mb-2 text-sm font-medium "
+                  >
+                    Post photos
+                    <span className="text-red-500 text-sm ml-1">*</span>
+                  </label>
                   <input multiple name="postPhotos" type="file" onChange={e => handleFileChange(e)} />
                 </div>
-
-                <button disabled={isPending} type="submit">
-                  Submit
-                </button>
+                <div className="grid grid-cols-2 gap-4">
+                  <Button
+                    onClick={() => {
+                      setIsModalOpen(false);
+                    }}
+                    type="default" className="danger-button" htmlType="submit">
+                    Cancel
+                  </Button>
+                  <Button disabled={isPending} type="primary" htmlType="submit">
+                    Submit
+                  </Button>
+                </div>
               </Form>
             )
           }}
