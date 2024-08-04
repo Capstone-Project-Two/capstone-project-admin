@@ -2,18 +2,19 @@
 import { likePost } from "@/actions/post-action";
 import useLikePost from "@/lib/hooks/swr-hooks/use-like-post";
 import { RelationalPostResponseDto } from "@/service/api-types";
-import { dateFormat } from "@/utils/date-format";
-import { Button, Divider, Flex, Space, Spin } from "antd";
+import { Button, Space } from "antd";
 import { useTransition } from "react";
-import Image from "next/image";
-import { imageReqHelper } from "@/utils/image-req-helper";
 import BaseImage from "../ui/base-image";
+import dayjs from "dayjs";
+import { cn } from "@/lib/utils";
+import { imageReqHelper } from "@/utils/image-req-helper";
 
 type Props = {
   post: RelationalPostResponseDto;
 }
 
 function PostCard({ post }: Props) {
+  const { patient } = post
   const { likePostData, isLoading, mutate } = useLikePost(post._id);
 
   const [isPending, startTransition] = useTransition()
@@ -29,75 +30,98 @@ function PostCard({ post }: Props) {
   }
 
   return (
-    <Space direction="vertical" className="border w-full rounded-md p-4">
-      {/** Header */}
-      <Flex justify="space-between" align="center">
-        <Space direction="vertical">
-          <Flex align="center" gap={12}>
-            <BaseImage src={post.patient.profile_img} width={48} className="rounded-full" height={48} alt={post.patient.username} />
-            <p>
-              {post.patient?.username}
-            </p>
-          </Flex>
-          <p>
-            {post.patient?._id}
-          </p>
-        </Space>
-        <Flex vertical align="end">
-          <p>
-            {dateFormat({
-              date: post.updatedAt,
-              formatType: 'DD-MM-YYYY'
-            }).newDate}&nbsp;
-          </p>
-          <p>
-            {dateFormat({
-              date: post.updatedAt,
-              formatTime: 'hh:mm'
-            }).newTime}
-          </p>
-        </Flex>
-      </Flex>
+    <Space direction="vertical" className="border w-full rounded-md p-4 max-w-[1000px] lg:max-h-[200px] ">
+      <div className="lg:flex flex lg:flex-row flex-col w-full gap-2 items-center">
 
-      <Divider />
-
-      {/** Body */}
-      <Space direction="vertical">
-        <p>
-          {post.body}
-        </p>
-        <p>
-          {post._id}
-        </p>
-
-        {post.postPhotos.length > 0 && post.postPhotos.map(post => (
-          <div key={post._id}>
-            <Image src={imageReqHelper(post.filename as string)} width={200} height={200} alt={post.filename} />
-          </div>
-        ))}
-
-      </Space>
-
-      <Divider />
-
-      {/** Footer */}
-      <Space align="start">
-        <Flex vertical>
-          <Button disabled={isPending} onClick={handleLike}>
-            Like {post.like_count}
-          </Button>
-          {isLoading && <Spin />}
-          {!isLoading && likePostData?.filter(post => post.is_like).map(post => (
-            <div key={post._id}>
-              {post?.patient?.username}
+        <Wrapper className="flex items-center">
+          <div className="flex gap-2">
+            <BaseImage src={patient.profile_img} width={42} height={42} alt={patient.username} className="rounded-full object-contain" />
+            <div className="flex flex-col">
+              <span className="font-bold">
+                {patient.username}
+              </span>
+              <span>
+                {dayjs(post.createdAt).format('YYYY-MM-DD')}
+              </span>
             </div>
-          ))}
-        </Flex>
-        <Button>
-          Comment
-        </Button>
-      </Space>
+          </div>
+        </Wrapper>
+
+        <Wrapper className="lg:max-w-[250px]">
+          {/** Title */}
+          <div className="flex flex-col gap-2 ">
+            <WrapperTitle>
+              Caption
+            </WrapperTitle>
+            <span className={post.body.length > 0 ? "overflow-ellipsis line-clamp-3" : 'italic overflow-ellipsis line-clamp-3'}>
+              {post.body.length > 0 ? post.body : 'No Caption'}
+            </span>
+          </div>
+        </Wrapper>
+
+        <Wrapper className="overflow-clip">
+          <div className="flex flex-col gap-2">
+            <WrapperTitle>
+              Photos ({post.postPhotos.length})
+            </WrapperTitle>
+            <div className="h-full w-full flex justify-center">
+              <BaseImage src={imageReqHelper(post.postPhotos[0]?.filename)} width={500} height={500} alt={post.postPhotos[0]?.filename ?? "Chantek"} className="object-contain p-2 max-h-[100px]" />
+            </div>
+          </div>
+        </Wrapper>
+
+        <Wrapper className="">
+          <div className="flex flex-col gap-2">
+            <WrapperTitle>
+              Post Status
+            </WrapperTitle>
+            <div className="flex flex-col">
+              <div>
+                <span className="font-semibold">Like count:</span> {post.like_count}
+              </div>
+              <div>
+                <span className="font-semibold">Comment count:</span> {post.comment_count}
+              </div>
+              <div>
+                <span className="font-semibold">Save count:</span> {post.save_count}
+              </div>
+            </div>
+          </div>
+        </Wrapper>
+
+        <Wrapper noBorder={true}>
+          <div className="flex flex-col gap-2">
+            <WrapperTitle>
+              Actions
+            </WrapperTitle>
+            <div className="flex gap-4">
+              <Button type="primary">
+                View More
+              </Button>
+              <Button className="bg-red-500 text-white">
+                Ban
+              </Button>
+            </div>
+          </div>
+        </Wrapper>
+      </div>
     </Space>
+  )
+}
+
+const Wrapper = ({ noBorder, className, children }: { noBorder?: boolean, className?: string, children: React.ReactNode }) => {
+  return (
+    <div className={cn(className, noBorder ? "border-0" : "lg:border-b-0 lg:border-r-2 md:border-r-0 border-b-2", "w-full lg:min-h-[150px] md:max-h-[150px] h-full max-h-[250px] md:pr-4 pb-2")}>
+      {children}
+    </div>
+  )
+}
+
+const WrapperTitle = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="font-bold">
+      {children}
+    </div>
   )
 }
 

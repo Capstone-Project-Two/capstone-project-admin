@@ -20,7 +20,7 @@ async function ListPosts({ searchParams }: Props) {
 
   return (
     <Space direction="vertical" size={"middle"} className="w-full">
-      <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 w-full">
+      <div className="flex flex-col gap-4">
         {posts.map((post) => (
           <PostCard key={post._id} post={post} />
         ))}
