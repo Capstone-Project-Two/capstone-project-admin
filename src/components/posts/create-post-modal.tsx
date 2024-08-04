@@ -1,4 +1,5 @@
 "use client"
+import { createPost } from "@/actions/post-action";
 import { CreatePostDto } from "@/service/api-types";
 import { Button, Modal } from "antd";
 import { Field, Form, Formik } from "formik";
@@ -30,57 +31,24 @@ function CreatePostModal({ }: Props) {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    console.log(e.target.files)
     setFiles(e.target.files)
   }
 
-  const handleCreatePost = async (values: CreatePostDto) => {
-    console.log(values)
-    try {
-
-    } catch (e) {
-      console.log(e)
-      
-    }
-  }
-
   const onFinish = async (values: CreatePostDto) => {
-    console.log(values.postPhotos)
     const formData = new FormData()
-    const fileList: Array<any> = []
-    if(files) {
-      for(let i = 0;i<files.length; i ++) {
-        console.log(files[i])
-        fileList.push(files[i])
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        formData.append('postPhotos', files[i])
       }
     }
 
-    console.log(fileList)
-    formData.append('body', values.body)
     formData.append('patient', '63686861790123456789abcd')
-    
-    // await fetch(`${BASE_API_URL}${API_ROUTE.BASE_POSTS}`, {
-    //   method: "post",
-    //   body: formData,
-    //   headers: {
-    //     'Content-type': "application/json"
-    //   }
-    // }).then(e => {
-    //   console.log(e)
-    // }).catch(e => {
-    //   console.log(e)
-    // })
-    console.log(formData.get('body'))
-    console.log(formData.get('postPhotos'))
+    formData.append('body', values.body)
+
     startTransition(async () => {
-      // await handleCreatePost(formData).catch((e: TErrorType) => {
-      //   console.log(e)
-      // })
-      // await createPost({ body: values.body, patient: '63686861790123456789abcd', postPhotos: values.postPhotos }).then(() => {
-      //   handleCancel()
-      // }).catch(e => {
-      //   console.log("🚀 ~ awaitcreatePost ~ e:", e)
-      // })
+      await createPost(formData).catch(e => {
+        console.log("🚀 ~ awaitcreatePost ~ e:", e)
+      })
     })
   };
 
@@ -93,16 +61,12 @@ function CreatePostModal({ }: Props) {
         <Formik
           initialValues={initialValues}
           onSubmit={async (values) => {
-            await onFinish(values).then(() => {
-
-            }).catch(e => {
-              console.log(e)
-            })
+            await onFinish(values)
           }}
         >
-          {({ setFieldValue }) => {
+          {({ }) => {
             return (
-              <Form className="flex flex-col ">
+              <Form className="flex flex-col " encType="multipart/form-data" method="POST">
                 <div>
                   <label htmlFor="body">Body</label>
                   <Field className="border" name="body" />
