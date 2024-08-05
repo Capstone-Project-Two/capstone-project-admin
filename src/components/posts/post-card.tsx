@@ -2,7 +2,7 @@
 import { likePost } from "@/actions/post-action";
 import useLikePost from "@/lib/hooks/swr-hooks/use-like-post";
 import { RelationalPostResponseDto } from "@/service/api-types";
-import { Button, Space } from "antd";
+import { Button, Carousel, Divider, Space } from "antd";
 import { useTransition } from "react";
 import BaseImage from "../ui/base-image";
 import dayjs from "dayjs";
@@ -30,12 +30,12 @@ function PostCard({ post }: Props) {
   }
 
   return (
-    <Space direction="vertical" className="border w-full rounded-md p-4 max-w-[1000px] lg:max-h-[200px] ">
+    <Space direction="vertical" className="border rounded-md p-4 lg:max-h-[200px] max-w-[1400px]">
       <div className="lg:flex flex lg:flex-row flex-col w-full gap-2 items-center">
 
         <Wrapper className="flex items-center">
-          <div className="flex gap-2">
-            <BaseImage src={patient.profile_img} width={42} height={42} alt={patient.username} className="rounded-full object-contain" />
+          <div className="flex xl:flex-row flex-col gap-2">
+            <BaseImage src={patient.profile_img} width={48} height={48} alt={patient.username} className="rounded-full object-contain" />
             <div className="flex flex-col">
               <span className="font-bold">
                 {patient.username}
@@ -47,7 +47,7 @@ function PostCard({ post }: Props) {
           </div>
         </Wrapper>
 
-        <Wrapper className="lg:max-w-[250px]">
+        <Wrapper className="">
           {/** Title */}
           <div className="flex flex-col gap-2 ">
             <WrapperTitle>
@@ -60,18 +60,36 @@ function PostCard({ post }: Props) {
         </Wrapper>
 
         <Wrapper className="overflow-clip">
-          <div className="flex flex-col gap-2">
+          <div className="justify-center flex flex-col gap-2">
             <WrapperTitle>
               Photos ({post.postPhotos.length})
             </WrapperTitle>
-            <div className="h-full w-full flex justify-center">
-              <BaseImage src={imageReqHelper(post.postPhotos[0]?.filename)} width={500} height={500} alt={post.postPhotos[0]?.filename ?? "Chantek"} className="object-contain p-2 max-h-[100px]" />
+            <div className="xl:w-[250px] lg:w-[150px] bg-black bg-opacity-20">
+              {post.postPhotos.length === 0 ? (
+                <BaseImage
+                  src={imageReqHelper(post.postPhotos[0]?.filename)}
+                  width={250}
+                  height={110}
+                  alt={"Chantek"}
+                  className="object-contain p-2 max-h-[110px]" />
+              ) :
+                <Carousel arrows infinite>
+                  {post.postPhotos.map(photo => (
+                    <BaseImage
+                      key={photo._id}
+                      src={imageReqHelper(photo?.filename)}
+                      width={250}
+                      height={110} alt={photo?.filename ?? "Chantek"}
+                      className="object-contain max-h-[110px]" />
+                  ))}
+                </Carousel>
+              }
             </div>
           </div>
         </Wrapper>
 
         <Wrapper className="">
-          <div className="flex flex-col gap-2">
+          <div className="xl:w-[150px] w-[120px] flex flex-col gap-2">
             <WrapperTitle>
               Post Status
             </WrapperTitle>
@@ -111,9 +129,12 @@ function PostCard({ post }: Props) {
 
 const Wrapper = ({ noBorder, className, children }: { noBorder?: boolean, className?: string, children: React.ReactNode }) => {
   return (
-    <div className={cn(className, noBorder ? "border-0" : "lg:border-b-0 lg:border-r-2 md:border-r-0 border-b-2", "w-full lg:min-h-[150px] md:max-h-[150px] h-full max-h-[250px] md:pr-4 pb-2")}>
-      {children}
-    </div>
+    <>
+      <div className={cn(className, noBorder ? "border-0" : "lg:border-b-0 border-b-2", "w-full md:pr-4 pb-2 lg:min-h-[150px]")}>
+        {children}
+      </div>
+      {!noBorder && <Divider type="vertical" rootClassName="bg-gray-200 md:h-0 lg:h-[120px] w-[2px] h-0" />}
+    </>
   )
 }
 

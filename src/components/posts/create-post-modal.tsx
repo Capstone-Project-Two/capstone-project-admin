@@ -1,8 +1,12 @@
 "use client"
 import { createPost } from "@/actions/post-action";
+import { postSchema } from "@/lib/validation/post-schema";
 import { CreatePostDto } from "@/service/api-types";
-import { Button, Input, Modal } from "antd";
-import { Form, Formik, FormikState } from "formik";
+import { InboxOutlined } from "@ant-design/icons";
+import { Button, Input, Modal, UploadProps } from "antd";
+import { RcFile } from "antd/es/upload";
+import Dragger from "antd/es/upload/Dragger";
+import { ErrorMessage, Form, Formik, FormikState } from "formik";
 import { Sticker } from "lucide-react";
 import { useState, useTransition } from "react";
 
@@ -16,12 +20,8 @@ function CreatePostModal({ }: Props) {
   }
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPending, startTransition] = useTransition()
-  const [files, setFiles] = useState<FileList | null>()
+  const [files, setFiles] = useState<RcFile[]>([])
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setFiles(e.target.files)
-  }
 
   const onFinish = async (values: CreatePostDto, resetForm: (nextState?: Partial<FormikState<CreatePostDto>>) => void) => {
     const formData = new FormData()
@@ -39,9 +39,29 @@ function CreatePostModal({ }: Props) {
         console.log("🚀 ~ awaitcreatePost ~ e:", e)
       }).then(() => {
         resetForm()
-        setFiles(null)
+        setFiles([])
+        setIsModalOpen(false)
       })
     })
+  };
+
+  const draggerProps: UploadProps = {
+    name: 'postPhotos',
+    multiple: true,
+    accept: "image/png, image/jpeg, image/webp, image/svg+xml, image/jpg",
+    onChange(info) {
+      const files: any[] = []
+      info.fileList.forEach(uploadFile => {
+        files.push(uploadFile.originFileObj)
+      })
+      setFiles(files)
+    },
+    onDrop(e) {
+      console.log('Dropped files', e.dataTransfer.files);
+    },
+    onRemove(file) {
+      setFiles(files.filter(uploadFile => uploadFile.name !== file.name))
+    },
   };
 
   return (
@@ -58,11 +78,12 @@ function CreatePostModal({ }: Props) {
             <h1 className="text-xl font-semibold">
               Create a new Post
             </h1>
-            <p className="text-sm">Enter therapist info</p>
+            <p className="text-sm">Enter post information</p>
           </div>
         </div>
       )} open={isModalOpen} footer={[]}>
         <Formik
+          validationSchema={postSchema}
           initialValues={initialValues}
           onSubmit={async (values, { resetForm }) => {
             await onFinish(values, resetForm)
@@ -77,21 +98,25 @@ function CreatePostModal({ }: Props) {
                     htmlFor="body"
                     className="block mb-2 text-sm font-medium "
                   >
-                    First name
-                    <span className="text-red-500 text-sm ml-1">*</span>
+                    Caption
                   </label>
                   <Input name="body" onChange={handleChange} placeholder="Write something here..." />
+                  <div className="text-red-500 text-sm mt-2" >
+                    <ErrorMessage name="body" />
+                  </div>
                 </div>
 
-                <div>
-                  <label
-                    htmlFor="postPhotos"
-                    className="block mb-2 text-sm font-medium "
-                  >
-                    Post photos
-                    <span className="text-red-500 text-sm ml-1">*</span>
-                  </label>
-                  <input multiple name="postPhotos" type="file" onChange={e => handleFileChange(e)} />
+                <Dragger {...draggerProps}>
+                  <p className="ant-upload-drag-icon">
+                    <InboxOutlined />
+                  </p>
+                  <p className="ant-upload-text">Click or drag photos to this area to upload</p>
+                  <p className="ant-upload-hint">
+                    Support for a single or bulk upload. Please upload photos that are aligned with our guidelines.
+                  </p>
+                </Dragger>
+                <div className="text`-red-500 text-sm mt-2" >
+                  <ErrorMessage name="postPhotos" />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <Button

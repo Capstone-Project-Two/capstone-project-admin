@@ -31,8 +31,6 @@ export const createPost = async (createPostDto: FormData) => {
     body: createPostDto,
   });
 
-  console.log(res?.data);
-
   revalidateTag(REVALIDATE_TAG_ENUM.POST);
 
   return res;

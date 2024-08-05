@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ROUTER_PATH } from "@/constants/route-constant";
 import {
   Calendar,
-  CircleDollarSign, ClipboardMinus, FolderInput, LayoutDashboard, ShieldBan,
+  CircleDollarSign, ClipboardMinus, FolderInput, ShieldBan,
   Stethoscope,
   Sticker
 } from "lucide-react";
@@ -40,11 +40,6 @@ function Sidebar({ children }: Props) {
   } = theme.useToken();
 
   const sidebarLinks: Array<TLink> = [
-    {
-      key: ROUTER_PATH.HOMEPAGE,
-      label: <LayoutLink href={ROUTER_PATH.HOMEPAGE}>Overview</LayoutLink>,
-      icon: LayoutDashboard,
-    },
     {
       key: ROUTER_PATH.PATIENTS,
       label: <LayoutLink href={ROUTER_PATH.PATIENTS}>Patients</LayoutLink>,
