@@ -8,7 +8,7 @@ import {
   CircleDollarSign,
   ClipboardMinus,
   FolderInput,
-
+  LucideWallet,
   ShieldBan,
   Stethoscope,
   Sticker,
@@ -81,6 +81,13 @@ function Sidebar({ children }: Props) {
       key: ROUTER_PATH.CREDITS,
       label: <LayoutLink href={ROUTER_PATH.CREDITS}>Credit</LayoutLink>,
       icon: CircleDollarSign,
+    },
+    {
+      key: ROUTER_PATH.TRANSACTIONS,
+      label: (
+        <LayoutLink href={ROUTER_PATH.TRANSACTIONS}>Transactions</LayoutLink>
+      ),
+      icon: LucideWallet,
     },
     {
       key: `${ROUTER_PATH.APPOINTMENTS}`,

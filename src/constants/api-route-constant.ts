@@ -22,4 +22,8 @@ export enum API_ROUTE {
 
   //Therapist Routes
   BASE_APPOINTMENTS = "/appointments",
+
+  //Stripe Routes
+  ALL_CHARGES = "/stripe/charges",
+  BALANCES = "/stripe/balance",
 }

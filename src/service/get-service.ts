@@ -106,6 +106,34 @@ export const getCredits = async () => {
   };
 };
 
+export const getCharges = async () => {
+  const res = await fetchDefault({
+    url: API_ROUTE.ALL_CHARGES,
+    tags: [REVALIDATE_TAG_ENUM.STRIPE],
+  });
+
+  return {
+    error: !isValidResponse(res?.statusCode) && res,
+    message: res?.message,
+    data: res?.data,
+    statusCode: res?.statusCode,
+  };
+};
+
+export const getBalances = async () => {
+  const res = await fetchDefault({
+    url: API_ROUTE.BALANCES,
+    tags: [REVALIDATE_TAG_ENUM.STRIPE],
+  });
+
+  return {
+    error: !isValidResponse(res?.statusCode) && res,
+    message: res?.message,
+    data: res?.data,
+    statusCode: res?.statusCode,
+  };
+};
+
 export const getAppointments = async ({ status }: FilterParams) => {
   const res = await fetchDefault({
     url: `${API_ROUTE.BASE_APPOINTMENTS}?${URL_PARAM.STATUS}=${
