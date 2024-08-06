@@ -121,6 +121,16 @@ function Sidebar({ children }: Props) {
           ),
         },
         {
+          key: `${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.COMPLETED}`,
+          label: (
+            <LayoutLink
+              href={`${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.COMPLETED}`}
+            >
+              Completed
+            </LayoutLink>
+          ),
+        },
+        {
           key: `${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.REJECTED}`,
           label: (
             <LayoutLink
