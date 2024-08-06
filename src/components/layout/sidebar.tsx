@@ -5,9 +5,13 @@ import Link from "next/link";
 import { ROUTER_PATH } from "@/constants/route-constant";
 import {
   Calendar,
-  CircleDollarSign, ClipboardMinus, FolderInput, ShieldBan,
+  CircleDollarSign,
+  ClipboardMinus,
+  FolderInput,
+
+  ShieldBan,
   Stethoscope,
-  Sticker
+  Sticker,
 } from "lucide-react";
 import React from "react";
 import { usePathname } from "next/navigation";
@@ -64,11 +68,7 @@ function Sidebar({ children }: Props) {
         {
           icon: <FolderInput size={20} />,
           key: ROUTER_PATH.POSTS_HISTORY,
-          label: (
-            <Link href={ROUTER_PATH.POSTS_HISTORY}>
-              Post History
-            </Link>
-          ),
+          label: <Link href={ROUTER_PATH.POSTS_HISTORY}>Post History</Link>,
         },
       ],
     },
@@ -84,13 +84,21 @@ function Sidebar({ children }: Props) {
     },
     {
       key: `${ROUTER_PATH.APPOINTMENTS}`,
-      label: <Link href={`${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.REQUESTED}`}>Appointments</Link>,
+      label: (
+        <Link
+          href={`${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.REQUESTED}`}
+        >
+          Appointments
+        </Link>
+      ),
       icon: Calendar,
       children: [
         {
           key: `${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.REQUESTED}`,
           label: (
-            <LayoutLink href={`${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.REQUESTED}`}>
+            <LayoutLink
+              href={`${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.REQUESTED}`}
+            >
               Requested
             </LayoutLink>
           ),
@@ -98,7 +106,9 @@ function Sidebar({ children }: Props) {
         {
           key: `${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.SCHEDULED}`,
           label: (
-            <LayoutLink href={`${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.SCHEDULED}`}>
+            <LayoutLink
+              href={`${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.SCHEDULED}`}
+            >
               Scheduled
             </LayoutLink>
           ),
@@ -106,7 +116,9 @@ function Sidebar({ children }: Props) {
         {
           key: `${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.REJECTED}`,
           label: (
-            <LayoutLink href={`${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.REJECTED}`}>
+            <LayoutLink
+              href={`${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.REJECTED}`}
+            >
               Rejected
             </LayoutLink>
           ),
@@ -139,11 +151,14 @@ function Sidebar({ children }: Props) {
           style={{
             borderRight: "1px solid rgba(0, 0, 0, 0.15)",
           }}
-          className="flex gap-3 items-center px-4 pt-4 bg-white">
+          className="flex gap-3 items-center px-4 pt-4 bg-white"
+        >
           <BaseImage src={logo} width={48} height={48} alt="Chantek" />
-          {!collapsed && <h1 className="font-bold text-xl tracking-widest">
-            {"Chantek".toUpperCase()}
-          </h1>}
+          {!collapsed && (
+            <h1 className="font-bold text-xl tracking-widest">
+              {"Chhantek".toUpperCase()}
+            </h1>
+          )}
         </Link>
         <Menu
           mode="inline"
