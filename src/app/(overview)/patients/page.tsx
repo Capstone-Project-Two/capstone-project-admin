@@ -1,6 +1,6 @@
 import { pageMetadata } from "@/utils/metadata-helpter";
 import { Metadata } from "next";
-import ListPatients from "../../components/patients/list-patients";
+import ListPatients from "../../../components/patients/list-patients";
 import { Suspense } from "react";
 import { Spin } from "antd";
 
