@@ -27,9 +27,14 @@ export async function fetchDefault({
       },
     });
 
+    if (!res.ok) {
+      const errorRes = await res.json();
+      throw errorRes;
+    }
+
     return res.json();
   } catch (e) {
-    console.log(e);
+    throw e;
   }
 }
 
@@ -51,9 +56,14 @@ export async function fetchPostDefault({
       },
     });
 
+    if (!res.ok) {
+      const errorRes = await res.json();
+      throw errorRes;
+    }
+
     return res.json();
   } catch (e) {
-    console.log(e);
+    throw e;
   }
 }
 
@@ -72,8 +82,13 @@ export async function fetchPostMultipart({
       method: method,
     });
 
+    if (!res.ok) {
+      const errorRes = await res.json();
+      throw errorRes;
+    }
+
     return res.json();
   } catch (e) {
-    console.log(e);
+    throw e;
   }
 }

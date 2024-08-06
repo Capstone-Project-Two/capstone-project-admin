@@ -2,15 +2,14 @@ import * as Yup from "yup";
 
 export const postSchema = Yup.object().shape(
   {
-    body: Yup.string().when(["postPhotos"], {
-      is: (postPhotos: []) => postPhotos.length === 0,
-      then: (schema) =>
-        schema
-          .test(_ => true)
-          .required("Body is required"),
+    body: Yup.mixed().when(["postPhotos"], {
+      is: (postPhotos: []) => {
+        return postPhotos.length > 0 || !postPhotos;
+      },
+      then: (schema) => schema.required("Body is required"),
     }),
     postPhotos: Yup.mixed().when(["body"], {
-      is: (body: string) => !body,
+      is: (body: string) => !body || body.trim()?.length === 0,
       then: (schema) => schema.required(),
     }),
   },

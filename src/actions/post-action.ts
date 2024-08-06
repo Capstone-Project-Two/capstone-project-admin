@@ -25,13 +25,17 @@ export const likePost = async (updateLikePostDto: UpdateLikePostDto) => {
 };
 
 export const createPost = async (createPostDto: FormData) => {
-  const res = await fetchPostMultipart({
-    url: `${API_ROUTE.BASE_POSTS}`,
-    method: "POST",
-    body: createPostDto,
-  });
+  try {
+    const res = await fetchPostMultipart({
+      url: `${API_ROUTE.BASE_POSTS}`,
+      method: "POST",
+      body: createPostDto,
+    });
 
-  revalidateTag(REVALIDATE_TAG_ENUM.POST);
+    revalidateTag(REVALIDATE_TAG_ENUM.POST);
 
-  return res;
+    return res;
+  } catch (e: any) {
+    return e;
+  }
 };

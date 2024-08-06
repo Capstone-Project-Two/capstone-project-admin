@@ -2,6 +2,8 @@
 import { createPost } from "@/actions/post-action";
 import { postSchema } from "@/lib/validation/post-schema";
 import { CreatePostDto } from "@/service/api-types";
+import { TError } from "@/types/types";
+import { isOkStatusCode } from "@/utils/api-helper";
 import { InboxOutlined } from "@ant-design/icons";
 import { Button, Input, Modal, UploadProps } from "antd";
 import { RcFile } from "antd/es/upload";
@@ -35,11 +37,15 @@ function CreatePostModal({ }: Props) {
     formData.append('body', values.body)
 
     startTransition(async () => {
-      await createPost(formData).catch(e => {
-        console.log("🚀 ~ awaitcreatePost ~ e:", e)
-      }).then(() => {
-        setIsModalOpen(false)
-      })
+      await createPost(formData)
+        .then((res) => {
+          if (!isOkStatusCode(res.statusCode as number)) {
+            throw res
+          }
+          setIsModalOpen(false)
+        }).catch((e: TError) => {
+          console.log("🚀 ~ .then ~ e:", e)
+        })
     })
   };
 
