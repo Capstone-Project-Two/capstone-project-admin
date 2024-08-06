@@ -6,7 +6,7 @@ import useSWR from "swr";
 
 export default function useLikePost(postId: string) {
   const { data, isLoading, mutate } = useSWR(
-    `${API_ROUTE.BASE_LIKE_POSTS}/${postId}`,
+    `${API_ROUTE.LIKE_POSTS_BY_POSTS}/${postId}`,
     fetcher
   );
 

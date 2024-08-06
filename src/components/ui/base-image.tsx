@@ -1,4 +1,5 @@
 "use client"
+import { cn } from "@/lib/utils";
 import { imagePlaceholder } from "@/utils/image-placeholder";
 import { logo } from "@/utils/image-req-helper";
 import Image, { ImageProps, StaticImageData } from "next/image";
@@ -50,6 +51,7 @@ function BaseImage({ src, alt, width, height, customFallback, ...props }: Props)
           setImgSrc(customFallback ?? logo)
         }
       }}
+      className={cn(props.className)}
     />
   )
 }

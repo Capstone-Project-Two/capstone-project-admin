@@ -1,7 +1,7 @@
 import { BASE_API_URL } from "@/constants/env-constant";
 
 export const fetcher = (url: string) =>
-  fetchDefault({ url }).then((res: any  ) => {
+  fetchDefault({ url }).then((res: any) => {
     return res;
   });
 
@@ -27,9 +27,14 @@ export async function fetchDefault({
       },
     });
 
+    if (!res.ok) {
+      const errorRes = await res.json();
+      throw errorRes;
+    }
+
     return res.json();
   } catch (e) {
-    console.log(e);
+    throw e;
   }
 }
 
@@ -51,12 +56,39 @@ export async function fetchPostDefault({
       },
     });
 
-    // if (!res.ok) {
-    //   throw new Error(`Failed to ${method} data`);
-    // }
+    if (!res.ok) {
+      const errorRes = await res.json();
+      throw errorRes;
+    }
 
     return res.json();
   } catch (e) {
-    console.log(e);
+    throw e;
+  }
+}
+
+export async function fetchPostMultipart({
+  url,
+  method,
+  body,
+}: {
+  url: string;
+  method: "POST" | "PATCH" | "DELETE";
+  body?: any;
+}) {
+  try {
+    const res = await fetch(`${BASE_API_URL}${url}`, {
+      body: body,
+      method: method,
+    });
+
+    if (!res.ok) {
+      const errorRes = await res.json();
+      throw errorRes;
+    }
+
+    return res.json();
+  } catch (e) {
+    throw e;
   }
 }

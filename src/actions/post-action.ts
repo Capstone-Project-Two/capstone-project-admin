@@ -2,8 +2,11 @@
 
 import { API_ROUTE } from "@/constants/api-route-constant";
 import { REVALIDATE_TAG_ENUM } from "@/constants/revalidate-tags-constant";
-import { CreatePostDto, UpdateLikePostDto } from "@/service/api-types";
-import { fetchPostDefault } from "@/service/fetcher-service";
+import { UpdateLikePostDto } from "@/service/api-types";
+import {
+  fetchPostDefault,
+  fetchPostMultipart,
+} from "@/service/fetcher-service";
 import { revalidateTag } from "next/cache";
 
 export const likePost = async (updateLikePostDto: UpdateLikePostDto) => {
@@ -21,21 +24,18 @@ export const likePost = async (updateLikePostDto: UpdateLikePostDto) => {
   return res;
 };
 
-export const createPost = async (createPostDto: CreatePostDto) => {
+export const createPost = async (createPostDto: FormData) => {
   try {
-    const res = await fetchPostDefault({
+    const res = await fetchPostMultipart({
       url: `${API_ROUTE.BASE_POSTS}`,
       method: "POST",
       body: createPostDto,
     });
 
-    console.log(res?.data);
-
     revalidateTag(REVALIDATE_TAG_ENUM.POST);
 
     return res;
-  } catch (e) {
-    // console.log(e);
-    // throw new Error(JSON.stringify(e));
+  } catch (e: any) {
+    return e;
   }
 };
