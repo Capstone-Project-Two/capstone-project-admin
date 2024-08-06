@@ -6,4 +6,5 @@ export enum REVALIDATE_TAG_ENUM {
   APPOINTMENT = "appointment",
   POST = "post",
   LIKE_POST = "like_post",
+  STRIPE = "stripe",
 }

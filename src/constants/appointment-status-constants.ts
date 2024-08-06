@@ -1,5 +1,6 @@
 export enum ApntStatus {
   REQUESTED = 'requested',
   SCHEDULED = 'scheduled',
-  REJECTED = 'rejected'
+  REJECTED = 'rejected',
+  COMPLETED = 'completed'
 }

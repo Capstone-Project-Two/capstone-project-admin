@@ -8,7 +8,7 @@ import {
   CircleDollarSign,
   ClipboardMinus,
   FolderInput,
-
+  LucideWallet,
   ShieldBan,
   Stethoscope,
   Sticker,
@@ -83,6 +83,13 @@ function Sidebar({ children }: Props) {
       icon: CircleDollarSign,
     },
     {
+      key: ROUTER_PATH.TRANSACTIONS,
+      label: (
+        <LayoutLink href={ROUTER_PATH.TRANSACTIONS}>Transactions</LayoutLink>
+      ),
+      icon: LucideWallet,
+    },
+    {
       key: `${ROUTER_PATH.APPOINTMENTS}`,
       label: (
         <Link
@@ -110,6 +117,16 @@ function Sidebar({ children }: Props) {
               href={`${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.SCHEDULED}`}
             >
               Scheduled
+            </LayoutLink>
+          ),
+        },
+        {
+          key: `${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.COMPLETED}`,
+          label: (
+            <LayoutLink
+              href={`${ROUTER_PATH.APPOINTMENTS}?status=${ApntStatus.COMPLETED}`}
+            >
+              Completed
             </LayoutLink>
           ),
         },
