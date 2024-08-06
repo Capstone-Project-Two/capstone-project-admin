@@ -1,11 +1,10 @@
 "use client"
 import { createPost } from "@/actions/post-action";
-import { postSchema } from "@/lib/validation/post-schema";
 import { CreatePostDto } from "@/service/api-types";
 import { TError } from "@/types/types";
-import { isOkStatusCode } from "@/utils/api-helper";
+import { convertRcFileToUploadFile, isOkStatusCode } from "@/utils/helper";
 import { InboxOutlined } from "@ant-design/icons";
-import { Button, Input, Modal, UploadProps } from "antd";
+import { Button, Input, Modal, notification, UploadProps } from "antd";
 import { RcFile } from "antd/es/upload";
 import Dragger from "antd/es/upload/Dragger";
 import { ErrorMessage, Form, Formik } from "formik";
@@ -43,8 +42,13 @@ function CreatePostModal({ }: Props) {
             throw res
           }
           setIsModalOpen(false)
+          notification.success({
+            message: 'Post created successfully',
+          })
         }).catch((e: TError) => {
-          console.log("🚀 ~ .then ~ e:", e)
+          notification.error({
+            message: `Something went wrong - (${e.statusCode})`,
+          })
         })
     })
   };
@@ -53,7 +57,7 @@ function CreatePostModal({ }: Props) {
     name: 'postPhotos',
     multiple: true,
     accept: "image/png, image/jpeg, image/webp, image/svg+xml, image/jpg",
-    fileList: files,
+    fileList: convertRcFileToUploadFile(files),
     onChange(info) {
       const files: any[] = []
       info.fileList.forEach(uploadFile => {
@@ -88,7 +92,6 @@ function CreatePostModal({ }: Props) {
         </div>
       )} open={isModalOpen} footer={[]}>
         <Formik
-          validationSchema={postSchema}
           initialValues={initialValues}
           onSubmit={async (values, { setFieldValue }) => {
             await onFinish(values).then(() => {

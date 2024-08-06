@@ -4,7 +4,7 @@ export const postSchema = Yup.object().shape(
   {
     body: Yup.mixed().when(["postPhotos"], {
       is: (postPhotos: []) => {
-        return postPhotos.length > 0 || !postPhotos;
+        return postPhotos.length === 0 || !postPhotos;
       },
       then: (schema) => schema.required("Body is required"),
     }),
