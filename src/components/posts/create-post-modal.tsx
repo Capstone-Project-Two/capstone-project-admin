@@ -6,7 +6,7 @@ import { InboxOutlined } from "@ant-design/icons";
 import { Button, Input, Modal, UploadProps } from "antd";
 import { RcFile } from "antd/es/upload";
 import Dragger from "antd/es/upload/Dragger";
-import { ErrorMessage, Form, Formik, FormikState } from "formik";
+import { ErrorMessage, Form, Formik } from "formik";
 import { Sticker } from "lucide-react";
 import { useState, useTransition } from "react";
 
@@ -23,7 +23,7 @@ function CreatePostModal({ }: Props) {
   const [files, setFiles] = useState<RcFile[]>([])
 
 
-  const onFinish = async (values: CreatePostDto, resetForm: (nextState?: Partial<FormikState<CreatePostDto>>) => void) => {
+  const onFinish = async (values: CreatePostDto) => {
     const formData = new FormData()
     if (files) {
       for (let i = 0; i < files.length; i++) {
@@ -38,8 +38,6 @@ function CreatePostModal({ }: Props) {
       await createPost(formData).catch(e => {
         console.log("🚀 ~ awaitcreatePost ~ e:", e)
       }).then(() => {
-        resetForm()
-        setFiles([])
         setIsModalOpen(false)
       })
     })
@@ -49,6 +47,7 @@ function CreatePostModal({ }: Props) {
     name: 'postPhotos',
     multiple: true,
     accept: "image/png, image/jpeg, image/webp, image/svg+xml, image/jpg",
+    fileList: files,
     onChange(info) {
       const files: any[] = []
       info.fileList.forEach(uploadFile => {
@@ -85,11 +84,15 @@ function CreatePostModal({ }: Props) {
         <Formik
           validationSchema={postSchema}
           initialValues={initialValues}
-          onSubmit={async (values, { resetForm }) => {
-            await onFinish(values, resetForm)
+          onSubmit={async (values, { setFieldValue }) => {
+            await onFinish(values).then(() => {
+              setFieldValue('body', '')
+              setFieldValue('postPhotos', [])
+              setFiles([])
+            })
           }}
         >
-          {({ handleChange }) => {
+          {({ handleChange, values }) => {
             return (
               <Form className="w-full flex flex-col gap-4" encType="multipart/form-data" method="POST">
 
@@ -100,7 +103,7 @@ function CreatePostModal({ }: Props) {
                   >
                     Caption
                   </label>
-                  <Input name="body" onChange={handleChange} placeholder="Write something here..." />
+                  <Input value={values.body} name="body" onChange={handleChange} placeholder="Write something here..." />
                   <div className="text-red-500 text-sm mt-2" >
                     <ErrorMessage name="body" />
                   </div>
