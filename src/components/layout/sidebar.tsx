@@ -8,6 +8,7 @@ import {
   CircleDollarSign,
   ClipboardMinus,
   FolderInput,
+  LucideMail,
   LucideWallet,
   ShieldBan,
   Stethoscope,
@@ -76,6 +77,15 @@ function Sidebar({ children }: Props) {
       key: ROUTER_PATH.THERAPISTS,
       label: <LayoutLink href={ROUTER_PATH.THERAPISTS}>Therapists</LayoutLink>,
       icon: Stethoscope,
+    },
+    {
+      key: ROUTER_PATH.THERAPIST_APPLICATION,
+      label: (
+        <LayoutLink href={ROUTER_PATH.THERAPIST_APPLICATION}>
+          Therapist Applications
+        </LayoutLink>
+      ),
+      icon: LucideMail,
     },
     {
       key: ROUTER_PATH.CREDITS,

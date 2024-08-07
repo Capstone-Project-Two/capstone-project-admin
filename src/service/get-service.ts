@@ -92,6 +92,20 @@ export const getTherapists = async () => {
   };
 };
 
+export const getTherapistApplications = async () => {
+  const res = await fetchDefault({
+    url: `${API_ROUTE.BASE_THERAPIST}/registration`,
+    tags: [REVALIDATE_TAG_ENUM.THERAPIST],
+  });
+
+  return {
+    error: !isValidResponse(res?.statusCode) && res,
+    message: res?.message,
+    data: res?.data,
+    statusCode: res?.statusCode,
+  };
+};
+
 export const getCredits = async () => {
   const res = await fetchDefault({
     url: API_ROUTE.ALL_CREDIT,

@@ -24,6 +24,20 @@ export const likePost = async (updateLikePostDto: UpdateLikePostDto) => {
   return res;
 };
 
+// export const updateRegistration = async (status: string, id: string) => {
+//   const res = await fetchPostDefault({
+//     url: `${API_ROUTE.BASE_THERAPIST}/registration/${id}`,
+//     body: {
+//       status: status,
+//     },
+//     method: "PATCH",
+//   });
+
+//   revalidateTag(REVALIDATE_TAG_ENUM.THERAPIST);
+
+//   return res;
+// };
+
 export const createPost = async (createPostDto: FormData) => {
   try {
     const res = await fetchPostMultipart({
