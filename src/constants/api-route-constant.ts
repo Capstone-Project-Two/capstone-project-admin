@@ -22,4 +22,7 @@ export enum API_ROUTE {
 
   //Therapist Routes
   BASE_APPOINTMENTS = "/appointments",
+
+  // Auth
+  ADMIN_LOGIN = '/auth/admin/login'
 }

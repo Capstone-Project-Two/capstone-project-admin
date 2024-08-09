@@ -29,12 +29,22 @@ export interface paths {
   "/patients/ban-patient/{id}": {
     patch: operations["PatientsController_banPatient"];
   };
+  "/patients/add-credits/{id}": {
+    patch: operations["PatientsController_addCredits"];
+  };
   "/patients/unban-patient/{id}": {
     patch: operations["PatientsController_unbanPatient"];
   };
   "/therapists": {
     get: operations["TherapistsController_findAll"];
     post: operations["TherapistsController_create"];
+  };
+  "/therapists/registration": {
+    get: operations["TherapistsController_getAllTherapistRegistration"];
+    post: operations["TherapistsController_therapistRegistration"];
+  };
+  "/therapists/registration/{id}": {
+    patch: operations["TherapistsController_updateTherapistRegistration"];
   };
   "/therapists/specializations": {
     get: operations["TherapistsController_getAllSpecializations"];
@@ -53,11 +63,32 @@ export interface paths {
     delete: operations["PostsController_remove"];
     patch: operations["PostsController_update"];
   };
+  "/posts/patient-post/{patientId}": {
+    get: operations["PostsController_findPatientPost"];
+  };
   "/posts/remove-post/{id}": {
     patch: operations["PostsController_userRemovePost"];
   };
   "/seeds": {
     post: operations["SeedsController_create"];
+  };
+  "/auth/patient/register": {
+    post: operations["AuthController_register"];
+  };
+  "/auth/patient/login": {
+    post: operations["AuthController_patient_login"];
+  };
+  "/auth/patient/logout": {
+    get: operations["AuthController_patient_logout"];
+  };
+  "/auth/admin/login": {
+    post: operations["AuthController_login"];
+  };
+  "/auth/admin/logout": {
+    get: operations["AuthController_logout"];
+  };
+  "/auth/refresh-token": {
+    get: operations["AuthController_refreshToken"];
   };
   "/factories": {
     post: operations["FactoriesController_create"];
@@ -70,12 +101,6 @@ export interface paths {
     get: operations["AppointmentsController_findOne"];
     delete: operations["AppointmentsController_remove"];
     patch: operations["AppointmentsController_update"];
-  };
-  "/auth/login": {
-    post: operations["AuthController_login"];
-  };
-  "/auth/logout": {
-    get: operations["AuthController_logout"];
   };
   "/credential": {
     get: operations["CredentialController_findAll"];
@@ -126,16 +151,19 @@ export interface paths {
     patch: operations["ActivityImagesController_update"];
   };
   "/patient-comments": {
-    get: operations["PatientCommentsController_findAll"];
+    get: operations["PatientCommentsController_findCommentByPost"];
     post: operations["PatientCommentsController_create"];
+  };
+  "/patient-comments/all": {
+    get: operations["PatientCommentsController_findAll"];
+  };
+  "/patient-comments/comments-new/{id}": {
+    get: operations["PatientCommentsController_findCommentByPostV2"];
   };
   "/patient-comments/{id}": {
     get: operations["PatientCommentsController_findOne"];
     delete: operations["PatientCommentsController_remove"];
     patch: operations["PatientCommentsController_update"];
-  };
-  "/patient-comments/post/{id}": {
-    get: operations["PatientCommentsController_findCommentByPost"];
   };
   "/patient-comments/all-replies/{id}": {
     get: operations["PatientCommentsController_findAllReplies"];
@@ -166,6 +194,51 @@ export interface paths {
     delete: operations["CreditsController_remove"];
     patch: operations["CreditsController_update"];
   };
+  "/stripe/payment-intent": {
+    post: operations["StripeController_create"];
+  };
+  "/stripe/charges": {
+    get: operations["StripeController_getAllCharges"];
+  };
+  "/stripe/balance": {
+    get: operations["StripeController_getBalance"];
+  };
+  "/stripe/payment-intent/{id}": {
+    get: operations["StripeController_findOne"];
+  };
+  "/stripe/{id}": {
+    delete: operations["StripeController_remove"];
+    patch: operations["StripeController_update"];
+  };
+  "/stress-monitor": {
+    get: operations["StressMonitorController_findAll"];
+    post: operations["StressMonitorController_create"];
+  };
+  "/stress-monitor/{id}": {
+    get: operations["StressMonitorController_findOne"];
+  };
+  "/stress-monitor/stress-monitor-count/{id}": {
+    get: operations["StressMonitorController_findStressMonitorCount"];
+  };
+  "/mind-checkup": {
+    get: operations["MindCheckupController_findAll"];
+    post: operations["MindCheckupController_create"];
+  };
+  "/mind-checkup/{id}": {
+    get: operations["MindCheckupController_findOne"];
+  };
+  "/mind-checkup/checkup-count/{id}": {
+    get: operations["MindCheckupController_findCheckupCount"];
+  };
+  "/therapist-application-photos": {
+    get: operations["TherapistApplicationPhotosController_findAll"];
+    post: operations["TherapistApplicationPhotosController_create"];
+  };
+  "/therapist-application-photos/{id}": {
+    get: operations["TherapistApplicationPhotosController_findOne"];
+    delete: operations["TherapistApplicationPhotosController_remove"];
+    patch: operations["TherapistApplicationPhotosController_update"];
+  };
 }
 
 export type webhooks = Record<string, never>;
@@ -191,12 +264,20 @@ export interface components {
       password?: string;
     };
     CreatePatientDto: {
+      credential?: string;
+      username?: string;
+      gender?: string;
+      credits?: number;
+      profile_img?: string;
+    };
+    CredentialResponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
       email: string;
-      username: string;
-      phone_number: string;
-      gender: string;
-      credits: number;
-      profile_img: string;
+      password: string;
     };
     PatientResponseDto: {
       _id: string;
@@ -216,6 +297,11 @@ export interface components {
       /** @default false */
       is_banned: boolean;
       profile_img: string;
+      /** @default 0 */
+      stress_monitor_count: number;
+      /** @default 0 */
+      mind_checkup_count: number;
+      credential: components["schemas"]["CredentialResponseDto"];
     };
     PostResponseDto: {
       _id: string;
@@ -228,6 +314,8 @@ export interface components {
       like_count: number;
       save_count: number;
       comment_count: number;
+      /** @default false */
+      stress_result: boolean;
     };
     RelationalPatientResponseDto: {
       _id: string;
@@ -247,12 +335,16 @@ export interface components {
       /** @default false */
       is_banned: boolean;
       profile_img: string;
+      /** @default 0 */
+      stress_monitor_count: number;
+      /** @default 0 */
+      mind_checkup_count: number;
+      credential: components["schemas"]["CredentialResponseDto"];
       posts: components["schemas"]["PostResponseDto"][];
     };
     UpdatePatientDto: {
-      email?: string;
+      credential?: string;
       username?: string;
-      phone_number?: string;
       gender?: string;
       credits?: number;
       profile_img?: string;
@@ -260,12 +352,16 @@ export interface components {
       is_deleted: boolean;
       roles: ("patient" | "admin" | "therapist")[];
     };
+    UpdateBalanceDto: {
+      credits: number;
+    };
     CreateTherapistDto: {
       first_name: string;
       last_name: string;
       bio: string;
       username: string;
       email: string;
+      hourly_rate: number;
       phone_number: string;
       specializations: string[];
       /** @enum {string} */
@@ -274,11 +370,58 @@ export interface components {
        * @default [
        *   "therapist"
        * ]
-       * @enum {string}
        */
-      roles: "patient" | "admin" | "therapist";
+      roles: ("patient" | "admin" | "therapist")[];
       /** @default false */
       is_deleted: boolean;
+    };
+    TherapistRegistrationDto: {
+      first_name: string;
+      last_name: string;
+      email: string;
+      status: string;
+      therapistApplicationPhotos: string[];
+    };
+    TherapistRegistrationReponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      first_name: string;
+      last_name: string;
+      email: string;
+      /** @enum {string} */
+      status: "requested" | "accepted" | "rejected";
+    };
+    TherapistApplicationPhotoResponse: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      filename: string;
+      therapist_application: components["schemas"]["TherapistRegistrationReponseDto"];
+    };
+    RelationalTherapistRegistrationResponse: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      first_name: string;
+      last_name: string;
+      email: string;
+      /** @enum {string} */
+      status: "requested" | "accepted" | "rejected";
+      therapistApplicationPhotos: components["schemas"]["TherapistApplicationPhotoResponse"][];
+    };
+    UpdateTherapistRegistration: {
+      first_name?: string;
+      last_name?: string;
+      email?: string;
+      status?: string;
+      therapistApplicationPhotos?: string[];
     };
     TherapistResponseDto: {
       _id: string;
@@ -292,6 +435,7 @@ export interface components {
       username: string;
       email: string;
       phone_number: string;
+      hourly_rate: number;
       specializations: string[];
       /** @enum {string} */
       gender: "male" | "female";
@@ -305,6 +449,7 @@ export interface components {
       bio?: string;
       username?: string;
       email?: string;
+      hourly_rate?: number;
       phone_number?: string;
       specializations?: string[];
       /** @enum {string} */
@@ -313,9 +458,8 @@ export interface components {
        * @default [
        *   "therapist"
        * ]
-       * @enum {string}
        */
-      roles?: "patient" | "admin" | "therapist";
+      roles?: ("patient" | "admin" | "therapist")[];
       /** @default false */
       is_deleted?: boolean;
     };
@@ -323,6 +467,20 @@ export interface components {
       body: string;
       patient: string;
       postPhotos: string[];
+    };
+    CreatePostResponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      body: string;
+      patient: string;
+      like_count: number;
+      comment_count: number;
+      save_count: number;
+      /** @default false */
+      stress_result: boolean;
     };
     PostPhotoResponseDto: {
       _id: string;
@@ -344,6 +502,8 @@ export interface components {
       like_count: number;
       save_count: number;
       comment_count: number;
+      /** @default false */
+      stress_result: boolean;
       postPhotos: components["schemas"]["PostPhotoResponseDto"][];
     };
     UpdatePostDto: {
@@ -352,12 +512,26 @@ export interface components {
       /** @default false */
       is_deleted: boolean;
     };
+    RegisterDto: {
+      credential?: string;
+      username?: string;
+      gender?: string;
+      credits?: number;
+      profile_img?: string;
+      email: string;
+      password: string;
+    };
+    LoginDto: {
+      email: string;
+      password: string;
+    };
     CreateFactoryDto: {
       /** @default 10 */
       length?: number;
     };
     CreateAppointmentDto: {
       note: string;
+      prescriptions: string;
       symptoms: string;
       patient: string;
       therapist: string;
@@ -366,6 +540,8 @@ export interface components {
       status: string;
       start_time: string;
       end_time: string;
+      duration: number;
+      session_price: number;
     };
     AppointmentResponseDto: {
       _id: string;
@@ -374,6 +550,7 @@ export interface components {
       /** Format: date-time */
       updatedAt: string;
       note: string;
+      prescriptions: string;
       symptoms: string;
       /** Format: date-time */
       scheduleDate: string;
@@ -383,9 +560,12 @@ export interface components {
       therapist: components["schemas"]["TherapistResponseDto"];
       start_time: string;
       end_time: string;
+      duration: number;
+      session_price: number;
     };
     UpdateAppointmentDto: {
       note?: string;
+      prescriptions?: string;
       symptoms?: string;
       patient?: string;
       therapist?: string;
@@ -394,10 +574,8 @@ export interface components {
       status?: string;
       start_time?: string;
       end_time?: string;
-    };
-    AdminLoginDto: {
-      email: string;
-      password: string;
+      duration?: number;
+      session_price?: number;
     };
     CreateCredentialDto: Record<string, never>;
     UpdateCredentialDto: Record<string, never>;
@@ -407,7 +585,7 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
-      patient: components["schemas"]["PatientResponseDto"];
+      patient: string;
       post: components["schemas"]["PostResponseDto"];
       is_like: boolean;
     };
@@ -470,6 +648,11 @@ export interface components {
       username: string;
       credits: number;
       profile_img: string;
+      /** @default 0 */
+      stress_monitor_count: number;
+      /** @default 0 */
+      mind_checkup_count: number;
+      credential: components["schemas"]["CredentialResponseDto"];
     };
     PatientCommentResponseDto: {
       _id: string;
@@ -529,7 +712,12 @@ export interface components {
       post: string;
     };
     SavePostsResponseDto: {
-      patient: components["schemas"]["PatientResponseDto"];
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      patient: string;
       post: components["schemas"]["PostResponseDto"];
       is_saved: boolean;
     };
@@ -562,6 +750,83 @@ export interface components {
       price?: number;
       discount?: number;
       is_visible?: boolean;
+    };
+    CreateStripeDto: {
+      amount: number;
+      currency: string;
+      credits: number;
+      patientId: string;
+    };
+    UpdateStripeDto: {
+      amount?: number;
+      currency?: string;
+      credits?: number;
+      patientId?: string;
+    };
+    CreateStressMonitorDto: {
+      total_score: number;
+      patient: string;
+    };
+    StressMonitorResponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      patient: components["schemas"]["PatientResponseDto"];
+      total_score: number;
+    };
+    StressMonitorCountResponseDto: {
+      /** @default 0 */
+      stressMonitorCount: number;
+    };
+    CreateMindCheckupDto: {
+      patient: string;
+      /** @enum {string} */
+      Gender: "Female" | "Male";
+      /** @enum {string} */
+      Occupation: "Corporate" | "Student" | "Business" | "Housewife" | "Others";
+      /** @enum {string} */
+      self_employed: "No" | "Yes";
+      /** @enum {string} */
+      family_history: "No" | "Yes";
+      /** @enum {string} */
+      treatment: "No" | "Yes";
+      /** @enum {string} */
+      Days_Indoors: "1-14 days" | "Go out Every day" | "More than 2 months" | "15-30 days" | "31-60 days";
+      /** @enum {string} */
+      Growing_Stress: "No" | "Maybe" | "Yes";
+      /** @enum {string} */
+      Changes_Habits: "No" | "Maybe" | "Yes";
+      /** @enum {string} */
+      Mood_Swings: "Medium" | "Low" | "High";
+      /** @enum {string} */
+      Coping_Struggles: "No" | "Yes";
+      /** @enum {string} */
+      Work_Interest: "No" | "Maybe" | "Yes";
+      /** @enum {string} */
+      Social_Weakness: "No" | "Maybe" | "Yes";
+      /** @enum {string} */
+      mental_health_interview: "No" | "Maybe" | "Yes";
+      /** @enum {string} */
+      care_options: "Not sure" | "No" | "Yes";
+    };
+    MindCheckupResponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      /** @enum {string} */
+      result: "Yes" | "No" | "Maybe";
+      patient: components["schemas"]["PatientResponseDto"];
+    };
+    CheckupCountResponseDto: {
+      checkupCount: number;
+    };
+    UpdateTherapistApplicationPhotoDto: {
+      filename?: string;
+      therapist_application?: Record<string, never>;
     };
   };
   responses: never;
@@ -730,6 +995,23 @@ export interface operations {
       };
     };
   };
+  PatientsController_addCredits: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateBalanceDto"];
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
   PatientsController_unbanPatient: {
     parameters: {
       path: {
@@ -759,6 +1041,44 @@ export interface operations {
     };
     responses: {
       201: {
+        content: never;
+      };
+    };
+  };
+  TherapistsController_getAllTherapistRegistration: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["RelationalTherapistRegistrationResponse"][];
+        };
+      };
+    };
+  };
+  TherapistsController_therapistRegistration: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["TherapistRegistrationDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  TherapistsController_updateTherapistRegistration: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateTherapistRegistration"];
+      };
+    };
+    responses: {
+      200: {
         content: never;
       };
     };
@@ -839,8 +1159,10 @@ export interface operations {
       };
     };
     responses: {
-      201: {
-        content: never;
+      200: {
+        content: {
+          "application/json": components["schemas"]["CreatePostResponseDto"];
+        };
       };
     };
   };
@@ -890,6 +1212,20 @@ export interface operations {
       };
     };
   };
+  PostsController_findPatientPost: {
+    parameters: {
+      path: {
+        patientId: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["RelationalPostResponseDto"][];
+        };
+      };
+    };
+  };
   PostsController_userRemovePost: {
     parameters: {
       header: {
@@ -908,6 +1244,63 @@ export interface operations {
   SeedsController_create: {
     responses: {
       201: {
+        content: never;
+      };
+    };
+  };
+  AuthController_register: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["RegisterDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  AuthController_patient_login: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LoginDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  AuthController_patient_logout: {
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  AuthController_login: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LoginDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  AuthController_logout: {
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  AuthController_refreshToken: {
+    responses: {
+      200: {
         content: never;
       };
     };
@@ -987,25 +1380,6 @@ export interface operations {
         "application/json": components["schemas"]["UpdateAppointmentDto"];
       };
     };
-    responses: {
-      200: {
-        content: never;
-      };
-    };
-  };
-  AuthController_login: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AdminLoginDto"];
-      };
-    };
-    responses: {
-      201: {
-        content: never;
-      };
-    };
-  };
-  AuthController_logout: {
     responses: {
       200: {
         content: never;
@@ -1312,7 +1686,13 @@ export interface operations {
       };
     };
   };
-  PatientCommentsController_findAll: {
+  PatientCommentsController_findCommentByPost: {
+    parameters: {
+      query?: {
+        post?: unknown;
+        comment?: unknown;
+      };
+    };
     responses: {
       200: {
         content: {
@@ -1330,6 +1710,29 @@ export interface operations {
     responses: {
       201: {
         content: never;
+      };
+    };
+  };
+  PatientCommentsController_findAll: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["RelationalPatientCommentResponseDto"][];
+        };
+      };
+    };
+  };
+  PatientCommentsController_findCommentByPostV2: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["RelationalPatientCommentResponseDto"][];
+        };
       };
     };
   };
@@ -1373,20 +1776,6 @@ export interface operations {
     responses: {
       200: {
         content: never;
-      };
-    };
-  };
-  PatientCommentsController_findCommentByPost: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      200: {
-        content: {
-          "application/json": components["schemas"]["RelationalPatientCommentResponseDto"][];
-        };
       };
     };
   };
@@ -1545,6 +1934,231 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["UpdateCreditDto"];
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  StripeController_create: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateStripeDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  StripeController_getAllCharges: {
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  StripeController_getBalance: {
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  StripeController_findOne: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  StripeController_remove: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  StripeController_update: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateStripeDto"];
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  StressMonitorController_findAll: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["StressMonitorResponseDto"][];
+        };
+      };
+    };
+  };
+  StressMonitorController_create: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateStressMonitorDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  StressMonitorController_findOne: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["StressMonitorResponseDto"][];
+        };
+      };
+    };
+  };
+  StressMonitorController_findStressMonitorCount: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["StressMonitorCountResponseDto"];
+        };
+      };
+    };
+  };
+  MindCheckupController_findAll: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["MindCheckupResponseDto"][];
+        };
+      };
+    };
+  };
+  MindCheckupController_create: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateMindCheckupDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  MindCheckupController_findOne: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["MindCheckupResponseDto"][];
+        };
+      };
+    };
+  };
+  MindCheckupController_findCheckupCount: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["CheckupCountResponseDto"];
+        };
+      };
+    };
+  };
+  TherapistApplicationPhotosController_findAll: {
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  TherapistApplicationPhotosController_create: {
+    requestBody: {
+      content: {
+        "application/json": string;
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  TherapistApplicationPhotosController_findOne: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  TherapistApplicationPhotosController_remove: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  TherapistApplicationPhotosController_update: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateTherapistApplicationPhotoDto"];
       };
     };
     responses: {

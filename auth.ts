@@ -1,61 +1,86 @@
-import { logo } from "@/utils/image-req-helper";
-import NextAuth from "next-auth";
-import type { NextAuthConfig } from "next-auth";
-import "next-auth/jwt";
+import { ROUTER_PATH } from "@/constants/route-constant";
+import { adminLogin } from "@/service/auth-service";
+import NextAuth, { type DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
-const config = {
-  theme: { logo: logo },
+declare module "next-auth" {
+  interface Session {
+    user: {
+      _id: string;
+      username: string;
+      roles: Array<string>;
+      credential: {
+        email?: string;
+        password?: string;
+      };
+      refresh_token: string;
+    } & DefaultSession["user"];
+  }
+
+  interface User {
+    username: string;
+    credential: {
+      email: string;
+      password: string;
+    };
+    roles: Array<string>;
+  }
+}
+
+export const { handlers, signIn, signOut, auth } = NextAuth({
+  pages: {
+    signIn: ROUTER_PATH.LOGIN,
+  },
   providers: [
     Credentials({
       credentials: {
-        email: { label: "Email" },
-        password: { label: "Password", type: "password" },
+        email: {
+          label: "Email",
+          name: "email",
+        },
+        password: {
+          label: "Password",
+          name: "password",
+          type: "password",
+        },
       },
-      async authorize(credentials) {
-        // const response = await fetch("");
-        // if (!response.ok) return null;
-        console.log(credentials);
-        return null;
+      authorize: async (credentials) => {
+        try {
+          const user = await adminLogin({
+            email: credentials.email as string,
+            password: credentials.password as string,
+          });
+
+          if (user.data?.admin) {
+            return user.data?.admin;
+          }
+
+          return null;
+        } catch (e) {
+          console.log(e);
+          throw e;
+        }
       },
     }),
   ],
-  basePath: "/auth",
+  session: {
+    strategy: "jwt",
+  },
   callbacks: {
-    authorized({ request, auth }) {
-      const { pathname } = request.nextUrl;
-      if (pathname === "/middleware-example") return !!auth;
-      return true;
-    },
-    jwt({ token, trigger, session, account }) {
-      if (trigger === "update") token.name = session.user.name;
-      if (account?.provider === "keycloak") {
-        return { ...token, accessToken: account.access_token };
+    async jwt({ token, user }) {
+      if (user) {
+        token.username = user.username;
+        token.email = user.credential.email;
+        token.roles = user.roles;
       }
       return token;
     },
     async session({ session, token }) {
-      if (token?.accessToken) {
-        session.accessToken = token.accessToken;
+      if (token) {
+        session.user.username = token.username as string;
+        session.user.roles = token.roles as Array<string>;
       }
       return session;
     },
   },
-  experimental: {
-    enableWebAuthn: true,
-  },
-} satisfies NextAuthConfig;
-
-export const { handlers, signIn, signOut, auth } = NextAuth(config);
-
-declare module "next-auth" {
-  interface Session {
-    accessToken?: string;
-  }
-}
-
-declare module "next-auth/jwt" {
-  interface JWT {
-    accessToken?: string;
-  }
-}
+});

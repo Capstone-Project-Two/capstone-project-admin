@@ -22,6 +22,7 @@ export type LikePostResponseDto = GenApi["LikePostResponseDto"];
 export type UpdateTherapistDto = GenApi["UpdateTherapistDto"];
 export type CreatePostDto = GenApi["CreatePostDto"];
 export type RelationalPostResponseDto = GenApi["RelationalPostResponseDto"];
+export type LoginDto = GenApi['LoginDto']
 export type TErrorType = {
   statusCode: number;
   timeStamp: Date;
