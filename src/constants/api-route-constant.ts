@@ -26,4 +26,8 @@ export enum API_ROUTE {
   //Stripe Routes
   ALL_CHARGES = "/stripe/charges",
   BALANCES = "/stripe/balance",
+
+  // Auth
+  ADMIN_LOGIN = "/auth/admin/login",
+  ADMIN_LOGOUT = "/auth/admin/logout",
 }

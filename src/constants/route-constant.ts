@@ -12,4 +12,6 @@ export enum ROUTER_PATH {
 
   POSTS = "/posts",
   POSTS_HISTORY = "/posts/history",
+
+  LOGIN = '/login'
 }

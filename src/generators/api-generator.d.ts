@@ -63,23 +63,14 @@ export interface paths {
     delete: operations["PostsController_remove"];
     patch: operations["PostsController_update"];
   };
+  "/posts/patient-post/{patientId}": {
+    get: operations["PostsController_findPatientPost"];
+  };
   "/posts/remove-post/{id}": {
     patch: operations["PostsController_userRemovePost"];
   };
   "/seeds": {
     post: operations["SeedsController_create"];
-  };
-  "/factories": {
-    post: operations["FactoriesController_create"];
-  };
-  "/appointments": {
-    get: operations["AppointmentsController_findAll"];
-    post: operations["AppointmentsController_create"];
-  };
-  "/appointments/{id}": {
-    get: operations["AppointmentsController_findOne"];
-    delete: operations["AppointmentsController_remove"];
-    patch: operations["AppointmentsController_update"];
   };
   "/auth/patient/register": {
     post: operations["AuthController_register"];
@@ -98,6 +89,18 @@ export interface paths {
   };
   "/auth/refresh-token": {
     get: operations["AuthController_refreshToken"];
+  };
+  "/factories": {
+    post: operations["FactoriesController_create"];
+  };
+  "/appointments": {
+    get: operations["AppointmentsController_findAll"];
+    post: operations["AppointmentsController_create"];
+  };
+  "/appointments/{id}": {
+    get: operations["AppointmentsController_findOne"];
+    delete: operations["AppointmentsController_remove"];
+    patch: operations["AppointmentsController_update"];
   };
   "/credential": {
     get: operations["CredentialController_findAll"];
@@ -148,16 +151,19 @@ export interface paths {
     patch: operations["ActivityImagesController_update"];
   };
   "/patient-comments": {
-    get: operations["PatientCommentsController_findAll"];
+    get: operations["PatientCommentsController_findCommentByPost"];
     post: operations["PatientCommentsController_create"];
+  };
+  "/patient-comments/all": {
+    get: operations["PatientCommentsController_findAll"];
+  };
+  "/patient-comments/comments-new/{id}": {
+    get: operations["PatientCommentsController_findCommentByPostV2"];
   };
   "/patient-comments/{id}": {
     get: operations["PatientCommentsController_findOne"];
     delete: operations["PatientCommentsController_remove"];
     patch: operations["PatientCommentsController_update"];
-  };
-  "/patient-comments/post/{id}": {
-    get: operations["PatientCommentsController_findCommentByPost"];
   };
   "/patient-comments/all-replies/{id}": {
     get: operations["PatientCommentsController_findAllReplies"];
@@ -240,6 +246,8 @@ export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
     CreateAdminDto: {
+      username: string;
+      profile_img: string;
       email: string;
       password: string;
     };
@@ -254,16 +262,26 @@ export interface components {
       roles: ("patient" | "admin" | "therapist")[];
     };
     UpdateAdminDto: {
+      username?: string;
+      profile_img?: string;
       email?: string;
       password?: string;
     };
     CreatePatientDto: {
+      credential?: string;
+      username?: string;
+      gender?: string;
+      credits?: number;
+      profile_img?: string;
+    };
+    CredentialResponseDto: {
+      _id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
       email: string;
-      username: string;
-      phone_number: string;
-      gender: string;
-      credits: number;
-      profile_img: string;
+      password: string;
     };
     PatientResponseDto: {
       _id: string;
@@ -287,6 +305,7 @@ export interface components {
       stress_monitor_count: number;
       /** @default 0 */
       mind_checkup_count: number;
+      credential: components["schemas"]["CredentialResponseDto"];
     };
     PostResponseDto: {
       _id: string;
@@ -324,12 +343,12 @@ export interface components {
       stress_monitor_count: number;
       /** @default 0 */
       mind_checkup_count: number;
+      credential: components["schemas"]["CredentialResponseDto"];
       posts: components["schemas"]["PostResponseDto"][];
     };
     UpdatePatientDto: {
-      email?: string;
+      credential?: string;
       username?: string;
-      phone_number?: string;
       gender?: string;
       credits?: number;
       profile_img?: string;
@@ -497,6 +516,19 @@ export interface components {
       /** @default false */
       is_deleted: boolean;
     };
+    RegisterDto: {
+      credential?: string;
+      username?: string;
+      gender?: string;
+      credits?: number;
+      profile_img?: string;
+      email: string;
+      password: string;
+    };
+    LoginDto: {
+      email: string;
+      password: string;
+    };
     CreateFactoryDto: {
       /** @default 10 */
       length?: number;
@@ -549,14 +581,6 @@ export interface components {
       duration?: number;
       session_price?: number;
     };
-    RegisterDto: {
-      email: string;
-      password: string;
-    };
-    LoginDto: {
-      email: string;
-      password: string;
-    };
     CreateCredentialDto: Record<string, never>;
     UpdateCredentialDto: Record<string, never>;
     LikePostResponseDto: {
@@ -565,7 +589,7 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
-      patient: components["schemas"]["PatientResponseDto"];
+      patient: string;
       post: components["schemas"]["PostResponseDto"];
       is_like: boolean;
     };
@@ -632,6 +656,7 @@ export interface components {
       stress_monitor_count: number;
       /** @default 0 */
       mind_checkup_count: number;
+      credential: components["schemas"]["CredentialResponseDto"];
     };
     PatientCommentResponseDto: {
       _id: string;
@@ -696,7 +721,7 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
-      patient: components["schemas"]["PatientResponseDto"];
+      patient: string;
       post: components["schemas"]["PostResponseDto"];
       is_saved: boolean;
     };
@@ -1191,6 +1216,20 @@ export interface operations {
       };
     };
   };
+  PostsController_findPatientPost: {
+    parameters: {
+      path: {
+        patientId: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["RelationalPostResponseDto"][];
+        };
+      };
+    };
+  };
   PostsController_userRemovePost: {
     parameters: {
       header: {
@@ -1209,6 +1248,63 @@ export interface operations {
   SeedsController_create: {
     responses: {
       201: {
+        content: never;
+      };
+    };
+  };
+  AuthController_register: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["RegisterDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  AuthController_patient_login: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LoginDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  AuthController_patient_logout: {
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  AuthController_login: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LoginDto"];
+      };
+    };
+    responses: {
+      201: {
+        content: never;
+      };
+    };
+  };
+  AuthController_logout: {
+    responses: {
+      200: {
+        content: never;
+      };
+    };
+  };
+  AuthController_refreshToken: {
+    responses: {
+      200: {
         content: never;
       };
     };
@@ -1288,63 +1384,6 @@ export interface operations {
         "application/json": components["schemas"]["UpdateAppointmentDto"];
       };
     };
-    responses: {
-      200: {
-        content: never;
-      };
-    };
-  };
-  AuthController_register: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["RegisterDto"];
-      };
-    };
-    responses: {
-      201: {
-        content: never;
-      };
-    };
-  };
-  AuthController_patient_login: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["LoginDto"];
-      };
-    };
-    responses: {
-      201: {
-        content: never;
-      };
-    };
-  };
-  AuthController_patient_logout: {
-    responses: {
-      200: {
-        content: never;
-      };
-    };
-  };
-  AuthController_login: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["LoginDto"];
-      };
-    };
-    responses: {
-      201: {
-        content: never;
-      };
-    };
-  };
-  AuthController_logout: {
-    responses: {
-      200: {
-        content: never;
-      };
-    };
-  };
-  AuthController_refreshToken: {
     responses: {
       200: {
         content: never;
@@ -1651,7 +1690,13 @@ export interface operations {
       };
     };
   };
-  PatientCommentsController_findAll: {
+  PatientCommentsController_findCommentByPost: {
+    parameters: {
+      query?: {
+        post?: unknown;
+        comment?: unknown;
+      };
+    };
     responses: {
       200: {
         content: {
@@ -1669,6 +1714,29 @@ export interface operations {
     responses: {
       201: {
         content: never;
+      };
+    };
+  };
+  PatientCommentsController_findAll: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["RelationalPatientCommentResponseDto"][];
+        };
+      };
+    };
+  };
+  PatientCommentsController_findCommentByPostV2: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["RelationalPatientCommentResponseDto"][];
+        };
       };
     };
   };
@@ -1712,20 +1780,6 @@ export interface operations {
     responses: {
       200: {
         content: never;
-      };
-    };
-  };
-  PatientCommentsController_findCommentByPost: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      200: {
-        content: {
-          "application/json": components["schemas"]["RelationalPatientCommentResponseDto"][];
-        };
       };
     };
   };

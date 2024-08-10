@@ -24,12 +24,6 @@ function PatientTable({ patients }: Props) {
       key: "username",
     },
     {
-      title: "Phone number",
-      dataIndex: "phone_number",
-      key: "phone_number",
-      width: "10%"
-    },
-    {
       title: "Roles",
       dataIndex: "roles",
       key: "roles",
