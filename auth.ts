@@ -1,33 +1,10 @@
 import { ROUTER_PATH } from "@/constants/route-constant";
 import { adminLogin } from "@/service/auth-service";
-import NextAuth, { type DefaultSession } from "next-auth";
+import NextAuth, { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
-declare module "next-auth" {
-  interface Session {
-    user: {
-      _id: string;
-      username: string;
-      roles: Array<string>;
-      credential: {
-        email?: string;
-        password?: string;
-      };
-      refresh_token: string;
-    } & DefaultSession["user"];
-  }
-
-  interface User {
-    username: string;
-    credential: {
-      email: string;
-      password: string;
-    };
-    roles: Array<string>;
-  }
-}
-
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const authConfig = {
+  debug: process.env.ENV_MODE === "development",
   pages: {
     signIn: ROUTER_PATH.LOGIN,
   },
@@ -49,16 +26,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const user = await adminLogin({
             email: credentials.email as string,
             password: credentials.password as string,
-          });
+          })
+            .then((val) => {
+              return val;
+            })
+            .catch((_) => {
+              return null;
+            });
 
-          if (user.data?.admin) {
-            return user.data?.admin;
+          if (!user) {
+            return null;
           }
 
+          return user.data?.admin;
+        } catch (err) {
           return null;
-        } catch (e) {
-          console.log(e);
-          throw e;
         }
       },
     }),
@@ -83,4 +65,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
   },
-});
+} satisfies NextAuthConfig;
+
+export const { handlers, signIn, signOut, auth } = NextAuth(authConfig);

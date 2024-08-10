@@ -1,14 +1,11 @@
 "use client"
 import { authSignIn, authSignOut } from "@/service/auth-service";
-import { Button, Input } from "antd";
+import { Button, Input, notification } from "antd";
 import { ErrorMessage, Form, Formik } from "formik";
 
 type Props = {};
 
-export default function SignIn({
-  provider,
-  ...props
-}: { provider?: string } & React.ComponentPropsWithRef<typeof Button>) {
+export default function SignIn({ }: Props) {
   return (
     <div className="flex flex-col gap-4">
       <Formik
@@ -17,12 +14,17 @@ export default function SignIn({
           password: 'P@$$w0rd',
         }}
         onSubmit={async (values) => {
-          console.log(provider)
           const formData = new FormData()
           formData.append('email', values.email)
           formData.append('password', values.password)
-          await authSignIn(values).catch(err => {
-            // console.log(err)
+          await authSignIn(values).then(val => {
+            notification.success({
+              message: 'Login successful'
+            })
+          }).catch((err) => {
+            notification.error({
+              message: 'Invalid password or email',
+            })
           });
         }}
       >

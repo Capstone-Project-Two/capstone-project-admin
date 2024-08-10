@@ -24,5 +24,6 @@ export enum API_ROUTE {
   BASE_APPOINTMENTS = "/appointments",
 
   // Auth
-  ADMIN_LOGIN = '/auth/admin/login'
+  ADMIN_LOGIN = "/auth/admin/login",
+  ADMIN_LOGOUT = "/auth/admin/logout",
 }
