@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Button, Layout, Menu, MenuProps, notification, theme } from "antd";
+import { Layout, Menu, MenuProps, theme } from "antd";
 import Link from "next/link";
 import { ROUTER_PATH } from "@/constants/route-constant";
 import {
@@ -21,7 +21,6 @@ import BaseImage from "../ui/base-image";
 import { logo } from "@/utils/image-req-helper";
 import Navbar from "./navbar";
 import { ApntStatus } from "@/constants/appointment-status-constants";
-import { authSignOut } from "@/service/auth-service";
 
 type Props = {
   children: React.ReactNode;
@@ -125,16 +124,6 @@ function Sidebar({ children }: Props) {
           ),
         },
       ],
-    },
-    {
-      key: 'Logout',
-      label: <Button onClick={async () => {
-        await authSignOut().then(() => {
-          notification.success({
-            message: 'Logout successful',
-          })
-        });
-      }}>Logout</Button>,
     },
   ];
 
