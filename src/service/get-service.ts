@@ -92,6 +92,20 @@ export const getTherapists = async () => {
   };
 };
 
+export const getTherapistApplications = async () => {
+  const res = await fetchDefault({
+    url: `${API_ROUTE.BASE_THERAPIST}/registration`,
+    tags: [REVALIDATE_TAG_ENUM.THERAPIST],
+  });
+
+  return {
+    error: !isValidResponse(res?.statusCode) && res,
+    message: res?.message,
+    data: res?.data,
+    statusCode: res?.statusCode,
+  };
+};
+
 export const getCredits = async () => {
   const res = await fetchDefault({
     url: API_ROUTE.ALL_CREDIT,
@@ -102,6 +116,34 @@ export const getCredits = async () => {
     error: !isValidResponse(res?.statusCode) && res,
     message: res?.message,
     data: res?.data as Array<CreditReponseDto>,
+    statusCode: res?.statusCode,
+  };
+};
+
+export const getCharges = async () => {
+  const res = await fetchDefault({
+    url: API_ROUTE.ALL_CHARGES,
+    tags: [REVALIDATE_TAG_ENUM.STRIPE],
+  });
+
+  return {
+    error: !isValidResponse(res?.statusCode) && res,
+    message: res?.message,
+    data: res?.data,
+    statusCode: res?.statusCode,
+  };
+};
+
+export const getBalances = async () => {
+  const res = await fetchDefault({
+    url: API_ROUTE.BALANCES,
+    tags: [REVALIDATE_TAG_ENUM.STRIPE],
+  });
+
+  return {
+    error: !isValidResponse(res?.statusCode) && res,
+    message: res?.message,
+    data: res?.data,
     statusCode: res?.statusCode,
   };
 };

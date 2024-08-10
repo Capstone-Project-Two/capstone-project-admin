@@ -5,6 +5,7 @@ import { AppointmentResponseDto } from "@/service/api-types";
 import { dateFormat } from "@/utils/date-format";
 import { Button, Spin, Tag } from "antd";
 import { useTransition } from "react";
+import ManagePrescriptionModal from "./manage-prescription-modal";
 
 type Props = {
   appointments: Array<AppointmentResponseDto>;
@@ -103,6 +104,11 @@ function AppointmentCard({ appointments }: Props) {
               >
                 Reject
               </Button>
+            </div>
+          )}
+          {appointment?.status === STATUS.SCHEDULED && !isPending && (
+            <div className="flex gap-x-4">
+              <ManagePrescriptionModal appointmentId={appointment?._id} />
             </div>
           )}
         </div>

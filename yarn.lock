@@ -54,11 +54,11 @@ __metadata:
   linkType: hard
 
 "@ant-design/fast-color@npm:^2.0.1":
-  version: 2.0.4
-  resolution: "@ant-design/fast-color@npm:2.0.4"
+  version: 2.0.5
+  resolution: "@ant-design/fast-color@npm:2.0.5"
   dependencies:
     "@babel/runtime": "npm:^7.24.7"
-  checksum: 10c0/5b041a7f42fa1e983ef124354e77d090e6b7911363e748de759d1c5900680a342f9658db4c6889633de282ce35930ea66ee76222d56d58faa3f11e11209cebdd
+  checksum: 10c0/224b48131ebea77758da2b8b81d15e0b8e64d5bc8ae3211ec584d5e1ec66e95f4ed333dfffc90fbc886a29f7a03005813d85e0001223e2f72338e3dd0ac693df
   languageName: node
   linkType: hard
 
@@ -86,15 +86,15 @@ __metadata:
   linkType: hard
 
 "@ant-design/nextjs-registry@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@ant-design/nextjs-registry@npm:1.0.0"
+  version: 1.0.1
+  resolution: "@ant-design/nextjs-registry@npm:1.0.1"
   peerDependencies:
     "@ant-design/cssinjs": ^1.18.2
     antd: ^5.0.0
     next: ^14.0.0
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
-  checksum: 10c0/26a339b967e53ee2c93e325219d3461f986ae905459a0d480e5ccd60b3408da126d81bf027ef5126e466d44704569d14ad236ad91f25d137ccf5ed642b09e64f
+  checksum: 10c0/92d407b9872251159ee50fb4973cb1d94f057f3001b1c287f4616bacd294e91a9456c63540dc9cf28e677643d7a9dd9af9d4cc7899c502249a3ed108ac5ffaa9
   languageName: node
   linkType: hard
 
@@ -1389,9 +1389,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001579, caniuse-lite@npm:^1.0.30001646":
-  version: 1.0.30001647
-  resolution: "caniuse-lite@npm:1.0.30001647"
-  checksum: 10c0/54c07aabbe3915a67bac8015e8421aee59f2756f996fc70fc2a4743fec66e8684e620b45fb706e7e3d0fdd0b2f8dbab0309df90609ead5b45a9cd4318c8716c7
+  version: 1.0.30001649
+  resolution: "caniuse-lite@npm:1.0.30001649"
+  checksum: 10c0/0ca2f3776324acfc36d72a575e72ffd1408b91f0ac462a6f0aa08ea24d0d16e83f85f652e19d40e6d6d82ab0fb588740f948e7c88d2818fe6bcd68f70ca33acf
   languageName: node
   linkType: hard
 
@@ -1809,9 +1809,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.4":
-  version: 1.5.4
-  resolution: "electron-to-chromium@npm:1.5.4"
-  checksum: 10c0/139abf1b7281c2f3288819fb9b114f09d541ac38c9f0373f194ce2d483d82d118b8751f1b2a59b04ed0d8f414071b58508a40050fc0f23b5aa7e38d11d0cf30c
+  version: 1.5.5
+  resolution: "electron-to-chromium@npm:1.5.5"
+  checksum: 10c0/6e5e12f729a74a78d9a7386ea32039262cb8a2f4611ab346da1f162c270d0569194c72169042080a1017220835ed30ee2d77ca5ba13c1acaa5fa0d373fbc0ad5
   languageName: node
   linkType: hard
 
@@ -4095,13 +4095,13 @@ __metadata:
   linkType: hard
 
 "postcss@npm:^8, postcss@npm:^8.4.23":
-  version: 8.4.40
-  resolution: "postcss@npm:8.4.40"
+  version: 8.4.41
+  resolution: "postcss@npm:8.4.41"
   dependencies:
     nanoid: "npm:^3.3.7"
     picocolors: "npm:^1.0.1"
     source-map-js: "npm:^1.2.0"
-  checksum: 10c0/65ed67573e5443beaeb582282ff27a6be7c7fe3b4d9fa15761157616f2b97510cb1c335023c26220b005909f007337026d6e3ff092f25010b484ad484e80ea7f
+  checksum: 10c0/c1828fc59e7ec1a3bf52b3a42f615dba53c67960ed82a81df6441b485fe43c20aba7f4e7c55425762fd99c594ecabbaaba8cf5b30fd79dfec5b52a9f63a2d690
   languageName: node
   linkType: hard
 

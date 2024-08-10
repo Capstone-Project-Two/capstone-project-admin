@@ -246,6 +246,8 @@ export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
     CreateAdminDto: {
+      username: string;
+      profile_img: string;
       email: string;
       password: string;
     };
@@ -260,6 +262,8 @@ export interface components {
       roles: ("patient" | "admin" | "therapist")[];
     };
     UpdateAdminDto: {
+      username?: string;
+      profile_img?: string;
       email?: string;
       password?: string;
     };

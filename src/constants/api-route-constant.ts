@@ -23,6 +23,10 @@ export enum API_ROUTE {
   //Therapist Routes
   BASE_APPOINTMENTS = "/appointments",
 
+  //Stripe Routes
+  ALL_CHARGES = "/stripe/charges",
+  BALANCES = "/stripe/balance",
+
   // Auth
   ADMIN_LOGIN = "/auth/admin/login",
   ADMIN_LOGOUT = "/auth/admin/logout",
