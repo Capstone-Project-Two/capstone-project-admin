@@ -3,8 +3,14 @@ import { Spin } from "antd";
 import BaseImage from "@/components/ui/base-image";
 import { Suspense } from "react";
 import LoginForm from "@/components/login/login-form";
+import { Metadata } from "next";
+import { pageMetadata } from "@/utils/metadata-helpter";
 
 type Props = {};
+
+export const metadata: Metadata = pageMetadata({
+  title: "Login",
+});
 
 export default async function LoginPage({ }: Props) {
 
