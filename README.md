@@ -19,6 +19,18 @@ $ yarn start:staging
 $ yarn start:prod
 ```
 
+## Generate Api
+
+> Run this script to generate response from the backend server
+
+```bash
+# development mode
+$ yarn gen:api:dev
+
+# TODO: Gen Api for staging
+# TODO: Gen Api for prod
+```
+
 ## Building the app
 
 ```bash

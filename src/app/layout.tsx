@@ -1,21 +1,30 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import { ENV_MODE } from "@/constants/env-constant";
+import AppThemeProvider from "@/contexts/app-theme-provider";
+import { logo } from "@/utils/image-req-helper";
+import { Metadata } from "next";
 
-const inter = Inter({ subsets: ["latin"] });
+type Props = {
+  children: React.ReactNode
+}
 
 export const metadata: Metadata = {
-  title: `Capstone Admin - ${process.env.ENV_MODE !== 'production' && process.env.ENV_MODE}`,
-};
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
-  );
+  icons: logo,
+  title: {
+    template: `%s | Capstone Admin - ${ENV_MODE !== 'production' && ENV_MODE}`,
+    default: `Capstone Admin - ${ENV_MODE !== 'production' && ENV_MODE}`
+  }
 }
+
+async function RootLayout({ children }: Props) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <AppThemeProvider>
+          {children}
+        </AppThemeProvider>
+      </body>
+    </html>
+  )
+}
+
+export default RootLayout
