@@ -23,11 +23,3 @@ export type UpdateTherapistDto = GenApi["UpdateTherapistDto"];
 export type CreatePostDto = GenApi["CreatePostDto"];
 export type RelationalPostResponseDto = GenApi["RelationalPostResponseDto"];
 export type LoginDto = GenApi['LoginDto']
-export type TErrorType = {
-  statusCode: number;
-  timeStamp: Date;
-  path: String;
-  errorType: String;
-  messages: Array<string>;
-  validationMessages: Array<string>;
-};

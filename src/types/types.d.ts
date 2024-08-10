@@ -1,4 +1,4 @@
-import { type DefaultSession } from 'next-auth';
+import { type DefaultSession } from "next-auth";
 declare module "next-auth" {
   interface Session {
     user: {
@@ -14,6 +14,8 @@ declare module "next-auth" {
   }
 
   interface User {
+    _id: string;
+    profile_img: string;
     username: string;
     credential: {
       email: string;
@@ -33,10 +35,9 @@ export type TMeta = {
 
 export type TError = {
   statusCode: number;
-  timestamp: Date;
-  path: string;
-  messages: Array<string>;
-  errorType: string;
+  timeStamp: Date;
+  path: String;
+  errorType: String;
   validationMessages: Array<string>;
-  data?: [];
+  messages: Array<string>;
 };

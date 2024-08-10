@@ -1,5 +1,7 @@
-import { AntdRegistry } from "@ant-design/nextjs-registry"
-import AntdProvider from "./antd-provider"
+import "@/styles/globals.css";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
+import AntdProvider from "./antd-provider";
+import ProgressProvider from "./progress-bar-provider";
 
 type Props = {
   children: React.ReactNode
@@ -7,11 +9,13 @@ type Props = {
 
 function AppThemeProvider({ children }: Props) {
   return (
-    <AntdRegistry>
-      <AntdProvider>
-        {children}
-      </AntdProvider>
-    </AntdRegistry>
+    <ProgressProvider>
+      <AntdRegistry>
+        <AntdProvider>
+          {children}
+        </AntdProvider>
+      </AntdRegistry>
+    </ProgressProvider>
   )
 }
 

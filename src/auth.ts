@@ -2,6 +2,7 @@ import { ROUTER_PATH } from "@/constants/route-constant";
 import { adminLogin } from "@/service/auth-service";
 import NextAuth, { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { isOkStatusCode } from "./utils/helper";
 
 export const authConfig = {
   debug: process.env.ENV_MODE === "development",
@@ -11,31 +12,19 @@ export const authConfig = {
   providers: [
     Credentials({
       credentials: {
-        email: {
-          label: "Email",
-          name: "email",
-        },
-        password: {
-          label: "Password",
-          name: "password",
-          type: "password",
-        },
+        email: {},
+        password: {},
       },
       authorize: async (credentials) => {
         try {
           const user = await adminLogin({
             email: credentials.email as string,
             password: credentials.password as string,
-          })
-            .then((val) => {
-              return val;
-            })
-            .catch((_) => {
-              return null;
-            });
+          });
 
-          if (!user) {
-            return null;
+          if (!isOkStatusCode(user?.statusCode) || !user.data?.admin) {
+            // return null;
+            throw user;
           }
 
           return user.data?.admin;
@@ -51,14 +40,19 @@ export const authConfig = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
+        token.id = user._id;
         token.username = user.username;
         token.email = user.credential.email;
         token.roles = user.roles;
+        token.profile_img = user.profile_img;
       }
       return token;
     },
     async session({ session, token }) {
       if (token) {
+        session.user.name = token.username as string;
+        session.user.image = token.profile_img as string;
+        session.user.id = token.id as string;
         session.user.username = token.username as string;
         session.user.roles = token.roles as Array<string>;
       }

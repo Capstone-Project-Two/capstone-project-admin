@@ -1,24 +1,22 @@
 "use server";
 
-import { signIn, signOut } from "../../auth";
+import { signIn, signOut } from "../auth";
 import { ROUTER_PATH } from "@/constants/route-constant";
-import { fetchDefault, fetchPostDefault } from "./fetcher-service";
+import { fetchDefault } from "./fetcher-service";
 import { API_ROUTE } from "@/constants/api-route-constant";
 import { LoginDto } from "./api-types";
-import { isRedirectError } from "next/dist/client/components/redirect";
+import { BASE_API_URL } from "@/constants/env-constant";
 
 export const adminLogin = async (loginDto: LoginDto) => {
-  try {
-    const res = await fetchPostDefault({
-      url: API_ROUTE.ADMIN_LOGIN,
-      method: "POST",
-      body: loginDto,
-    });
+  const res = await fetch(`${BASE_API_URL}${API_ROUTE.ADMIN_LOGIN}`, {
+    body: JSON.stringify(loginDto),
+    method: "post",
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
 
-    return res;
-  } catch (e) {
-    throw e;
-  }
+  return res.json();
 };
 
 export const adminLogout = async () => {
@@ -33,15 +31,16 @@ export const adminLogout = async () => {
   }
 };
 
-export const authSignIn = async (formData: any) => {
+export const authSignIn = async (
+  formData: {
+    email: string;
+    password: string;
+  },
+  callbackUrl: string
+) => {
   await signIn("credentials", {
-    redirectTo: ROUTER_PATH.HOMEPAGE,
+    redirectTo: callbackUrl ?? ROUTER_PATH.HOMEPAGE,
     ...formData,
-  }).catch((err) => {
-    if (isRedirectError(err)) {
-      throw err;
-    }
-    throw err;
   });
 };
 
@@ -51,9 +50,6 @@ export const authSignOut = async () => {
       await adminLogout();
     })
     .catch((err) => {
-      if (isRedirectError(err)) {
-        throw err;
-      }
       throw err;
     });
 };
